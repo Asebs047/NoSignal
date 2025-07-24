@@ -18,6 +18,6 @@ public class LogoutServlet extends HttpServlet{
     protected void doGet(HttpServletRequest solicitud, HttpServletResponse respuesta) throws IOException, ServletException{
         HttpSession sesion = solicitud.getSession(false);
         if (sesion != null) sesion.invalidate();
-        respuesta.sendRedirect("inicioSecion.jsp");
+        respuesta.sendRedirect("index.jsp");
     }
 }

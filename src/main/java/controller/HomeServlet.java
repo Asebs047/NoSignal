@@ -18,10 +18,10 @@ public class HomeServlet extends HttpServlet {
     
     protected void doGet(HttpServletRequest solicitud, HttpServletResponse respuesta) throws IOException, ServletException{
         HttpSession sesion = solicitud.getSession(false);
-        if (sesion != null && sesion.getAttribute("nombreUsuario") != null) {
-            solicitud.getRequestDispatcher("").forward(solicitud, respuesta);//configurarlaaaajspeso
+        if (sesion != null && sesion.getAttribute("correo") != null) {
+            solicitud.getRequestDispatcher("home.jsp").forward(solicitud, respuesta);//configurarlaaaajspeso
         } else {
-            respuesta.sendRedirect("inicioSecion.jsp");
+            respuesta.sendRedirect("index.jsp");
         }
     }
 }
