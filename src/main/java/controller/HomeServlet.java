@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
  * @author NS
  */
 
-@WebServlet("/HomeServlet")
+@WebServlet("/Home")
 public class HomeServlet extends HttpServlet {
     
     protected void doGet(HttpServletRequest solicitud, HttpServletResponse respuesta) throws IOException, ServletException{
