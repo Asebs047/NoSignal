@@ -860,7 +860,6 @@ CALL sp_AgregarChaqueta('Chaqueta bomber', 2.0, 'Verde olivo', 1099.99, 'Hombre'
 CALL sp_AgregarChaqueta('Chaqueta parka', 3.5, 'Beige', 1599.50, 'Mujer');
 
 CALL sp_AgregarGorra('Gorra trucker', 0.5, 'Negra/Roja', 199.99, 'Hombre');
-CALL sp_AgregarGorra('Gorra snapback', 0.5, 'Azul', 249.50, 'Unisex');
 CALL sp_AgregarGorra('Gorra de beisbol', 0.5, 'Blanca', 179.99, 'Hombre');
 CALL sp_AgregarGorra('Gorra plana', 0.5, 'Negra', 229.99, 'Mujer');
 CALL sp_AgregarGorra('Gorra con visor', 0.5, 'Rosa', 199.50, 'Mujer');
