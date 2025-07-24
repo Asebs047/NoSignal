@@ -111,7 +111,7 @@
     </head>
     <body>
         <div class="contenedor">
-            <form action="registroServlet" method="get">
+            <form action="registroServlet" method="post">
                 <h2>Crear cuenta</h2>
 
                 <label>Nombre completo</label>
