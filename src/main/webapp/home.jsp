@@ -48,12 +48,16 @@
                 display: block;
                 margin: 0 auto;
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> af38b21c6df6dd32b7f233d96eecf5d2bb44064a
             .logo-menu {
                 width: 40px;
                 height: auto;
                 vertical-align: middle;
             }
+<<<<<<< HEAD
 
             /* ==== NEO-POP ESTILO PARA LA BARRA ==== */
             .navbar {
@@ -191,6 +195,8 @@
             }
 
  
+=======
+>>>>>>> af38b21c6df6dd32b7f233d96eecf5d2bb44064a
         </style>
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
@@ -198,7 +204,11 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
+<<<<<<< HEAD
                 <img src="images/logo4.png" alt="Logo NoSignal" class="logo-menu">
+=======
+                <img src="images/logo3.png" alt="Logo NoSignal" class="logo-menu">
+>>>>>>> af38b21c6df6dd32b7f233d96eecf5d2bb44064a
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -248,6 +258,10 @@
 
         <div class="container bienvenida">
             <img src="images/logo2.png" alt="Logo NoSignal" class="logo-principal">
+<<<<<<< HEAD
+=======
+            <h1 class="display-5">Bienvenido a NoSignal</h1>
+>>>>>>> af38b21c6df6dd32b7f233d96eecf5d2bb44064a
             <p class="lead">Sin conexión, sin reglas, solo estilo.</p>
             <div class="left-side" >
                 <p><strong>NoSignal</strong> es una marca de accesorios urbananos que desafía la lógica de lo convencional. Nacida de la fusión entre el <em>streetwear</em> rebelde y el universo <em>geek</em>, representa a una generación que no se conforma con seguir el sistema: lo hackea.</p>
@@ -267,6 +281,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
     </body>
 </html>
+
 
 
 
