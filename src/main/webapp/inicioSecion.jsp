@@ -157,7 +157,7 @@
 
                     <form action="loginServlet" method="get">
                         <input type="text" name="usuario" placeholder="Usuario" required>
-                        <input type="password" name="contrasena" placeholder="Contraseña" required>
+                        <input type="password" name="password" placeholder="password" required>
 
                         <input type="submit" value="Iniciar sesión">
 
