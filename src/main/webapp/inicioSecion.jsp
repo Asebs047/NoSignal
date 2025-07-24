@@ -10,23 +10,165 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Iniciar Secion</title>
+        <title>Iniciar Session</title>
+        <style>
+            body {
+                background-color: #f0f2f5;
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .container {
+                display: flex;
+                background-color: #fff;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+                border-radius: 10px;
+                overflow: hidden;
+                max-width: 900px;
+                width: 100%;
+            }
+
+            .left-side {
+                background-color: #fff;
+                flex: 1;
+                padding: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .left-side img {
+                max-width: 100%;
+                height: auto;
+                max-height: 250px;
+            }
+
+            .right-side {
+                flex: 1;
+                padding: 40px;
+                box-sizing: border-box;
+            }
+
+            .login-box {
+                text-align: center;
+            }
+
+            .login-box h1 {
+                color: #1877f2;
+                font-size: 40px;
+                margin-bottom: 5px;
+            }
+
+            .login-box h4 {
+                font-size: 18px;
+                margin-bottom: 20px;
+            }
+
+            .login-box input[type="text"],
+            .login-box input[type="password"] {
+                width: 100%;
+                padding: 12px;
+                margin: 8px 0;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                font-size: 16px;
+            }
+
+            .login-box input[type="submit"] {
+                width: 100%;
+                padding: 12px;
+                background-color: #1877f2;
+                border: none;
+                color: white;
+                font-size: 16px;
+                border-radius: 6px;
+                cursor: pointer;
+                margin-top: 10px;
+            }
+
+            .login-box input[type="submit"]:hover {
+                background-color: #145dbf;
+            }
+
+            .login-box a {
+                display: block;
+                margin: 10px 0;
+                font-size: 14px;
+                color: #1877f2;
+                text-decoration: none;
+            }
+
+            .create-account {
+                margin-top: 20px;
+                padding-top: 20px;
+                border-top: 1px solid #ddd;
+            }
+
+            .create-account a {
+                background-color: #9932CC;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 6px;
+                text-decoration: none;
+                font-weight: bold;
+                display: inline-block;
+            }
+
+            .create-account a:hover {
+                background-color: #7a29a4;
+            }
+
+            @media (max-width: 768px) {
+                .container {
+                    flex-direction: column;
+                }
+
+                .left-side {
+                    padding: 20px;
+                }
+
+                .right-side {
+                    padding: 20px;
+                }
+            }
+        </style>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     </head>
     <body>
-        <div class="container" style="text-align: center; margin-top: 150px;">
-            <form action="loginServlet" method="get">
-                <h4>Iniciar Sesión</h4>
+        <div class="container">
+            <!-- Lado izquierdo -->
+            <div class="left-side">
+                <div>
+                    <img src="images/logo2.png" alt="Logo NoSignal">
+                    <p>Compra en Nuestra Tienda NoSignal.</p>
+                </div>
+            </div>
 
-                <p><input type="text" name="usuario" placeholder="Usuario" required></p>
-                <p><input type="password" name="contrasena" placeholder="Contraseña" required></p>
+            <!-- Lado derecho con tu login-box original -->
+            <div class="right-side">
+                <div class="login-box">
+                    <img src="images/logo4.png" alt="Logo NoSignal" width="250" height="auto">
 
 
-                <p><a href="index.jsp" class="btn btn-warning">Cancelar</a></p>
-                <p><a href="registroCliente.jsp" class="btn btn-warning">Registrarse</a></p>
-                <input type="submit" value="Iniciar" class="btn btn-primary">
+                    <form action="loginServlet" method="get">
+                        <input type="text" name="usuario" placeholder="Usuario" required>
+                        <input type="password" name="contrasena" placeholder="Contraseña" required>
 
-            </form>
+                        <input type="submit" value="Iniciar sesión">
+
+                        <a href="#">¿Olvidaste tu cuenta?</a>
+
+                        <div class="create-account">
+                            <a href="registrarse.jsp">Crear cuenta nueva</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
