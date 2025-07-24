@@ -40,7 +40,7 @@ public class RegistroServlet extends HttpServlet{
                 registro.setString(4, password);
                 
                 registro.executeUpdate();
-                respuesta.sendRedirect("index.jsp");
+                respuesta.sendRedirect("home.jsp");
             }
             
         } catch (SQLException e) {
