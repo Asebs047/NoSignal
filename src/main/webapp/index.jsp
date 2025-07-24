@@ -1,3 +1,10 @@
+<%-- 
+    Document   : index
+    Created on : 23/07/2025, 22:10:39
+    Author     : Klopez
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
     <head>
