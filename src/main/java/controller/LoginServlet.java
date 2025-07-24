@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.database.DBConnection;
+import database.DBConnection;
 
 /**
  *
@@ -26,7 +26,7 @@ public class LoginServlet extends HttpServlet {
         String usuario = solicitud.getParameter("nombreUsuario");
         String contraseña = solicitud.getParameter("contraseña");
         
-        try (Connection conexion = DBConnection.getConnection()){
+        try (Connection conexion = DBConnection.getInstancia().getConnection()){
             PreparedStatement consulta = conexion.prepareStatement("select * from usuarios where nombreUsuario=? and contraseña=?");
             consulta.setString(1, usuario);
             consulta.setString(2, contraseña);
