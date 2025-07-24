@@ -21,11 +21,11 @@
                 <p><input type="text" name="usuario" placeholder="Usuario" required></p>
                 <p><input type="password" name="contrasena" placeholder="Contraseña" required></p>
 
-                <div>
-                    <p><p><a href="index.jsp" class="btn btn-warning">Cancelar</a></p>
-                    <p><a href="registroCliente.jsp" class="btn btn-warning">Registrarse</a></p>
-                    <button type="submit" class="btn btn-success">Iniciar</button> 
-                </div>
+
+                <p><a href="index.jsp" class="btn btn-warning">Cancelar</a></p>
+                <p><a href="registroCliente.jsp" class="btn btn-warning">Registrarse</a></p>
+                <input type="submit" value="Iniciar" class="btn btn-primary">
+
             </form>
         </div>
 

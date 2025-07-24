@@ -33,10 +33,10 @@
                 <label>Confirmar contraseña</label>
                 <p><input type="password" name="confirmar" placeholder="Repetir contraseña" required></p>
 
-                <div style="display: flex; justify-content: space-between;">
-                    <button type="reset">Cancelar</button>
-                    <button type="submit">Crear Cuenta</button>
-                </div>
+                
+                <p><a href="registroCliente.jsp" class="btn btn-warning">Cancelar</a></p>
+                <a href="inicioSecion.jsp" class="btn btn-warning">Crear Cuenta</a>
+
             </form>
         </div>
 

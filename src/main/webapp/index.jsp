@@ -16,7 +16,7 @@
     <body>
         <div class="container">
             <div style="text-align: center; margin-top: 150px;">
-                <a href="inicioSecion.jsp" class="btn btn-secondary">Iniciar Secion</a><br><br>
+                <p><a href="inicioSecion.jsp" class="btn btn-secondary">Iniciar Secion</a></p>
                 <a href="registrarse.jsp" class="btn btn-secondary">Registrarse</a>
             </div>
         </div>
