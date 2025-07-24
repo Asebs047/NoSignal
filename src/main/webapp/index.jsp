@@ -155,7 +155,7 @@
                     <img src="images/logo4.png" alt="Logo NoSignal" width="250" height="auto">
 
 
-                    <form action="loginServlet" method="get">
+                    <form action="loginServlet" method="post">
                         <input type="text" name="usuario" placeholder="Usuario" required>
                         <input type="password" name="password" placeholder="password" required>
 
