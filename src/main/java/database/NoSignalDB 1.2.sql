@@ -54,7 +54,9 @@ create table Calcetines(
 
 create table Usuarios(
     idUsuario int auto_increment,
+    nombre varchar(64) not null,
     nombreUsuario varchar(32) not null,
+    correo varchar(32) not null,
     contraseña varchar(32) not null,
     constraint pk_Usuarios primary key (idUsuario)
 );
@@ -143,12 +145,14 @@ create table Ventas(
 
 delimiter //
     create procedure sp_AgregarUsuario(
+		in p_nombre varchar(64),
         in p_nombreUsuario varchar(32),
+        in p_correo varchar(32),
         in p_contraseña varchar(32)
         )
         begin
-            insert into Usuarios (nombreUsuario, contraseña)
-                values (p_nombreUsuario, p_contraseña);
+            insert into Usuarios (nombre, nombreUsuario, correo, contraseña)
+                values (p_nombre , p_nombreUsuario, p_correo, p_contraseña);
         end//
 delimiter ;
 
@@ -157,7 +161,9 @@ delimiter //
     begin
         select
             U.idUsuario,
+            U.nombre,
             U.nombreUsuario,
+            U.correo,
             U.contraseña
         from Usuarios U;
     end//
@@ -166,12 +172,16 @@ delimiter ;
 delimiter //
     create procedure sp_ActualizarUsuario(
         in p_idUsuario int,
+        in p_nombre varchar(64),
         in p_nombreUsuario varchar (50),
+        in p_correo varchar(32),
         in p_contraseña varchar(50)
         )
         begin
             update Usuarios
-                set nombreUsuario = p_nombreUsuario,
+                set nombre = p_nombre,
+					nombreUsuario = p_nombreUsuario,
+                    correo = p_correo,
                     contraseña = p_contraseña
                 where idUsuario = p_idUsuario;
         end//
@@ -860,7 +870,6 @@ CALL sp_AgregarChaqueta('Chaqueta bomber', 2.0, 'Verde olivo', 1099.99, 'Hombre'
 CALL sp_AgregarChaqueta('Chaqueta parka', 3.5, 'Beige', 1599.50, 'Mujer');
 
 CALL sp_AgregarGorra('Gorra trucker', 0.5, 'Negra/Roja', 199.99, 'Hombre');
-CALL sp_AgregarGorra('Gorra snapback', 0.5, 'Azul', 249.50, 'Unisex');
 CALL sp_AgregarGorra('Gorra de beisbol', 0.5, 'Blanca', 179.99, 'Hombre');
 CALL sp_AgregarGorra('Gorra plana', 0.5, 'Negra', 229.99, 'Mujer');
 CALL sp_AgregarGorra('Gorra con visor', 0.5, 'Rosa', 199.50, 'Mujer');
@@ -882,18 +891,15 @@ CALL sp_AgregarIngresoInventario(15, DATE_SUB(CURDATE(), INTERVAL 2 DAY), 2, 2, 
 CALL sp_AgregarIngresoInventario(20, DATE_SUB(CURDATE(), INTERVAL 1 WEEK), 3, 3, 3, 3, 3);
 CALL sp_AgregarIngresoInventario(5, DATE_SUB(CURDATE(), INTERVAL 3 DAY), 4, 4, 4, 4, 4);
 
-CALL sp_AgregarUsuario('admin', 'admin123');
-CALL sp_AgregarUsuario('cliente1', 'cliente123');
-CALL sp_AgregarUsuario('cliente2', 'password456');
-CALL sp_AgregarUsuario('vendedor1', 'ventas123');
-CALL sp_AgregarUsuario('invitado', 'guest123');
+call sp_AgregarUsuario('Juan Pérez', 'juanp', 'juan@example.com', 'clave123');
+call sp_AgregarUsuario('María García', 'mariag', 'maria@example.com', 'securepass');
+call sp_AgregarUsuario('Carlos López', 'carlosl', 'carlos@example.com', 'mypassword');
 
 -- Asumiendo que los IDs de usuario generados son 1-5
 CALL sp_AgregarCarrito(2, 0); -- Carrito vacío para cliente1
 CALL sp_AgregarCarrito(3, 0); -- Carrito vacío para cliente2
 CALL sp_AgregarCarrito(2, 2549.97); -- Carrito con productos para cliente1
 CALL sp_AgregarCarrito(3, 1799.49); -- Carrito con productos para cliente2
-CALL sp_AgregarCarrito(5, 599.98); -- Carrito con productos para invitado
 
 -- Asumiendo IDs de carrito 3-5 y productos existentes
 CALL sp_AgregarDetalleCarrito(3, 1, NULL, NULL, NULL, NULL, 2, 399.98); -- 2 playeras básicas
@@ -905,17 +911,14 @@ CALL sp_AgregarDetalleCarrito(3, NULL, NULL, NULL, NULL, 3, 3, 359.97); -- 3 par
 -- Para carritos 3 y 4
 CALL sp_AgregarConfirmarPedido(3, CURDATE());
 CALL sp_AgregarConfirmarPedido(4, DATE_SUB(CURDATE(), INTERVAL 1 DAY));
-CALL sp_AgregarConfirmarPedido(5, DATE_SUB(CURDATE(), INTERVAL 3 DAY));
 
 -- Relacionadas con carritos confirmados
 CALL sp_AgregarFactura(2, 3, CURDATE()); -- cliente1, carrito3
 CALL sp_AgregarFactura(3, 4, DATE_SUB(CURDATE(), INTERVAL 1 DAY)); -- cliente2, carrito4
-CALL sp_AgregarFactura(5, 5, DATE_SUB(CURDATE(), INTERVAL 3 DAY)); -- invitado, carrito5
 
 -- Relacionadas con facturas existentes
 CALL sp_AgregarVenta(1); -- factura1
 CALL sp_AgregarVenta(2); -- factura2
-CALL sp_AgregarVenta(3); -- factura3
 
 call sp_ListarCalcetines();
 call sp_ListarCarritos();
