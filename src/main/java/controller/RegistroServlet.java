@@ -10,7 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.database.DBConnection;
+import database.DBConnection;
 
 /**
  *
@@ -22,7 +22,7 @@ public class RegistroServlet extends HttpServlet{
         String usuario = solicitud.getParameter("nombreUsuario");
         String password = solicitud.getParameter("contraseña");
         
-        try (Connection conexion = DBConnection.getConnection()){
+        try (Connection conexion = DBConnection.getInstancia().getConnection()){
             PreparedStatement consulta = conexion.prepareStatement("select * from usuarios where usuario=?");
             consulta.setString(1, usuario);
             ResultSet resultado = consulta.executeQuery();
