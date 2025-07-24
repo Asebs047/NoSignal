@@ -156,7 +156,7 @@
 
 
                     <form action="loginServlet" method="post">
-                        <input type="text" name="usuario" placeholder="Usuario" required>
+                        <input type="text" name="correo" placeholder="correo" required>
                         <input type="password" name="password" placeholder="password" required>
 
                         <input type="submit" value="Iniciar sesión">

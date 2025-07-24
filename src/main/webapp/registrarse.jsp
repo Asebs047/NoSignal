@@ -8,135 +8,155 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>NoSignal - Registro</title>
-        <style>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!DOCTYPE html>
+    <html lang="es">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>NoSignal - Registro</title>
+            <style>
 
-            body {
-                background-color: #f0f2f5;
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                margin: 0;
-                padding: 0;
-            }
+                body {
+                    background-color: #f0f2f5;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                }
 
-            .contenedor {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-            }
+                .contenedor {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                }
 
-            form {
-                background-color: white;
-                padding: 40px 35px;
-                border-radius: 12px;
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-                width: 100%;
-                max-width: 400px;
+                form {
+                    background-color: white;
+                    padding: 40px 35px;
+                    border-radius: 12px;
+                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                    width: 100%;
+                    max-width: 400px;
 
-            }
+                }
 
-            h2 {
-                text-align: center;
-                color: #1877f2;
-                margin-bottom: 30px;
+                h2 {
+                    text-align: center;
+                    color: #1877f2;
+                    margin-bottom: 30px;
 
-            }
+                }
 
-            label {
-                font-weight: 600;
-                display: block;
-                margin-bottom: 5px;
-                color: #333;
+                label {
+                    font-weight: 600;
+                    display: block;
+                    margin-bottom: 5px;
+                    color: #333;
 
-            }
+                }
 
-            input[type="text"],
-            input[type="email"],
-            input[type="password"] {
-                width: 100%;
-                padding: 12px;
-                margin-bottom: 20px;
-                border: 1px solid #ccc;
-                border-radius: 6px;
-                font-size: 15px;
-                box-sizing: border-box;
+                input[type="text"],
+                input[type="email"],
+                input[type="password"] {
+                    width: 100%;
+                    padding: 12px;
+                    margin-bottom: 20px;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                    font-size: 15px;
+                    box-sizing: border-box;
 
-            }
+                }
 
-            input:focus {
-                outline: none;
-                border-color: #1877f2;
-            }
+                input:focus {
+                    outline: none;
+                    border-color: #1877f2;
+                }
 
-            .btn-primary {
-                width: 100%;
-                padding: 12px;
-                background-color: #1877f2;
-                color: white;
-                font-size: 16px;
-                border: none;
-                border-radius: 6px;
-                cursor: pointer;
-                transition: background-color 0.3s;
-                margin-top: 10px;
-            }
+                .btn-primary {
+                    width: 100%;
+                    padding: 12px;
+                    background-color: #1877f2;
+                    color: white;
+                    font-size: 16px;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    transition: background-color 0.3s;
+                    margin-top: 10px;
+                }
 
-            .btn-primary:hover {
-                background-color: #145dbf;
-            }
+                .btn-primary:hover {
+                    background-color: #145dbf;
+                }
 
-            .btn-warning {
-                display: inline-block;
-                padding: 10px 15px;
-                background-color: #fbbc05;
-                color: #333;
-                text-decoration: none;
-                border-radius: 6px;
-                font-weight: 500;
-                margin-right: 10px;
-                text-align: center;
-            }
-            .btn-warning:hover {
-                background-color: #e0a800;
-            }
-            .btn-group {
-                display: flex;
-                justify-content: space-between;
-                margin-top: 10px;
-            }
-        </style>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    </head>
-    <body>
-        <div class="contenedor">
-            <form action="registroServlet" method="post">
-                <h2>Crear cuenta</h2>
+                .btn-warning {
+                    display: inline-block;
+                    padding: 10px 15px;
+                    background-color: #fbbc05;
+                    color: #333;
+                    text-decoration: none;
+                    border-radius: 6px;
+                    font-weight: 500;
+                    margin-right: 10px;
+                    text-align: center;
+                }
+                .btn-warning:hover {
+                    background-color: #e0a800;
+                }
+                .btn-group {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 10px;
+                }
+            </style>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+        </head>
+        <body>
+            <div class="contenedor">
+                <form action="registroServlet" method="post">
+                    <h2>Crear cuenta</h2>
 
-                <label>Nombre completo</label>
-                <input type="text" name="nombre" placeholder="Nombre completo" required>
+                    <label>Nombre</label>
+                    <input type="text" name="nombre" placeholder="Nombre" required>
 
-                <label>Nombre de usuario</label>
-                <input type="text" name="usuario" placeholder="Usuario" required>
+                    <label>Apellido</label>
+                    <input type="password" name="apellido" placeholder="Apellido" required>
 
-                <label>Correo electrónico</label>
-                <input type="email" name="correo" placeholder="correo@example.com" required>
+                    <label>Telefono</label>
+                    <input type="text" name="telefono" placeholder="Telefono" required>
 
-                <label>password</label>
-                <input type="password" name="password" placeholder="password" required>
+                    <label>Correo electrónico</label>
+                    <input type="email" name="correo" placeholder="correo@example.com" required>
 
-                <label>Confirmar password</label>
-                <input type="password" name="confirmar" placeholder="Repetir password" required>
+                    <label>Direccion</label>
+                    <input type="email" name="direccion" placeholder="direccion" required>
 
-                <div class="btn-group">
-                    <a href="registrarse.jsp" class="btn-warning">Cancelar</a>
-                    <input type="submit" class="btn-primary" value="Crear cuenta">
-                </div>
-            </form>
-        </div>
+                    <div class = "mb-3">
+                        <label for="genero" class="form-control">Genero:</label>
+                        <select id="genero" name="genero">
+                            <option value="masculino">Masculino</option>
+                            <option value="femenino">Femenino</option>
+                            <option value="n/a">n/a</option>
+                        </select>
+                    </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-    </body>
-</html>
+                    <label>password</label>
+                    <input type="password" name="password" placeholder="password" required>
+
+                    <label>Confirmar password</label>
+                    <input type="password" name="confirmar" placeholder="Repetir password" required>
+
+                    <div class="btn-group">
+                        <a href="registrarse.jsp" class="btn-warning">Cancelar</a>
+                        <input type="submit" class="btn-primary" value="Crear cuenta">
+                    </div>
+                </form>
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+        </body>
+    </html>
 
