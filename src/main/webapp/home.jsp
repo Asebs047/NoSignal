@@ -42,13 +42,25 @@
             .modal-footer {
                 border-top: 1px solid #444;
             }
+
+            .logo-principal {
+                width: 200px;
+                height: auto;
+                display: block;
+                margin: 0 auto;
+            }
+            .logo-menu {
+                width: 40px;
+                height: auto;
+                vertical-align: middle;
+            }
         </style>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">NoSignal</a>
+                <img src="images/logo3.png" alt="Logo NoSignal" class="logo-menu">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -68,7 +80,9 @@
                     </ul>
 
                     <button class="btn btn-light me-3" data-bs-toggle="modal" data-bs-target="#acercaModal">Acerca De</button>
+
                     <div class="ms-2">
+                        <a href="registrarse.jsp" class="btn btn-light">Carrito</a>
                         <a href="registrarse.jsp" class="btn btn-light">Mi cuenta</a>
                     </div>
                 </div>
@@ -95,7 +109,7 @@
         </div>
 
         <div class="container bienvenida">
-            <img src="images/logo2.png" alt="Logo NoSignal">
+            <img src="images/logo2.png" alt="Logo NoSignal" class="logo-principal">
             <h1 class="display-5">Bienvenido a NoSignal</h1>
             <p class="lead">Sin conexión, sin reglas, solo estilo.</p>
             <div class="left-side" >
@@ -113,9 +127,10 @@
 
         </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-</body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    </body>
 </html>
+
 
 
 
