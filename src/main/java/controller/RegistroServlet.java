@@ -1,5 +1,8 @@
 package controller;
 
+
+import dao.UsuarioDAO;
+import model.Usuario;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,33 +21,35 @@ import database.DBConnection;
  */
 @WebServlet("/registroServlet")
 public class RegistroServlet extends HttpServlet{
+   
     protected void doPost(HttpServletRequest solicitud, HttpServletResponse respuesta) throws IOException, ServletException{
         String nombre = solicitud.getParameter("nombre");
-        String nombreUsuario = solicitud.getParameter("nombreUsuario");
+        String apellido = solicitud.getParameter("apellido");
+        String telefono = solicitud.getParameter("telefono");
         String correo = solicitud.getParameter("correo");
-        String password = solicitud.getParameter("contraseña");
+        String direccion = solicitud.getParameter("direccion");
+        String genero = solicitud.getParameter("genero");
+        String contrasena = solicitud.getParameter("contrasena");
         
-        try (Connection conexion = DBConnection.getInstancia().getConnection()){
-            PreparedStatement consulta = conexion.prepareStatement("select * from usuarios where usuario=?");
-            consulta.setString(1, correo);
-            ResultSet resultado = consulta.executeQuery();
-            
-            if(resultado.next()) {
-                solicitud.setAttribute("error", "Usuario Ya registrado");
+        Usuario usuario = new Usuario(nombre, apellido, telefono, correo, direccion, genero, contrasena);
+        UsuarioDAO dao = new UsuarioDAO();
+        
+        try {
+            if (dao.correoExistente(correo)) {
+                solicitud.setAttribute("error", "El correo ya esta registrado");
                 solicitud.getRequestDispatcher("registrarse.jsp").forward(solicitud, respuesta);
-            } else {
-                PreparedStatement registro = conexion.prepareStatement("insert into usuarios (nombre, nombreUsuario, correo, contraseña) values (?,?,?,?)");
-                registro.setString(1, nombre);
-                registro.setString(2, nombreUsuario);
-                registro.setString(3, correo);
-                registro.setString(4, password);
-                
-                registro.executeUpdate();
-                respuesta.sendRedirect("home.jsp");
+            } else{
+                boolean registrado = dao.insertarUsuario(usuario);
+                if (registrado) {
+                    respuesta.sendRedirect("index.jsp");
+                } else {
+                    solicitud.setAttribute("error", "Error al registrar usuario");
+                    solicitud.getRequestDispatcher("registrarse.jsp").forward(solicitud, respuesta);
+                }
             }
-            
         } catch (SQLException e) {
-            throw new ServletException("Error en el registro", e);
+            throw new ServletException("Error al registrar usuario", e);
         }
+        
     }
 }
