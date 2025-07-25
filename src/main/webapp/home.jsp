@@ -5,6 +5,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% HttpSession sesion = request.getSession(false);
+    if (sesion == null || sesion.getAttribute("correo") == null) {
+        response.sendRedirect("index.jsp");
+        return;
+    }%>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -321,7 +326,7 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <a href="index.jsp" class="btn btn-danger">Cerrar sesión</a>
+                        <a href="LogoutServlet" class="btn btn-danger">Cerrar sesión</a>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
                         </div>
