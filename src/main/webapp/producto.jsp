@@ -87,7 +87,7 @@
                         </select>
 
                         <div class="buy-buttons">
-                            <button class="btn btn-warning">Agregar al Carrito</button>
+                            <button class="btn btn-warning">Carrito de compras</button>
                             <button class="btn btn-orange" style="background-color: orange;">Comprar Ahora</button>
                         </div>
 
