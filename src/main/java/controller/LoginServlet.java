@@ -1,6 +1,8 @@
 
 package controller;
 
+import dao.UsuarioDAO;
+import model.Usuario;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,27 +23,21 @@ import database.DBConnection;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
     
-    @Override
+    
     protected void doPost(HttpServletRequest solicitud, HttpServletResponse respuesta) throws IOException, ServletException{
-        String usuario = solicitud.getParameter("correo");
-        String contraseña = solicitud.getParameter("contraseña");
+        String correo = solicitud.getParameter("correo");
+        String contrasena = solicitud.getParameter("contrasena");
         
-        try (Connection conexion = DBConnection.getInstancia().getConnection()){
-            PreparedStatement consulta = conexion.prepareStatement("select * from usuarios where nombreUsuario=? and contraseña=?");
-            consulta.setString(1, usuario);
-            consulta.setString(2, contraseña);
-            ResultSet resultado = consulta.executeQuery();
-            
-            if(resultado.next()) {
-                HttpSession sesion = solicitud.getSession();
-                sesion.setAttribute("correo", usuario);
-                respuesta.sendRedirect("home"); 
-            } else {
-                solicitud.setAttribute("error", "Usuario o contraseña incorrectos"); 
-                solicitud.getRequestDispatcher("index.jsp").forward(solicitud, respuesta);
-            }
-        } catch (SQLException e) {
-            throw new ServletException("Error al validar usuario");
+        UsuarioDAO dao = new UsuarioDAO();
+        Usuario usuario = dao.validarUsuario(correo, contrasena);
+        
+        if(usuario != null){
+            HttpSession sesion = solicitud.getSession();
+            sesion.setAttribute("correo", usuario.getCorreo());
+            respuesta.sendRedirect("home");
+        } else {
+            solicitud.setAttribute("error", "Correo o contraseña incorrectos");
+            solicitud.getRequestDispatcher("index.jsp").forward(solicitud, respuesta);
         }
         
     }

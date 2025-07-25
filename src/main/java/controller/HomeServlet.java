@@ -13,13 +13,13 @@ import javax.servlet.http.HttpSession;
  * @author NS
  */
 
-@WebServlet("/Home")
+@WebServlet("/HomeServlet")
 public class HomeServlet extends HttpServlet {
     
     protected void doGet(HttpServletRequest solicitud, HttpServletResponse respuesta) throws IOException, ServletException{
         HttpSession sesion = solicitud.getSession(false);
         if (sesion != null && sesion.getAttribute("correo") != null) {
-            solicitud.getRequestDispatcher("home.jsp").forward(solicitud, respuesta);//configurarlaaaajspeso
+            solicitud.getRequestDispatcher("home.jsp").forward(solicitud, respuesta);
         } else {
             respuesta.sendRedirect("index.jsp");
         }
