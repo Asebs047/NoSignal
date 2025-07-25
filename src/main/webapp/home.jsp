@@ -80,11 +80,11 @@
             .navbar-brand:hover {
                 color: #ffeb3b !important;
             }
-            
+
             .navbar .nav-link.active {
                 color: #ffeb3b !important; /* <-- Color amarillo cuando activo */
             }
-            
+
             .btn-light {
                 background: linear-gradient(145deg, #ffffff, #e0e0e0);
                 border: 2px solid #ff00ff;
@@ -198,7 +198,7 @@
                 filter: contrast(1.2) saturate(1.3);
             }
 
- 
+
         </style>
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
@@ -231,8 +231,8 @@
                     <button class="btn btn-light me-3" data-bs-toggle="modal" data-bs-target="#acercaModal">Acerca De</button>
 
                     <div class="ms-2">
-                        <a href="registrarse.jsp" class="btn btn-light">Carrito</a>
-                        <a href="registrarse.jsp" class="btn btn-light">Mi cuenta</a>
+                        <button class="btn btn-light me-3" data-bs-toggle="modal" data-bs-target="#miCarrito">Carrito</button>
+                        <button class="btn btn-light me-3" data-bs-toggle="modal" data-bs-target="#miCuenta">Mi Cuenta</button>
                     </div>
                 </div>
             </div>
@@ -242,21 +242,94 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="acercaModalLabel">Acerca de NoSignal</h5>
+                        <h5 class="modal-title" id="acercaModalLabel">Acerca de los Programadores de NoSignal</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
-                    <p>asdfasd</p>
-                    <p>asdfasd</p>
-                    <p>asdfasd</p>
-                    <p>asdfasd</p>
-                    <p>asdfasd</p>
+                    <p>Emiliano Sebastián Herrera Galdamez - 2024047</p>
+                    <p>Billy Adrián Reyes López - 2024396</p>
+                    <p>Kevin Ritter Calvin López Aceytuno - 2024401</p>
+                    <p>Angel Fernando Lucero León - 2021211</p>
+                    <p>Pablo Josue Hernández Ortiz - 2024329</p>
+                    <p>Zimri Jahdai López Miranda - 2023241</p>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
         </div>
 
+        <div class="modal fade" id="miCarrito" tabindex="-1" aria-labelledby="acercaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="acercaModalLabel">Acerca de NoSignal</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-dark table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Relog de oro</td>
+                                    <td>5</td>
+                                    <td>Q450.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="text-end">
+                            <h5>Total: <span class="text-success">Q450.00</span></h5>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer justify-content-between">
+                        <button class="btn btn-danger">Vaciar carrito</button>
+                        <button class="btn btn-success">Finalizar compra</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="miCuenta" tabindex="-1" aria-labelledby="acercaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="acercaModalLabel">Informacion de Cuenta</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre:</label>
+                            <p class="form-control bg-secondary text-white">[Nombre del usuario]</p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Usuario:</label>
+                            <p class="form-control bg-secondary text-white">[Nombre de usuario]</p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Correo electrónico:</label>
+                            <p class="form-control bg-secondary text-white">[Correo del usuario]</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <a href="index.jsp" class="btn btn-danger">Cerrar sesión</a>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div class="container bienvenida">
             <img src="images/logo2.png" alt="Logo NoSignal" class="logo-principal">
 

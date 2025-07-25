@@ -161,31 +161,31 @@
                 <input type="text" name="nombre" placeholder="Nombre" required />
 
                 <label>Apellido</label>
-                <input type="password" name="apellido" placeholder="Apellido" required />
+                <input type="text" name="apellido" placeholder="Apellido" required />
 
                 <label>Telefono</label>
                 <input type="text" name="telefono" placeholder="Telefono" required />
 
                 <label>Correo electrónico</label>
-                <input type="email" name="correo" placeholder="correo@example.com" required />
+                <input type="text" name="correo" placeholder="correo@example.com" required />
 
                 <label>Direccion</label>
-                <input type="email" name="direccion" placeholder="direccion" required />
+                <input type="text" name="direccion" placeholder="direccion" required />
 
                 <div class="mb-3">
                     <label for="genero" class="form-control">Genero:</label>
                     <select id="genero" name="genero">
                         <option value="masculino">Masculino</option>
                         <option value="femenino">Femenino</option>
-                        <option value="n/a">n/a</option>
+                        <option value="no especificado">No Especificado</option>
                     </select>
                 </div>
 
-                <label>password</label>
-                <input type="password" name="password" placeholder="password" required />
+                <label>contrasena</label>
+                <input type="text" name="contrasena" placeholder="password" required />
 
-                <label>Confirmar password</label>
-                <input type="password" name="confirmar" placeholder="Repetir password" required />
+                <label>Confirmar contrasena</label>
+                <input type="text" name="contrasena" placeholder="Repetir password" required />
 
                 <div class="btn-group">
                     <a href="index.jsp" class="btn-warning">Cancelar</a>
