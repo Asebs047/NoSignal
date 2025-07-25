@@ -20,7 +20,7 @@ import database.DBConnection;
  *
  * @author NS
  */
-@WebServlet("/LoginServlet")
+@WebServlet("/loginServlet")
 public class LoginServlet extends HttpServlet {
     
     
@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
         if(usuario != null){
             HttpSession sesion = solicitud.getSession();
             sesion.setAttribute("correo", usuario.getCorreo());
-            respuesta.sendRedirect("home");
+            respuesta.sendRedirect("home.jsp");
         } else {
             solicitud.setAttribute("error", "Correo o contraseña incorrectos");
             solicitud.getRequestDispatcher("index.jsp").forward(solicitud, respuesta);
