@@ -10,6 +10,11 @@
         response.sendRedirect("index.jsp");
         return;
     }%>
+<%@page import="model.Usuario"%>
+<%
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
+%>
+    
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -222,7 +227,7 @@
                 <div class="collapse navbar-collapse" id="menuPrincipal">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link active" href="home.jsp">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="catalogo.jsp">Catálogo</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Catálogo</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button">Contacto</a>
                             <ul class="dropdown-menu">
@@ -236,7 +241,6 @@
                     <button class="btn btn-light me-3" data-bs-toggle="modal" data-bs-target="#acercaModal">Acerca De</button>
 
                     <div class="ms-2">
-                        <button class="btn btn-light me-3" data-bs-toggle="modal" data-bs-target="#miCarrito">Carrito</button>
                         <button class="btn btn-light me-3" data-bs-toggle="modal" data-bs-target="#miCuenta">Mi Cuenta</button>
                     </div>
                 </div>
@@ -263,44 +267,6 @@
             </div>
         </div>
 
-        <div class="modal fade" id="miCarrito" tabindex="-1" aria-labelledby="acercaModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="acercaModalLabel">Acerca de NoSignal</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <table class="table table-dark table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Cantidad</th>
-                                    <th>Precio</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Relog de oro</td>
-                                    <td>5</td>
-                                    <td>Q450.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <div class="text-end">
-                            <h5>Total: <span class="text-success">Q450.00</span></h5>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer justify-content-between">
-                        <button class="btn btn-danger">Vaciar carrito</button>
-                        <button class="btn btn-success">Finalizar compra</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="modal fade" id="miCuenta" tabindex="-1" aria-labelledby="acercaModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -312,17 +278,27 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">Nombre:</label>
-                            <p class="form-control bg-secondary text-white">[Nombre del usuario]</p>
+                            <p class="form-control bg-secondary text-white"><%= usuario.getNombre()%></p>
                         </div>
-
+                        
                         <div class="mb-3">
-                            <label class="form-label">Usuario:</label>
-                            <p class="form-control bg-secondary text-white">[Nombre de usuario]</p>
+                            <label class="form-label">Apellido:</label>
+                            <p class="form-control bg-secondary text-white"><%= usuario.getApellido()%></p>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Telefono:</label>
+                            <p class="form-control bg-secondary text-white"><%= usuario.getTelefono()%></p>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Direccion:</label>
+                            <p class="form-control bg-secondary text-white"><%= usuario.getDireccion()%></p>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Correo electrónico:</label>
-                            <p class="form-control bg-secondary text-white">[Correo del usuario]</p>
+                            <p class="form-control bg-secondary text-white"><%= usuario.getCorreo()%></p>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">

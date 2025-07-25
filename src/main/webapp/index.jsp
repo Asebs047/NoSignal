@@ -213,8 +213,6 @@
 
                         <input type="submit" value="Iniciar sesión">
 
-                        <a href="home.jsp">¿Olvidaste tu cuenta?</a>
-
                         <div class="create-account">
                             <a href="registrarse.jsp">Crear cuenta nueva</a>
                         </div>
