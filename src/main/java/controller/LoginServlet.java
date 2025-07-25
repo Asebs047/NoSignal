@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.database.DBConnection;
+import database.DBConnection;
 
 /**
  *
@@ -23,10 +23,10 @@ public class LoginServlet extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest solicitud, HttpServletResponse respuesta) throws IOException, ServletException{
-        String usuario = solicitud.getParameter("nombreUsuario");
+        String usuario = solicitud.getParameter("correo");
         String contraseña = solicitud.getParameter("contraseña");
         
-        try (Connection conexion = DBConnection.getConnection()){
+        try (Connection conexion = DBConnection.getInstancia().getConnection()){
             PreparedStatement consulta = conexion.prepareStatement("select * from usuarios where nombreUsuario=? and contraseña=?");
             consulta.setString(1, usuario);
             consulta.setString(2, contraseña);
@@ -34,16 +34,16 @@ public class LoginServlet extends HttpServlet {
             
             if(resultado.next()) {
                 HttpSession sesion = solicitud.getSession();
-                sesion.setAttribute("nombreUsuario", usuario);
+                sesion.setAttribute("correo", usuario);
                 respuesta.sendRedirect("home"); 
             } else {
                 solicitud.setAttribute("error", "Usuario o contraseña incorrectos"); 
-                solicitud.getRequestDispatcher("inicioSecion.jsp").forward(solicitud, respuesta);
+                solicitud.getRequestDispatcher("index.jsp").forward(solicitud, respuesta);
             }
         } catch (SQLException e) {
             throw new ServletException("Error al validar usuario");
         }
-    
+        
     }
     
 }

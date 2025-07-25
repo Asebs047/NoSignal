@@ -25,10 +25,10 @@ public class AuthFilter implements Filter {
         HttpServletResponse respuesta = (HttpServletResponse) resp;
         HttpSession sesion = solicitud.getSession(false);
         
-        if(sesion != null && sesion.getAttribute("nombreUsuario") != null){
+        if(sesion != null && sesion.getAttribute("correo") != null){
             cadena.doFilter(soli, resp);
         } else {
-            respuesta.sendRedirect("inicioSecion.jsp");
+            respuesta.sendRedirect("index.jsp");
         }
     }
 }

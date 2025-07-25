@@ -12,15 +12,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Iniciar Session</title>
         <style>
+            /* Estilos generales */
             body {
-                background-color: #f0f2f5;
-                font-family: Arial, sans-serif;
+                background-color: #f8f9fa;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
                 padding: 0;
                 height: 100vh;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                position: relative;
             }
 
             .container {
@@ -33,6 +35,7 @@
                 width: 100%;
             }
 
+            /* Lado izquierdo con imagen y texto */
             .left-side {
                 background-color: #fff;
                 flex: 1;
@@ -48,6 +51,7 @@
                 max-height: 250px;
             }
 
+            /* Lado derecho con el formulario de inicio de sesión */
             .right-side {
                 flex: 1;
                 padding: 40px;
@@ -136,6 +140,48 @@
                     padding: 20px;
                 }
             }
+
+            /* =================== NEO-POP STYLING ===================== */
+
+            .navbar {
+                width: 100%;
+                background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
+                padding: 12px 0;
+                border-bottom: 4px solid #ff00ff;
+                box-shadow: 0 0 20px rgba(0, 212, 255, 0.4), 0 0 40px rgba(255, 0, 255, 0.3);
+            }
+
+            .navbar .nav-link,
+            .navbar-brand,
+            .dropdown-toggle {
+                color: white !important;
+                font-weight: bold;
+                text-shadow: 1px 1px 2px #000;
+            }
+
+            .navbar .nav-link:hover,
+            .navbar-brand:hover {
+                color: #ffeb3b !important;
+            }
+
+            /* Fondo de rayos y logo */
+            body::before {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-image: url('images/noseñal2.png'), url('images/logo2.png'); /* Fondo de rayos y otro logo */
+                background-repeat: repeat, no-repeat;
+                background-size: 300px, 200px;
+                background-position: center, center;
+                opacity: 0.08; /* Baja opacidad para los rayos */
+                z-index: -1;
+                pointer-events: none;
+                filter: contrast(1.2) saturate(1.3);
+            }
+
         </style>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     </head>

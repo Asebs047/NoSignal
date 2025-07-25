@@ -1,14 +1,15 @@
 
-package org.database;
+package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/** Esta clase esta hecha para realizar las conexiones con las tablas en la base de datos
+/** Esta clase esta hecha para realizar las conexiones con las tablas en la base de datos.
  *
  * @author Lu0
  */
+
 public class DBConnection {
     private static DBConnection instancia;
     private Connection conexion;
@@ -18,7 +19,6 @@ public class DBConnection {
     private static final String PASSWORD = "admin";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
                                           
-
     private DBConnection(){
         conectar(); 
     }
@@ -61,5 +61,3 @@ public class DBConnection {
         }
     }
 }
-
-
