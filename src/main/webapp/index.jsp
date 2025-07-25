@@ -201,8 +201,15 @@
                     <img src="images/logo4.png" alt="Logo NoSignal" width="250" height="auto">
 
                     <form action="loginServlet" method="post">
+                        <%
+                            String error = (String) request.getAttribute("error");
+                            if (error != null) {
+                        %>
+                        <div style="color:red; font-weight: bold; margin-bottom: 10px;"><%= error%></div>
+                        <%}%>
+
                         <input type="text" name="correo" placeholder="correo" required>
-                        <input type="password" name="password" placeholder="password" required>
+                        <input type="password" name="contrasena" placeholder="password" required>
 
                         <input type="submit" value="Iniciar sesión">
 
