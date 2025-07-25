@@ -184,10 +184,10 @@
                 </div>
 
                 <label>contrasena</label>
-                <input type="text" name="contrasena" placeholder="password" required />
+                <input type="password" name="contrasena" placeholder="password" required />
 
                 <label>Confirmar contrasena</label>
-                <input type="text" name="contrasena" placeholder="Repetir password" required />
+                <input type="password" name="confirmarContrasena" placeholder="Repetir password" required />
 
                 <div class="btn-group">
                     <a href="index.jsp" class="btn-warning">Cancelar</a>
