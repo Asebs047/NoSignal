@@ -10,7 +10,9 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Catálogo Estilo Intelaf</title>
+        <title>Catálogo NoSignal</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -18,9 +20,72 @@
                 background-color: #f4f4f4;
             }
 
+            /* ==== NEO-POP ESTILO PARA LA BARRA ==== */
+            .navbar {
+                width: 100%;
+                background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
+                padding: 12px 0;
+                border-bottom: 4px solid #ff00ff;
+                box-shadow: 0 0 20px rgba(0, 212, 255, 0.4), 0 0 40px rgba(255, 0, 255, 0.3);
+            }
+
+            .navbar .nav-link,
+            .navbar-brand,
+            .dropdown-toggle {
+                color: white !important;
+                font-weight: bold;
+                text-shadow: 1px 1px 2px #000;
+            }
+
+            .navbar .nav-link:hover,
+            .navbar-brand:hover {
+                color: #ffeb3b !important;
+            }
+
+            .navbar .nav-link.active {
+                color: #ffeb3b !important; /* <-- Color amarillo cuando activo */
+            }
+
+            .btn-light {
+                background: linear-gradient(145deg, #ffffff, #e0e0e0);
+                border: 2px solid #ff00ff;
+                font-weight: bold;
+                box-shadow: 0 0 10px rgba(255, 0, 255, 0.4);
+                color: #000;
+            }
+
+            .btn-light:hover {
+                background-color: #f5f5f5;
+                color: #ff00ff;
+            }
+
+            .dropdown-menu {
+                background-color: #222;
+                border: 2px solid #ff00ff;
+            }
+
+            .dropdown-item {
+                color: #0ff !important;
+            }
+
+            .dropdown-item:hover {
+                background-color: #444;
+                color: #ffeb3b !important;
+            }
+
+            .logo-menu {
+                width: 40px;
+                height: 40px;
+                object-fit: cover;
+                border-radius: 50%;
+                border: 2px solid #ff00ff;
+                box-shadow: 0 0 5px rgba(255, 0, 255, 0.6);
+                vertical-align: middle;
+            }
+
             h1 {
                 text-align: center;
-                margin-bottom: 30px;
+                margin: 40px 0 30px;
             }
 
             .catalogo {
@@ -69,6 +134,30 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     </head>
     <body>
+        <!-- BARRA DE NAVEGACIÓN COPIADA DE HOME -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+                <img src="images/logo4.png" alt="Logo NoSignal" class="logo-menu">
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="menuPrincipal">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="home.jsp">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="catalogo.jsp">Catálogo</a></li>
+                    </ul>
+
+                    <div class="ms-2">
+                        <a href="registrarse.jsp" class="btn btn-light">Carrito</a>
+                        <a href="registrarse.jsp" class="btn btn-light">Mi cuenta</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- CONTENIDO DE CATÁLOGO -->
         <h1>Catálogo NoSignal - Accesorios Urbanos</h1>
 
         <div class="catalogo">

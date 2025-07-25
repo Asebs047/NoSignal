@@ -188,7 +188,7 @@
                 <input type="password" name="confirmar" placeholder="Repetir password" required />
 
                 <div class="btn-group">
-                    <a href="registrarse.jsp" class="btn-warning">Cancelar</a>
+                    <a href="index.jsp" class="btn-warning">Cancelar</a>
                     <input type="submit" class="btn-primary" value="Crear cuenta" />
                 </div>
             </form>
