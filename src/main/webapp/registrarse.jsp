@@ -156,7 +156,9 @@
         <div class="contenedor">
             <form action="registroServlet" method="post">
                 <h2>Crear cuenta</h2>
-
+                <% if (request.getAttribute("error") != null) {%>
+                <p style="color:red;"><%= request.getAttribute("error")%></p>
+                <% }%>
                 <label>Nombre</label>
                 <input type="text" name="nombre" placeholder="Nombre" required />
 
