@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
  * @author NS
  */
 
-@WebFilter("/AuthFilter")//home.jsp
+@WebFilter("/home.jsp")
 public class AuthFilter implements Filter {
     
 

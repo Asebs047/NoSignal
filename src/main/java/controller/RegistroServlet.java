@@ -30,6 +30,13 @@ public class RegistroServlet extends HttpServlet{
         String direccion = solicitud.getParameter("direccion");
         String genero = solicitud.getParameter("genero");
         String contrasena = solicitud.getParameter("contrasena");
+        String confirmarContrasena = solicitud.getParameter("confirmarContrasena");
+
+        if (!contrasena.equals(confirmarContrasena)) {
+            solicitud.setAttribute("error", "Las contraseñas no coinciden");
+            solicitud.getRequestDispatcher("registrarse.jsp").forward(solicitud, respuesta);
+            return;
+        }
         
         Usuario usuario = new Usuario(nombre, apellido, telefono, correo, direccion, genero, contrasena);
         UsuarioDAO dao = new UsuarioDAO();

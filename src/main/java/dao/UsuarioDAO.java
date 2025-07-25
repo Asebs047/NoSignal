@@ -45,4 +45,31 @@ public class UsuarioDAO {
             return false;
         }
     }
+    
+    public Usuario validarUsuario(String correo, String contrasena) {
+        String sql = "select * from Usuarios where correo=? and contrasena=?";
+        
+        try (Connection conexion = DBConnection.getInstancia().getConnection();
+                PreparedStatement consulta = conexion.prepareStatement(sql)){
+            consulta.setString(1, correo);
+            consulta.setString(2, contrasena);
+            
+            ResultSet resultado = consulta.executeQuery();
+            if (resultado.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(resultado.getInt("idUsuario"));
+                usuario.setNombre(resultado.getString("nombre"));
+                usuario.setApellido(resultado.getString("apellido"));
+                usuario.setTelefono(resultado.getString("telefono"));
+                usuario.setCorreo(correo);
+                usuario.setDireccion(resultado.getString("direccion"));
+                usuario.setGenero(resultado.getString("genero"));
+                usuario.setContrasena(contrasena);
+                return usuario;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al validar usuario"+ e.getMessage());
+        }
+        return null;
+    }
 }
