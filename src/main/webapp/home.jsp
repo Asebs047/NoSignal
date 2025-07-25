@@ -80,7 +80,11 @@
             .navbar-brand:hover {
                 color: #ffeb3b !important;
             }
-
+            
+            .navbar .nav-link.active {
+                color: #ffeb3b !important; /* <-- Color amarillo cuando activo */
+            }
+            
             .btn-light {
                 background: linear-gradient(145deg, #ffffff, #e0e0e0);
                 border: 2px solid #ff00ff;
@@ -212,8 +216,8 @@
 
                 <div class="collapse navbar-collapse" id="menuPrincipal">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Catálogo</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="home.jsp">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="catalogo.jsp">Catálogo</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button">Contacto</a>
                             <ul class="dropdown-menu">

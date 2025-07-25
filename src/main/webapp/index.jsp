@@ -190,7 +190,7 @@
             <!-- Lado izquierdo -->
             <div class="left-side">
                 <div>
-                    <img src="images/logo2.png" alt="Logo NoSignal">
+                    <img src="images/logo3.png" alt="Logo NoSignal">
                     <p>Compra en Nuestra Tienda NoSignal.</p>
                 </div>
             </div>
@@ -200,14 +200,13 @@
                 <div class="login-box">
                     <img src="images/logo4.png" alt="Logo NoSignal" width="250" height="auto">
 
-
                     <form action="loginServlet" method="post">
-                        <input type="text" name="usuario" placeholder="Usuario" required>
+                        <input type="text" name="correo" placeholder="correo" required>
                         <input type="password" name="password" placeholder="password" required>
 
                         <input type="submit" value="Iniciar sesión">
 
-                        <a href="#">¿Olvidaste tu cuenta?</a>
+                        <a href="home.jsp">¿Olvidaste tu cuenta?</a>
 
                         <div class="create-account">
                             <a href="registrarse.jsp">Crear cuenta nueva</a>

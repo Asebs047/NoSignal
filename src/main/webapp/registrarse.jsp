@@ -8,11 +8,10 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>NoSignal - Registro</title>
         <style>
-
             /* Estilos generales */
             body {
                 background-color: #f0f2f5;
@@ -38,7 +37,6 @@
                 width: 100%;
                 max-width: 400px;
             }
-
             h2 {
                 text-align: center;
                 color: #1877f2;
@@ -52,9 +50,9 @@
                 color: #333;
             }
 
-            input[type="text"],
-            input[type="email"],
-            input[type="password"] {
+            input[type='text'],
+            input[type='email'],
+            input[type='password'] {
                 width: 100%;
                 padding: 12px;
                 margin-bottom: 20px;
@@ -97,9 +95,11 @@
                 margin-right: 10px;
                 text-align: center;
             }
+
             .btn-warning:hover {
                 background-color: #e0a800;
             }
+
             .btn-group {
                 display: flex;
                 justify-content: space-between;
@@ -133,24 +133,22 @@
                 color: #ffeb3b !important;
             }
 
-            /* Fondo de rayos y logo */
             body::before {
-                content: "";
+                content: '';
                 position: fixed;
                 top: 0;
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background-image: url('images/noseñal2.png'), url('images/logo2.png'); /* Fondo de rayos y otro logo */
+                background-image: url('images/noseñal2.png'), url('images/logo2.png');
                 background-repeat: repeat, no-repeat;
                 background-size: 300px, 200px;
                 background-position: center, center;
-                opacity: 0.08; /* Baja opacidad para los rayos */
+                opacity: 0.08;
                 z-index: -1;
                 pointer-events: none;
                 filter: contrast(1.2) saturate(1.3);
             }
-
         </style>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     </head>
@@ -159,24 +157,39 @@
             <form action="registroServlet" method="post">
                 <h2>Crear cuenta</h2>
 
-                <label>Nombre completo</label>
-                <input type="text" name="nombre" placeholder="Nombre completo" required>
+                <label>Nombre</label>
+                <input type="text" name="nombre" placeholder="Nombre" required />
 
-                <label>Nombre de usuario</label>
-                <input type="text" name="usuario" placeholder="Usuario" required>
+                <label>Apellido</label>
+                <input type="password" name="apellido" placeholder="Apellido" required />
+
+                <label>Telefono</label>
+                <input type="text" name="telefono" placeholder="Telefono" required />
 
                 <label>Correo electrónico</label>
-                <input type="email" name="correo" placeholder="correo@example.com" required>
+                <input type="email" name="correo" placeholder="correo@example.com" required />
+
+                <label>Direccion</label>
+                <input type="email" name="direccion" placeholder="direccion" required />
+
+                <div class="mb-3">
+                    <label for="genero" class="form-control">Genero:</label>
+                    <select id="genero" name="genero">
+                        <option value="masculino">Masculino</option>
+                        <option value="femenino">Femenino</option>
+                        <option value="n/a">n/a</option>
+                    </select>
+                </div>
 
                 <label>password</label>
-                <input type="password" name="password" placeholder="password" required>
+                <input type="password" name="password" placeholder="password" required />
 
                 <label>Confirmar password</label>
-                <input type="password" name="confirmar" placeholder="Repetir password" required>
+                <input type="password" name="confirmar" placeholder="Repetir password" required />
 
                 <div class="btn-group">
-                    <a href="registrarse.jsp" class="btn-warning">Cancelar</a>
-                    <input type="submit" class="btn-primary" value="Crear cuenta">
+                    <a href="index.jsp" class="btn-warning">Cancelar</a>
+                    <input type="submit" class="btn-primary" value="Crear cuenta" />
                 </div>
             </form>
         </div>
