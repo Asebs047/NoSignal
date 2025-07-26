@@ -5,16 +5,17 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="model.Usuario" %>
 <% HttpSession sesion = request.getSession(false);
     if (sesion == null || sesion.getAttribute("correo") == null) {
         response.sendRedirect("index.jsp");
         return;
+    }
+    Usuario usuario = (Usuario) sesion.getAttribute("usuario");
+    if (usuario == null) {
+        response.sendRedirect("index.jsp");
+        return;
     }%>
-<%@page import="model.Usuario"%>
-<%
-    Usuario usuario = (Usuario) session.getAttribute("usuario");
-%>
-    
 <!DOCTYPE html>
 <html lang="es">
     <head>

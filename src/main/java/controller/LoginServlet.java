@@ -34,6 +34,7 @@ public class LoginServlet extends HttpServlet {
         if(usuario != null){
             HttpSession sesion = solicitud.getSession();
             sesion.setAttribute("correo", usuario.getCorreo());
+            sesion.setAttribute("usuario", usuario);
             respuesta.sendRedirect("home.jsp");
         } else {
             solicitud.setAttribute("error", "Correo o contraseña incorrectos");
