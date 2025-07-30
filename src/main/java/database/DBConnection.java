@@ -15,8 +15,8 @@ public class DBConnection {
     private Connection conexion;
 
     private static final String URL = "jdbc:mysql://127.0.0.1:3306/NoSignalDB?useSSL=false";
-    private static final String USER = "quintov";
-    private static final String PASSWORD = "admin";
+    private static final String USER = "root";
+    private static final String PASSWORD = "jesucristo123";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
                                           
     private DBConnection(){

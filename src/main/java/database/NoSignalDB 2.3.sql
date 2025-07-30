@@ -5,25 +5,23 @@ use NoSignalDB;
 create table Productos(
     idProducto int not null auto_increment,
     nombre varchar(100) not null,
-    material varchar(50) not null,
+    descripcion varchar(50) not null,
     color varchar(32) not null,
     precio decimal(10,2) not null,
     genero enum('Hombre','Mujer','Unisex') not null,
-    tipo enum('Reloj','Cadena','Anillo','Gorra','Gafas','Piercing','Guante') not null,
+    categoria enum('Reloj','Cadena','Anillo','Gorra','Gafas','Piercing','Guante') not null,
+    urlImagen varchar(255) not null,
     constraint pk_Productos primary key(idProducto)
 );
-
 
 create table DetalleProductos(
     idDetalle int not null auto_increment,
     idProducto int not null,
     tipoCorrea enum('Metal','Cuero','Tela','Plastico') null,
-    longitud decimal(10,2) null,
-    talla decimal(10,2) null,
+    talla enum('S','M','L','XL','XXL'),
     tipoVisera enum('Curva','Recta','Ajustable') null,
     tipoLente enum('Sol','Vista','Proteccion') null,
     zonaCuerpo enum('Oreja','Nariz','Labio','Lengua','Ombligo') null,
-    medida decimal(10,2) null, -- esta es para guantes y anillos xd
     constraint pk_DetalleProductos primary key(idDetalle),
     constraint fk_DetalleProductos_Productos foreign key(idProducto) 
         references Productos(idProducto)
@@ -38,6 +36,7 @@ create table Usuarios(
     correo varchar(32) not null,
     direccion varchar(255) not null,
     genero enum('masculino','femenino','no especificado') not null,
+    rol enum('administrador','cliente') not null,
     contrasena varchar(32) not null,
     constraint pk_Usuarios primary key(idUsuario)
 );
@@ -122,11 +121,12 @@ delimiter //
         in p_correo varchar(32),
         in p_direccion varchar(255),
         in p_genero enum('masculino','femenino','no especificado'),
+        in p_rol enum('administrador','cliente'),
         in p_contrasena varchar(32)
         )
         begin
-            insert into Usuarios (nombre, apellido, telefono, correo, direccion, genero, contrasena)
-                values (p_nombre, p_apellido, p_telefono, p_correo, p_direccion, p_genero, p_contrasena);
+            insert into Usuarios (nombre, apellido, telefono, correo, direccion, genero, rol, contrasena)
+                values (p_nombre, p_apellido, p_telefono, p_correo, p_direccion, p_genero, p_rol, p_contrasena);
         end//
 delimiter ;
 
@@ -141,6 +141,7 @@ delimiter //
             U.correo,
             U.direccion,
             U.genero,
+            U.rol,
             U.contrasena
         from Usuarios U;
     end//
@@ -155,6 +156,7 @@ delimiter //
         in p_correo varchar(32),
         in p_direccion varchar(255),
         in p_genero enum('masculino','femenino','no especificado'),
+         in p_rol enum('administrador','cliente'),
         in p_contrasena varchar(32)
         )
         begin
@@ -165,6 +167,7 @@ delimiter //
                     correo = p_correo,
                     direccion = p_direccion,
                     genero = p_genero,
+                    rol = p_rol,
                     contrasena = p_contrasena
                 where idUsuario = p_idUsuario;
         end//
@@ -180,34 +183,30 @@ delimiter ;
 delimiter //
     create procedure sp_AgregarProducto(
         in p_nombre varchar(100),
-        in p_material varchar(50),
+        in p_descripcion varchar(50),
         in p_color varchar(32),
         in p_precio decimal(10,2),
-        in p_genero enum('Hombre','Mujer','Unisex'),
-        in p_tipo enum('Reloj','Cadena','Anillo','Gorra','Gafas','Piercing','Guante'),
-        -- Detalles específicos
-        in p_tipoCorrea enum('Metal','Cuero','Tela','Plastico'),
-        in p_longitud decimal(10,2),
-        in p_talla decimal(10,2),
-        in p_tipoVisera enum('Curva','Recta','Ajustable'),
-        in p_tipoLente enum('Sol','Vista','Proteccion'),
-        in p_zonaCuerpo enum('Oreja','Nariz','Labio','Lengua','Ombligo'),
-        in p_medida decimal(10,2)
+        in p_genero enum('hombre','mujer','unisex'),
+        in p_categoria enum('reloj','cadena','anillo','gorra','gafas','piercing','guante'),
+        in p_urlimagen varchar(255),
+        in p_tipocorrea enum('metal','cuero','tela','plastico'),
+        in p_talla enum('s','m','l','xl','xxl'),
+        in p_tipovisera enum('curva','recta','ajustable'),
+        in p_tipolente enum('sol','vista','proteccion'),
+        in p_zonacuerpo enum('oreja','nariz','labio','lengua','ombligo')
         )
         begin
-            declare v_idProducto int;
+            declare v_idproducto int;
             
-            insert into Productos (nombre, material, color, precio, genero, tipo)
-                values (p_nombre, p_material, p_color, p_precio, p_genero, p_tipo);
+            insert into productos (nombre, descripcion, color, precio, genero, categoria, urlimagen)
+                values (p_nombre, p_descripcion, p_color, p_precio, p_genero, p_categoria, p_urlimagen);
             
-            set v_idProducto = last_insert_id();
+            set v_idproducto = last_insert_id();
             
-            insert into DetalleProductos (
-                idProducto, tipoCorrea, longitud, talla, 
-                tipoVisera, tipoLente, zonaCuerpo, medida
+            insert into detalleproductos (
+                idproducto, tipocorrea, talla, tipovisera, tipolente, zonacuerpo
             ) values (
-                v_idProducto, p_tipoCorrea, p_longitud, p_talla,
-                p_tipoVisera, p_tipoLente, p_zonaCuerpo, p_medida
+                v_idproducto, p_tipocorrea, p_talla, p_tipovisera, p_tipolente, p_zonacuerpo
             );
         end//
 delimiter ;
@@ -216,62 +215,58 @@ delimiter //
     create procedure sp_ListarProductos()
     begin
         select
-            P.idProducto,
-            P.nombre,
-            P.material,
-            P.color,
-            P.precio,
-            P.genero,
-            P.tipo,
-            D.tipoCorrea,
-            D.longitud,
-            D.talla,
-            D.tipoVisera,
-            D.tipoLente,
-            D.zonaCuerpo,
-            D.medida
-        from Productos P
-        left join DetalleProductos D on P.idProducto = D.idProducto;
+            p.idproducto,
+            p.nombre,
+            p.descripcion,
+            p.color,
+            p.precio,
+            p.genero,
+            p.categoria,
+            p.urlimagen,
+            d.tipocorrea,
+            d.talla,
+            d.tipovisera,
+            d.tipolente,
+            d.zonacuerpo
+        from productos p
+        left join detalleproductos d on p.idproducto = d.idproducto;
     end//
 delimiter ;
 
 delimiter //
     create procedure sp_ActualizarProducto(
-        in p_idProducto int,
+        in p_idproducto int,
         in p_nombre varchar(100),
-        in p_material varchar(50),
+        in p_descripcion varchar(50),
         in p_color varchar(32),
         in p_precio decimal(10,2),
-        in p_genero enum('Hombre','Mujer','Unisex'),
-        in p_tipo enum('Reloj','Cadena','Anillo','Gorra','Gafas','Piercing','Guante'),
-        -- detalles para los productos aaaaeawsdrgfs
-        in p_tipoCorrea enum('Metal','Cuero','Tela','Plastico'),
-        in p_longitud decimal(10,2),
-        in p_talla decimal(10,2),
-        in p_tipoVisera enum('Curva','Recta','Ajustable'),
-        in p_tipoLente enum('Sol','Vista','Proteccion'),
-        in p_zonaCuerpo enum('Oreja','Nariz','Labio','Lengua','Ombligo'),
-        in p_medida decimal(10,2)
+        in p_genero enum('hombre','mujer','unisex'),
+        in p_categoria enum('reloj','cadena','anillo','gorra','gafas','piercing','guante'),
+        in p_urlimagen varchar(255),
+        in p_tipocorrea enum('metal','cuero','tela','plastico'),
+        in p_talla enum('s','m','l','xl','xxl'),
+        in p_tipovisera enum('curva','recta','ajustable'),
+        in p_tipolente enum('sol','vista','proteccion'),
+        in p_zonacuerpo enum('oreja','nariz','labio','lengua','ombligo')
         )
         begin
-            update Productos
+            update productos
                 set nombre = p_nombre,
-                    material = p_material,
+                    descripcion = p_descripcion,
                     color = p_color,
                     precio = p_precio,
                     genero = p_genero,
-                    tipo = p_tipo
-                where idProducto = p_idProducto;
+                    categoria = p_categoria,
+                    urlimagen = p_urlimagen
+                where idproducto = p_idproducto;
             
-            update DetalleProductos
-                set tipoCorrea = p_tipoCorrea,
-                    longitud = p_longitud,
+            update detalleproductos
+                set tipocorrea = p_tipocorrea,
                     talla = p_talla,
-                    tipoVisera = p_tipoVisera,
-                    tipoLente = p_tipoLente,
-                    zonaCuerpo = p_zonaCuerpo,
-                    medida = p_medida
-                where idProducto = p_idProducto;
+                    tipovisera = p_tipovisera,
+                    tipolente = p_tipolente,
+                    zonacuerpo = p_zonacuerpo
+                where idproducto = p_idproducto;
         end//
 delimiter ;
 
@@ -614,17 +609,20 @@ delimiter ;
 
 -- -------------------------Datos Temporales------------------------------------
 
-call sp_AgregarUsuario('Juan Pérez', 'García', '5551234567', 'juan@email.com', 'Calle 123, Ciudad', 'masculino', 'clave123');
-call sp_AgregarUsuario('María López', 'Rodríguez', '5557654321', 'maria@email.com', 'Avenida 456, Ciudad', 'femenino', 'securepass');
-call sp_AgregarUsuario('Carlos Sánchez', 'Martínez', '5559876543', 'carlos@email.com', 'Boulevard 789, Ciudad', 'masculino', 'mypassword');
-call sp_AgregarUsuario('Ana García', 'Fernández', '5554567890', 'ana@email.com', 'Callejón 321, Ciudad', 'femenino', 'ana789');
-call sp_AgregarUsuario('Pedro Martínez', 'Díaz', '5556789012', 'pedro@email.com', 'Pasaje 654, Ciudad', 'masculino', 'pedro456');
+call sp_AgregarUsuario('Juan Pérez', 'García', '5551234567', 'juan@email.com', 'Calle 123, Ciudad', 'masculino', 'cliente', 'clave123');
+call sp_AgregarUsuario('María López', 'Rodríguez', '5557654321', 'maria@email.com', 'Avenida 456, Ciudad', 'femenino', 'cliente', 'securepass');
+call sp_AgregarUsuario('Carlos Sánchez', 'Martínez', '5559876543', 'carlos@email.com', 'Boulevard 789, Ciudad', 'masculino', 'cliente', 'mypassword');
+call sp_AgregarUsuario('Ana García', 'Fernández', '5554567890', 'ana@email.com', 'Callejón 321, Ciudad', 'femenino', 'cliente', 'ana789');
+call sp_AgregarUsuario('Pedro Martínez', 'Díaz', '5556789012', 'pedro@email.com', 'Pasaje 654, Ciudad', 'masculino', 'cliente', 'pedro456');
+-- este es admin xd
+call sp_AgregarUsuario('Admin', 'Sistema', '5550000000', 'admin@tienda.com', 'Oficina Principal', 'masculino', 'administrador', 'admin123');
 
-call sp_AgregarProducto('Reloj Deportivo', 'Plástico', 'Negro', 129.99, 'Hombre', 'Reloj', 'Tela', null, null, null, null, null, null);
-call sp_AgregarProducto('Cadena de Plata', 'Plata', 'Plateado', 299.99, 'Unisex', 'Cadena', null, 45.0, null, null, null, null, null);
-call sp_AgregarProducto('Anillo de Oro', 'Oro', 'Dorado', 599.99, 'Mujer', 'Anillo', null, null, 16.5, null, null, null, null);
-call sp_AgregarProducto('Gorra Béisbol', 'Algodón', 'Azul', 49.99, 'Unisex', 'Gorra', null, null, null, 'Curva', null, null, null);
-call sp_AgregarProducto('Gafas de Sol', 'Acetato', 'Negro', 199.99, 'Hombre', 'Gafas', null, null, null, null, 'Sol', null, null);
+call sp_AgregarProducto('Reloj Deportivo', 'Reloj resistente al agua', 'Negro', 129.99, 'hombre', 'reloj', 'https://ejemplo.com/reloj.jpg', 'tela', null, null, null, null);
+call sp_AgregarProducto('Cadena de Plata', 'Cadena 925 de alta calidad', 'Plateado', 299.99, 'unisex', 'cadena', 'https://ejemplo.com/cadena.jpg', 'metal', 'm', null, null, null);
+call sp_AgregarProducto('Anillo de Oro', 'Anillo de oro 18k', 'Dorado', 599.99, 'mujer', 'anillo', 'https://ejemplo.com/anillo.jpg', null, 's', null, null, null);
+call sp_AgregarProducto('Gorra Béisbol', 'Gorra de algodón ajustable', 'Azul', 49.99, 'unisex', 'gorra', 'https://ejemplo.com/gorra.jpg', null, 'l', 'curva', null, null);
+call sp_AgregarProducto('Gafas de Sol', 'Gafas protección UV 400', 'Negro', 199.99, 'hombre', 'gafas', 'https://ejemplo.com/gafas.jpg', null, null, null, 'sol', null);
+call sp_AgregarProducto('Piercing Ombligo', 'Acero quirúrgico hipoalergénico', 'Plateado', 89.99, 'mujer', 'piercing', 'https://ejemplo.com/piercing.jpg', null, null, null, null, 'ombligo');
 
 call sp_AgregarInventario(1, 50);
 call sp_AgregarInventario(2, 30);
@@ -673,8 +671,6 @@ call sp_AgregarVenta(2);
 call sp_AgregarVenta(3);
 call sp_AgregarVenta(4);
 call sp_AgregarVenta(5);
-
-
 
 call sp_ListarCarritos();
 call sp_ListarConfirmacionesPedidos();
