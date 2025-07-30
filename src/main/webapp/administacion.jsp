@@ -17,32 +17,27 @@
     </head>
     <body>
         <div class="container mt-4">
-            <h2 class="text-center mb-4">Listado de Clientes</h2>
-            <a href="registroCliente.jsp" class="btn btn-primary mb-3">Agregar Clientes</a>
+            <h2 class="text-center mb-4">Administracion</h2>
+            <a href="registroCliente.jsp" class="btn btn-primary mb-3">Agregar Producto</a>
 
             <table class="table table-bordered table-stripe">
                 <thead class="table-dark">
                     <tr>
                         <th>Código</th>
                         <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Telefono</th>
-                        <th>Correo</th>
-                        <th>Genero</th>
-                        <th>Edad</th>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Color</th>
                         <th>Aciones</th>
                     </tr>
                 </thead>
                 <tbody> 
                     <%
-                        //definir nuestro parametro y comprobar su estado (null o no null)
                         List<Usuario> listaClientes = (List<Usuario>) request.getAttribute("listaClientes");
-                        if (listaClientes.isEmpty()) {
-                            System.out.println("Lista de clientes vacia.");
-                        }
+
                         if (listaClientes != null && !listaClientes.isEmpty()) {
                             for (Usuario c : listaClientes) {
-                                //filas de la tabla
                     %>
                     <tr>
                         <td><%=c.getNombre()%></td>
@@ -53,7 +48,7 @@
                         <td>
                             <a href="ServletEditarCliente?id=<%=c.getNombre()%>" class="btn btn-warning btn-sm">Editar</a>
                             <a href="ServletEliminarCliente?id=<%=c.getNombre()%>" class="btn btn-danger btn-sm"
-                               anclick="return confirm('¿Desea eliminar este cliente?')">Eliminar</a>
+                               onclick="return confirm('¿Desea eliminar este cliente?')">Eliminar</a>
 
                         </td>  
                     </tr>     

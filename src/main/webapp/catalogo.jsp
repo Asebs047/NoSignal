@@ -208,6 +208,7 @@
                         <li class="nav-item"><a class="nav-link" href="home.jsp">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link active" href="catalogo.jsp">Catálogo</a></li>
                         <li><button class="btn btn-light ms-3" onclick="toggleSidebar()">☰ Categorías</button></li>
+                        <li class ="nav-item"><a href="administacion.jsp">admin</a></li>
                     </ul>
 
                     <div class="ms-2">
