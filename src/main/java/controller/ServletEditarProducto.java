@@ -24,7 +24,7 @@ public class ServletEditarProducto extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             Producto producto = productoDAO.buscarPorId(id); // JDBC
             request.setAttribute("producto", producto);
-            request.getRequestDispatcher("editarProducto.jsp").forward(request, response);
+            request.getRequestDispatcher("editarProducto.jsp?id=1").forward(request, response);
         } catch (SQLException e) {
             throw new ServletException("Error JDBC al buscar", e);
         }
@@ -53,7 +53,7 @@ public class ServletEditarProducto extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Error al actualizar producto: " + e.getMessage());
-            request.getRequestDispatcher("editarProducto.jsp").forward(request, response);
+            request.getRequestDispatcher("editarProducto.jsp?id=1").forward(request, response);
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Formato numérico inválido");
             request.getRequestDispatcher("editarProducto.jsp").forward(request, response);
