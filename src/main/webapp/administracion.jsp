@@ -52,7 +52,7 @@
                         <th>Género</th>
                         <th>Categoría</th>
                         <th>Detalle</th>
-                        <th>Acciones</th>
+                        <th>Imagen</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,6 +71,7 @@
                         <td><%= p.getGenero()%></td>
                         <td><%= p.getCategoria()%></td>
                         <td><%= p.getDetalle()%></td>
+                        <td><%= p.getUrlImagen()%></td>
                         <td>
                             <a href="ServletEditarProducto?accion=editar&id=<%= p.getIdProducto()%>" 
                                class="btn btn-warning btn-sm">Editar</a>

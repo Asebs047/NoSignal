@@ -36,13 +36,27 @@ public class ServletEditarProducto extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             Producto producto = productoDAO.buscarPorId(id);
             
+            producto.setIdProducto(Integer.parseInt(request.getParameter("id")));
             producto.setNombre(request.getParameter("nombre"));
-            // ... (actualizar todos los campos)
-            
-            productoDAO.actualizar(producto); // JDBC
+            producto.setDescripcion(request.getParameter("descripcion"));
+            producto.setColor(request.getParameter("color"));
+            producto.setPrecio(Double.parseDouble(request.getParameter("precio")));
+            producto.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+            producto.setGenero(request.getParameter("genero"));
+            producto.setCategoria(request.getParameter("categoria"));
+            producto.setDetalle(request.getParameter("detalle"));
+            producto.setUrlImagen(request.getParameter("urlImagen"));
+
+            productoDAO.actualizar(producto);
             response.sendRedirect("ServletListarProductos");
+
         } catch (SQLException e) {
-            throw new ServletException("Error JDBC al actualizar", e);
+            e.printStackTrace();
+            request.setAttribute("error", "Error al actualizar producto: " + e.getMessage());
+            request.getRequestDispatcher("editarProducto.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Formato numérico inválido");
+            request.getRequestDispatcher("editarProducto.jsp").forward(request, response);
         }
     }
 }

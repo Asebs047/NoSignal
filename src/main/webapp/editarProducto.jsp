@@ -14,66 +14,80 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Editar Cliente</title>
+        <title>Editar Producto</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     </head>
     <body>
-        <div class="ServletEditarProducto mt-4">
-            <form action="ServletEditarCliente" method="post">
-                <input type="hidden" id="id" name="accion" value="actualizar">
-                <input type="hidden" id="id" name="id" value="<%=producto.getIdProducto()%>">
+        <div class="container mt-4">
+            <h1 class="mb-4">Editar Producto</h1>
+            
+            <form action="ServletEditarProducto" method="post">
+                <input type="hidden" name="id" value="<%=producto.getIdProducto()%>">
+                
                 <div class="mb-3">
-                    <label for="nombre" class="form-control">Nombre:</label>
+                    <label for="nombre" class="form-label">Nombre:</label>
                     <input type="text" id="nombre" name="nombre" class="form-control" value="<%=producto.getNombre()%>">
                 </div>
+                
                 <div class="mb-3">
-                    <label for="nombre" class="form-control">Descripcio:</label>
-                    <input type="text" id="apellido" name="apellido" class="form-control" value="<%=producto.getDescripcion()%>">
+                    <label for="descripcion" class="form-label">Descripción:</label>
+                    <input type="text" id="descripcion" name="descripcion" class="form-control" value="<%=producto.getDescripcion()%>">
                 </div>
+                
                 <div class="mb-3">
-                    <label for="nombre" class="form-control">Color:</label>
-                    <input type="text" id="telefono" name="telefono" class="form-control" value="<%=producto.getColor()%>">
+                    <label for="color" class="form-label">Color:</label>
+                    <input type="text" id="color" name="color" class="form-control" value="<%=producto.getColor()%>">
                 </div>
+                
                 <div class="mb-3">
-                    <label for="nombre" class="form-control">Precio:</label>
-                    <input type="numbre" name="correo"  name="correo" class="form-control" value="<%=producto.getPrecio()%>">
+                    <label for="precio" class="form-label">Precio:</label>
+                    <input type="number" step="0.01" id="precio" name="precio" class="form-control" value="<%=producto.getPrecio()%>">
                 </div>
+                
                 <div class="mb-3">
-                    <label for="nombre" class="form-control">Cantidad:</label>
-                    <input type="numbre" name="correo"  name="correo" class="form-control" value="<%=producto.getCantidad()%>">
+                    <label for="cantidad" class="form-label">Cantidad:</label>
+                    <input type="number" id="cantidad" name="cantidad" class="form-control" value="<%=producto.getCantidad()%>">
                 </div>
-        </div>
-        <div class = "mb-3">
-            <label for="genero" class="form-control">Genero:</label>
-            <select id="genero" name="genero">
-                <option <%=producto.getGenero().equals("masculino") ? "selected" : "masculino"%>>Masculino</option>
-                <option <%=producto.getGenero().equals("femenino") ? "selected" : "femenino"%>>Femenino</option>
-                <option <%=producto.getGenero().equals("unisex") ? "selected" : "unisex"%>>unisex</option>
-            </select>
-        </div>
-        <div class = "mb-3">
-            <label for="genero" class="form-control">Categoria:</label>
-            <select id="categoria" name="categoria">
-                <option <%=producto.getGenero().equals("reloj") ? "selected" : "reloj"%>>Reloj</option>
-                <option <%=producto.getGenero().equals("cadena") ? "selected" : "cadena"%>>Cadena</option>
-                <option <%=producto.getGenero().equals("anillo") ? "selected" : "anillo"%>>Anillo</option>
-                <option <%=producto.getGenero().equals("gorra") ? "selected" : "gorra"%>>Gorra</option>
-                <option <%=producto.getGenero().equals("gafas") ? "selected" : "gafas"%>>Gafas</option>
-                <option <%=producto.getGenero().equals("piercing") ? "selected" : "piercing"%>>Piercing</option>
-                <option <%=producto.getGenero().equals("guante") ? "selected" : "guante"%>>Guante</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="edad" class="form-control">Detalle:</label>
-            <input type="text" id="detalle" name="detalle" class="form-control" value="<%=producto.getDetalle()%>">
+                
+                <div class="mb-3">
+                    <label for="genero" class="form-label">Género:</label>
+                    <select id="genero" name="genero" class="form-select">
+                        <option value="hombre" <%= "hombre".equals(producto.getGenero()) ? "selected" : "" %>>Masculino</option>
+                        <option value="mujer" <%= "mujer".equals(producto.getGenero()) ? "selected" : "" %>>Femenino</option>
+                        <option value="unisex" <%= "unisex".equals(producto.getGenero()) ? "selected" : "" %>>Unisex</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="categoria" class="form-label">Categoría:</label>
+                    <select id="categoria" name="categoria" class="form-select">
+                        <option value="reloj" <%= "reloj".equals(producto.getCategoria()) ? "selected" : "" %>>Reloj</option>
+                        <option value="cadena" <%= "cadena".equals(producto.getCategoria()) ? "selected" : "" %>>Cadena</option>
+                        <option value="anillo" <%= "anillo".equals(producto.getCategoria()) ? "selected" : "" %>>Anillo</option>
+                        <option value="gorra" <%= "gorra".equals(producto.getCategoria()) ? "selected" : "" %>>Gorra</option>
+                        <option value="gafas" <%= "gafas".equals(producto.getCategoria()) ? "selected" : "" %>>Gafas</option>
+                        <option value="piercing" <%= "piercing".equals(producto.getCategoria()) ? "selected" : "" %>>Piercing</option>
+                        <option value="guante" <%= "guante".equals(producto.getCategoria()) ? "selected" : "" %>>Guante</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="detalle" class="form-label">Detalle:</label>
+                    <input type="text" id="detalle" name="detalle" class="form-control" value="<%=producto.getDetalle()%>">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="urlImagen" class="form-label">URL Imagen:</label>
+                    <input type="text" id="urlImagen" name="urlImagen" class="form-control" value="<%=producto.getUrlImagen()%>">
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="ServletListarProductos" class="btn btn-secondary me-md-2">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
         </div>
 
-        <a href="ServletListarProductos" class="btn btn-secondary">Cancelar</a>
-
-    </form>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-</body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    </body>
 </html>

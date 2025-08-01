@@ -16,7 +16,7 @@ import model.Producto;
 public class ProductoDAO {
 
     public void guardar(Producto producto) throws SQLException {
-        String sql = "{call sp_AgregarProducto(?,?,?,?,?,?,?,?)}"; // Si usas procedimientos
+        String sql = "{call sp_AgregarProducto(?,?,?,?,?,?,?,?,?)}"; // Si usas procedimientos
         // O si no:
         // String sql = "INSERT INTO Productos (nombre, descripcion, color, precio, cantidad, genero, categoria, detalle) VALUES (?,?,?,?,?,?,?,?)";
 
@@ -30,6 +30,7 @@ public class ProductoDAO {
             consulta.setString(6, producto.getGenero());
             consulta.setString(7, producto.getCategoria());
             consulta.setString(8, producto.getDetalle());
+            consulta.setString(9, producto.getUrlImagen());
 
             consulta.executeUpdate();
         }
@@ -52,7 +53,8 @@ public class ProductoDAO {
                 producto.setGenero(resultado.getString("genero"));
                 producto.setCategoria(resultado.getString("categoria"));
                 producto.setDetalle(resultado.getString("detalle"));
-
+                producto.setUrlImagen(resultado.getString("urlImagen"));
+                
                 productos.add(producto);
             }
         }
@@ -70,7 +72,14 @@ public class ProductoDAO {
                     Producto producto = new Producto();
                     producto.setIdProducto(resultado.getInt("idProducto"));
                     producto.setNombre(resultado.getString("nombre"));
-                    // ... (setear todos los campos como en listarTodos)
+                    producto.setDescripcion(resultado.getString("descripcion"));
+                    producto.setColor(resultado.getString("color"));
+                    producto.setPrecio(resultado.getDouble("precio"));
+                    producto.setCantidad(resultado.getInt("cantidad"));
+                    producto.setGenero(resultado.getString("genero"));
+                    producto.setCategoria(resultado.getString("categoria"));
+                    producto.setDetalle(resultado.getString("detalle"));
+                    producto.setUrlImagen(resultado.getString("urlImagen"));
                     return producto;
                 }
             }
@@ -85,8 +94,14 @@ public class ProductoDAO {
 
             consulta.setString(1, producto.getNombre());
             consulta.setString(2, producto.getDescripcion());
-            // ... (setear todos los campos)
-            consulta.setInt(9, producto.getIdProducto());
+            consulta.setString(3, producto.getColor());
+            consulta.setDouble(4, producto.getPrecio());
+            consulta.setInt(5, producto.getCantidad());
+            consulta.setString(6, producto.getGenero());
+            consulta.setString(7, producto.getCategoria());
+            consulta.setString(8, producto.getDetalle());
+            consulta.setString(9, producto.getUrlImagen());
+            consulta.setInt(10, producto.getIdProducto());
 
             consulta.executeUpdate();
         }

@@ -33,6 +33,7 @@ public class ServletProducto extends HttpServlet {
             producto.setGenero(request.getParameter("genero"));
             producto.setCategoria(request.getParameter("categoria"));
             producto.setDetalle(request.getParameter("detalle"));
+            producto.setUrlImagen(request.getParameter("urlImagen"));
             
             productoDAO.guardar(producto);
             response.sendRedirect("ServletListarProductos");

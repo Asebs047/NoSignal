@@ -29,23 +29,13 @@ public class Producto {
    private String categoria;
    @Column
    private String detalle;
-   
+   @Column
+   private String urlImagen;
 
     public Producto() {
     }
 
-    public Producto(String nombre, String descripcion, String color, Double precio, int cantidad, String genero, String categoria, String detalle) {
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.color = color;
-        this.precio = precio;
-        this.cantidad = cantidad;
-        this.genero = genero;
-        this.categoria = categoria;
-        this.detalle = detalle;
-    }
-
-    public Producto(int idProducto, String nombre, String descripcion, String color, Double precio, int cantidad, String genero, String categoria, String detalle) {
+    public Producto(int idProducto, String nombre, String descripcion, String color, Double precio, int cantidad, String genero, String categoria, String detalle, String urlImagen) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -55,8 +45,9 @@ public class Producto {
         this.genero = genero;
         this.categoria = categoria;
         this.detalle = detalle;
+        this.urlImagen = urlImagen;
     }
-
+    
     public int getIdProducto() {
         return idProducto;
     }
@@ -128,5 +119,15 @@ public class Producto {
     public void setDetalle(String detalle) {
         this.detalle = detalle;
     }
+
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
+    }
+   
+    
     
 }

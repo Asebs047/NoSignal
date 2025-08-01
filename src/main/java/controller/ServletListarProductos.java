@@ -23,7 +23,7 @@ public class ServletListarProductos extends HttpServlet {
             throws ServletException, IOException {
         try {
             List<Producto> productos = productoDAO.listarTodos(); // JDBC
-            request.setAttribute("administracion", productos);
+            request.setAttribute("listaProducto", productos);
             request.getRequestDispatcher("administracion.jsp").forward(request, response);
         } catch (SQLException e) {
             throw new ServletException("Error JDBC al listar", e);

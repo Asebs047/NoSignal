@@ -10,14 +10,12 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Registrar Cliente</title>
+        <title>Registrar Producto</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     </head>
     <body>
         <div class="container">
-            <h1>Cliente</h1>
-            <!--          nombre, apellido, telefono, correo, edad-->
-
+            <h1>Nuevo Producto</h1>
             <form action="ServletProducto" method="post">
                 <div class="mb-3">
                     <label for="nombre" class="form-control">Nombre:</label>
@@ -42,8 +40,8 @@
                 <div class = "mb-3">
                     <label for="genero" class="form-control">Genero:</label>
                     <select id="genero" name="genero">
-                        <option value="masculino">Masculino</option>
-                        <option value="femenino">Femenino</option>
+                        <option value="hombre">Masculino</option>
+                        <option value="mujer">Femenino</option>
                         <option value="unisex">unisex</option>
                     </select>
                 </div>
@@ -58,14 +56,17 @@
                         <option value="piercing">piercing</option>
                         <option value="guante">guante</option>
                     </select>
-                </div>
+                </div>          
                 <div class="mb-3">
                     <label for="edad" class="form-control">Detalle:</label>
                     <input type="text" id="detalle" name="detalle" class="form-control">
                 </div>
-                
+                <div class="mb-3">
+                    <label for="nombre" class="form-control">Imagen</label>
+                    <input type="text" id="urlImagen"  name="urlImagen" class="form-control">
+                </div>    
                 <input type="submit" value="Agregar Producto" class="btn btn-primary">
-                
+
             </form>
         </div>
 
