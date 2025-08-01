@@ -30,7 +30,7 @@ public class ProductoDAO {
         EntityManager admin = fabrica.createEntityManager();
         try {
             
-            return admin.createQuery("SELECT c FROM Cliente c", Producto.class).getResultList();
+            return admin.createQuery("SELECT c FROM Producto c", Producto.class).getResultList();
         }finally {
             admin.close();
         }
@@ -43,7 +43,6 @@ public class ProductoDAO {
         }
     }
     public void actualizar(Producto cliente){
-        //em, et --> begin, proceso, commit, 
         EntityManager admin = fabrica.createEntityManager();
         EntityTransaction transaccion = admin.getTransaction();
         try {

@@ -27,7 +27,7 @@
     <body>
         <div class="container mt-4">
             <h2 class="text-center mb-4">Administracion</h2>
-            <a href="registroCliente.jsp" class="btn btn-primary mb-3">Agregar Producto</a>
+            <a href="agregarProducto.jsp" class="btn btn-primary mb-3">Agregar Producto</a>
 
             <table class="table table-bordered table-stripe">
                 <thead class="table-dark">
@@ -55,8 +55,8 @@
                         <td><%=c.getCorreo()%></td>
                         <td><%=c.getGenero()%></td>
                         <td>
-                            <a href="ServletEditarCliente?id=<%=c.getNombre()%>" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="ServletEliminarCliente?id=<%=c.getNombre()%>" class="btn btn-danger btn-sm"
+                            <a href="ServletEditarProducto?id=<%=c.getNombre()%>" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="ServletEliminarProducto?id=<%=c.getNombre()%>" class="btn btn-danger btn-sm"
                                onclick="return confirm('¿Desea eliminar este cliente?')">Eliminar</a>
 
                         </td>  

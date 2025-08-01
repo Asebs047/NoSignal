@@ -20,7 +20,7 @@ public class UsuarioDAO {
     }
     
     public boolean insertarUsuario(Usuario usuario) throws SQLException {
-        String sql = "{call sp_AgregarUsuario(?,?,?,?,?,?,?)}";
+        String sql = "{call sp_AgregarUsuario(?,?,?,?,?,?,?,?)}";
         try (Connection conexion = DBConnection.getInstancia().getConnection();
              CallableStatement consulta = conexion.prepareCall(sql)) {
             consulta.setString(1, usuario.getNombre());
@@ -29,7 +29,8 @@ public class UsuarioDAO {
             consulta.setString(4, usuario.getCorreo());
             consulta.setString(5, usuario.getDireccion());
             consulta.setString(6, usuario.getGenero());
-            consulta.setString(7, usuario.getContrasena());
+            consulta.setString(7, usuario.getRol());
+            consulta.setString(8, usuario.getContrasena());
             consulta.execute();
             return true;
         }
