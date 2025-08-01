@@ -11,10 +11,10 @@ import javax.persistence.Table;
  *
  * @author reyes
  */
-
 @Entity
 @Table(name = "Usuarios")
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idUsuario;
@@ -30,6 +30,8 @@ public class Usuario {
     private String direccion;
     @Column(name = "genero")
     private String genero;
+    @Column(name = "rol")
+    private String rol;
     @Column(name = "contrasena")
     private String contrasena;
 
@@ -43,6 +45,7 @@ public class Usuario {
         this.correo = correo;
         this.direccion = direccion;
         this.genero = genero;
+        this.rol = rol;
         this.contrasena = contrasena;
     }
 
@@ -102,6 +105,14 @@ public class Usuario {
         this.genero = genero;
     }
 
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
     public String getContrasena() {
         return contrasena;
     }
@@ -109,6 +120,5 @@ public class Usuario {
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
-    
-    
+
 }

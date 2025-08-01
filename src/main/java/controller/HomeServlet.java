@@ -7,21 +7,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-/**
- *
- * @author NS
- */
-
 @WebServlet("/HomeServlet")
+
+
 public class HomeServlet extends HttpServlet {
-    
-    protected void doGet(HttpServletRequest solicitud, HttpServletResponse respuesta) throws IOException, ServletException{
-        HttpSession sesion = solicitud.getSession(false);
-        if (sesion != null && sesion.getAttribute("correo") != null) {
-            solicitud.getRequestDispatcher("home.jsp").forward(solicitud, respuesta);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        HttpSession session = request.getSession(false);
+        
+        if (session != null && session.getAttribute("usuario") != null) {
+            request.getRequestDispatcher("home.jsp").forward(request, response);
         } else {
-            respuesta.sendRedirect("index.jsp");
+            response.sendRedirect("index.jsp");
         }
     }
 }

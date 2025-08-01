@@ -11,8 +11,7 @@ import model.Producto;
 * @author informatica
 */
 public class ProductoDAO {
-    //CRUD
-    //Entity MANGER fACTORY - pu
+   
     private EntityManagerFactory fabrica = Persistence.createEntityManagerFactory("LibreriaPU");
     public void guardar(Producto cliente){
         EntityManager admin = fabrica.createEntityManager();
@@ -30,8 +29,7 @@ public class ProductoDAO {
     public List<Producto> ListarTodos(){
         EntityManager admin = fabrica.createEntityManager();
         try {
-            //getResultList -> Lista de Objetos
-            //JPQL
+            
             return admin.createQuery("SELECT c FROM Cliente c", Producto.class).getResultList();
         }finally {
             admin.close();
