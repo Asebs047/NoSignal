@@ -53,6 +53,7 @@
                         <th>Categoría</th>
                         <th>Detalle</th>
                         <th>Imagen</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,7 +72,17 @@
                         <td><%= p.getGenero()%></td>
                         <td><%= p.getCategoria()%></td>
                         <td><%= p.getDetalle()%></td>
-                        <td><%= p.getUrlImagen()%></td>
+                        <td>
+                            <%
+                                String nombreImagen = "producto-" + p.getIdProducto() + ".png";
+                                String rutaImagen = request.getContextPath() + "/images/productos/" + nombreImagen;
+                            %>
+                            <img src="<%= rutaImagen%>" 
+                                 alt="<%= p.getNombre()%>"
+                                 style="max-width: 80px; height: auto;"
+                                 class="img-thumbnail"
+                                 onerror="this.src='<%= request.getContextPath()%>/images/placeholder.jpg';this.onerror=null;">
+                        </td>
                         <td>
                             <a href="ServletEditarProducto?accion=editar&id=<%= p.getIdProducto()%>" 
                                class="btn btn-warning btn-sm">Editar</a>
@@ -85,7 +96,7 @@
                     } else {
                     %>
                     <tr>
-                        <td class="text-center" colspan="10">No hay productos registrados</td>
+                        <td class="text-center" colspan="11">No hay productos registrados</td>
                     </tr>
                     <%
                         }
