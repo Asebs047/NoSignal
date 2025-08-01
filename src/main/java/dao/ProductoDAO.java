@@ -132,9 +132,7 @@ public class ProductoDAO {
             consulta.executeUpdate();
         }
     }
-    
-    // Métodos adicionales según necesidades
-    
+        
     public List<Producto> buscarPorCategoria(int idCategoria) throws SQLException {
         String sql = "{call sp_ListarProductos()}";
         List<Producto> productos = new ArrayList<>();
