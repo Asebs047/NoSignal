@@ -7,6 +7,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page  import="java.util.List" %>
 <%@page  import="model.Usuario" %>
+<%@page import="model.Usuario"%>
+<%@page import="model.Usuario"%>
+<%
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
+    if (usuario == null || !"administrador".equals(usuario.getRol())) {
+        response.sendRedirect("index.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html lang="es">
     <head>
