@@ -2,6 +2,18 @@ drop database if exists NoSignalDB;
 create database NoSignalDB;
 use NoSignalDB;
 
+create table Proveedores(
+    idProveedor int not null auto_increment,
+    nombreProveedor varchar(64) not null,
+    descripcionProveedor varchar(255) not null,
+    telefono varchar(16) not null,
+    correo varchar(64) not null,
+    direccion varchar(255) not null,
+    fechaRegistro date not null,
+    estado enum('activo', 'inactivo') default 'activo' not null,
+    constraint pk_Proveedores primary key(idProveedor),
+    constraint uk_Proveedores_correo unique(correo)
+);
 
 create table Categorias(
     idCategoria int not null auto_increment,
@@ -11,9 +23,22 @@ create table Categorias(
     constraint pk_Categorias primary key(idCategoria)
 );
 
+create table Marcas(
+    idMarca int not null auto_increment,
+    nombreMarca varchar(32) not null,
+    descripcionMarca varchar(255) not null,
+    idProveedor int,
+    paisOrigen varchar(64),
+    constraint pk_Marcas primary key(idMarca),
+    constraint fk_Marcas_Proveedores foreign key(idProveedor) 
+        references Proveedores(idProveedor)
+);
+
+
 create table Productos(
     idProducto int not null auto_increment,
     idCategoria int,
+    idMarca int,
     nombre varchar(100) not null,
     descripcion varchar(50) not null,
     color varchar(32) not null,
@@ -23,8 +48,10 @@ create table Productos(
     detalle varchar(255) not null,
     urlImagen text not null,
     constraint pk_Productos primary key(idProducto),
-    constraint fk_Productos_Categorias foreign key (idCategoria) 
-		references Categorias(idCategoria)
+    constraint fk_Productos_Categorias foreign key(idCategoria) 
+        references Categorias(idCategoria),
+    constraint fk_Productos_Marcas foreign key(idMarca) 
+        references Marcas(idMarca)
 );
 
 create table Usuarios(
@@ -82,29 +109,6 @@ create table Facturas(
 		references CarritoProductos(idCarrito)
 );
 
-create table Proveedores(
-    idProveedor int not null auto_increment,
-    nombreProveedor varchar(64) not null,
-    descripcionProveedor varchar(255) not null,
-    telefono varchar(16) not null,
-    correo varchar(64) not null,
-    direccion varchar(255) not null,
-    fechaRegistro date not null,
-    estado enum('activo', 'inactivo') default 'activo' not null,
-    constraint pk_Proveedores primary key(idProveedor),
-    constraint uk_Proveedores_correo unique(correo)
-);
-
-create table Marcas(
-    idMarca int not null auto_increment,
-    nombreMarca varchar(32) not null,
-    descripcionMarca varchar(255) not null,
-    idProveedor int,
-    paisOrigen varchar(64),
-    constraint pk_Marcas primary key(idMarca),
-    constraint fk_Marcas_Proveedores foreign key(idProveedor) 
-        references Proveedores(idProveedor)
-);
 
 -- -------------------Procedimientos almacenados de 'Usuarios'------------------------------------------
 delimiter //
@@ -204,11 +208,12 @@ delimiter //
         in p_genero enum('Hombre','Mujer','Unisex'),
         in p_detalle varchar(255),
         in p_urlimagen text,
-        in p_idCategoria int
+        in p_idCategoria int,
+        in p_idMarca int
         )
         begin
-            insert into Productos (nombre, descripcion, color, precio, cantidad, genero, detalle, urlImagen, idCategoria)
-                values (p_nombre, p_descripcion, p_color, p_precio, p_cantidad, p_genero, p_detalle, p_urlimagen, p_idCategoria);
+            insert into Productos (nombre, descripcion, color, precio, cantidad, genero, detalle, urlImagen, idCategoria, idMarca)
+                values (p_nombre, p_descripcion, p_color, p_precio, p_cantidad, p_genero, p_detalle, p_urlimagen, p_idCategoria, p_idMarca);
         end//
 delimiter ;
 
@@ -226,9 +231,14 @@ delimiter //
             P.detalle,
             P.urlImagen,
             P.idCategoria,
-            C.nombreCategoria as categoria
+            C.nombreCategoria as categoria,
+            P.idMarca,
+            M.nombreMarca as marca,
+            PR.nombreProveedor as proveedor
         from Productos P
-        left join Categorias C on P.idCategoria = C.idCategoria;
+        left join Categorias C on P.idCategoria = C.idCategoria
+        left join Marcas M on P.idMarca = M.idMarca
+        left join Proveedores PR on M.idProveedor = PR.idProveedor;
     end//
 delimiter ;
 
@@ -243,7 +253,8 @@ delimiter //
         in p_genero enum('Hombre','Mujer','Unisex'),
         in p_detalle varchar(255),
         in p_urlimagen text,
-        in p_idCategoria int
+        in p_idCategoria int,
+        in p_idMarca int
         )
         begin
             update Productos
@@ -255,7 +266,8 @@ delimiter //
                     genero = p_genero,
                     detalle = p_detalle,
                     urlImagen = p_urlimagen,
-                    idCategoria = p_idCategoria
+                    idCategoria = p_idCategoria,
+                    idMarca = p_idMarca
                 where idProducto = p_idProducto;
         end//
 delimiter ;
@@ -591,6 +603,16 @@ delimiter //
         end //
 delimiter ;
 -- -------------------------Datos Temporales------------------------------------
+call sp_AgregarProveedor('Suministros Moda S.A.', 'Proveedor mayorista de accesorios de moda', '5551234567', 'contacto@suministrosmoda.com', 'Av. Principal 123, Ciudad de México', '2023-01-15', 'activo');
+call sp_AgregarProveedor('Joyeria Fina Internacional', 'Especialistas en joyería de plata y oro', '5557654321', 'ventas@joyeriafina.com', 'Calle Diamante 45, Guadalajara', '2023-02-20', 'activo');
+call sp_AgregarProveedor('Accesorios Deportivos Ltda.', 'Distribuidor de artículos deportivos', '5559876543', 'info@accesoriosdeportivos.com', 'Blvd. Deportivo 678, Monterrey', '2023-03-10', 'activo');
+
+call sp_AgregarMarca('TimeMaster', 'Relojes de alta precisión y diseño', 1, 'Suiza');
+call sp_AgregarMarca('SilverPure', 'Joyeria en plata esterlina 925', 2, 'Italia');
+call sp_AgregarMarca('SportGear', 'Accesorios deportivos de alta calidad', 3, 'Estados Unidos');
+call sp_AgregarMarca('LuxuryGold', 'Joyas en oro de 18k y 24k', 2, 'Italia');
+call sp_AgregarMarca('UrbanStyle', 'Accesorios urbanos y modernos', 1, 'México');
+
 call sp_AgregarCategoria('Reloj', 'Relojes analógicos y digitales para hombre y mujer', 'https://ejemplo.com/categoria/relojes.jpg');
 call sp_AgregarCategoria('Cadena', 'Cadenas de diferentes metales y longitudes', 'https://ejemplo.com/categoria/cadenas.jpg');
 call sp_AgregarCategoria('Anillo', 'Anillos de compromiso, argollas y más', 'https://ejemplo.com/categoria/anillos.jpg');
@@ -608,21 +630,27 @@ call sp_AgregarUsuario('Admin', 'Sistema', '5550000000', 'admin@tienda.com', 'Of
 -- este es jefe
 call sp_AgregarUsuario('Pedro Martínez', 'Díaz', '5556789012', 'pedro@email.com', 'Pasaje 654, Ciudad', 'masculino', 'jefe', 'pedro456');
 
--- Relojes (Categoría 1)
-call sp_AgregarProducto('Reloj Deportivo TimeMaster', 'Reloj resistente al agua', 'Negro', 129.99, 10, 'Hombre', 'Resistente al agua hasta 100m, cronómetro digital', 'https://ejemplo.com/reloj-deportivo.jpg', 1);
--- Cadenas (Categoría 2)
-call sp_AgregarProducto('Cadena de Plata 925', 'Cadena de plata esterlina', 'Plateado', 299.99, 5, 'Unisex', 'Largo 50cm, eslabones italianos', 'https://ejemplo.com/cadena-plata.jpg', 2);
--- Anillos (Categoría 3)
-call sp_AgregarProducto('Anillo de Oro 18k', 'Anillo clásico de oro', 'Dorado', 599.99, 3, 'Mujer', 'Talla ajustable, peso 5g', 'https://ejemplo.com/anillo-oro.jpg', 3);
--- Gorras (Categoría 4)
-call sp_AgregarProducto('Gorra Béisbol Clásica', 'Gorra de algodón ajustable', 'Azul', 49.99, 15, 'Unisex', '100% algodón, ajuste trasero', 'https://ejemplo.com/gorra-beisbol.jpg', 4);
--- Gafas (Categoría 5)
-call sp_AgregarProducto('Gafas de Sol Premium', 'Protección UV 400', 'Negro', 199.99, 8, 'Unisex', 'Marco de acetato, lentes polarizados', 'https://ejemplo.com/gafas-premium.jpg', 5);
--- Piercings (Categoría 6)
-call sp_AgregarProducto('Piercing de Ombligo', 'Acero quirúrgico', 'Plateado', 89.99, 12, 'Mujer', 'Hipoalergénico, 10mm de largo', 'https://ejemplo.com/piercing-ombligo.jpg', 6);
--- Guantes (Categoría 7)
-call sp_AgregarProducto('Guantes de Cuero', 'Guantes de piel genuina', 'Marrón', 79.99, 6, 'Hombre', 'Forro interior suave, talla M', 'https://ejemplo.com/guantes-cuero.jpg', 7);
+-- Reloj TimeMaster (Marca 1)
+call sp_AgregarProducto('Reloj Deportivo TimeMaster', 'Reloj resistente al agua', 'Negro', 129.99, 10, 'Hombre', 
+    'Resistente al agua hasta 100m, cronómetro digital', 'https://ejemplo.com/reloj-deportivo.jpg', 1, 1);
 
+-- Cadena SilverPure (Marca 2)
+call sp_AgregarProducto('Cadena de Plata 925', 'Cadena de plata esterlina', 'Plateado', 299.99, 5, 'Unisex', 
+    'Largo 50cm, eslabones italianos', 'https://ejemplo.com/cadena-plata.jpg', 2, 2);
+
+-- Anillo LuxuryGold (Marca 4)
+call sp_AgregarProducto('Anillo de Oro 18k', 'Anillo clásico de oro', 'Dorado', 599.99, 3, 'Mujer', 
+    'Talla ajustable, peso 5g', 'https://ejemplo.com/anillo-oro.jpg', 3, 4);
+
+-- Gorra UrbanStyle (Marca 5)
+call sp_AgregarProducto('Gorra Béisbol Clásica', 'Gorra de algodón ajustable', 'Azul', 49.99, 15, 'Unisex', 
+    '100% algodón, ajuste trasero', 'https://ejemplo.com/gorra-beisbol.jpg', 4, 5);
+
+-- Gafas SportGear (Marca 3)
+call sp_AgregarProducto('Gafas de Sol Premium', 'Protección UV 400', 'Negro', 199.99, 8, 'Unisex', 
+    'Marco de acetato, lentes polarizados', 'https://ejemplo.com/gafas-premium.jpg', 5, 3);
+    
+    
 call sp_AgregarCarrito(1, 0);
 call sp_AgregarCarrito(2, 0);
 call sp_AgregarCarrito(3, 0);
@@ -640,16 +668,6 @@ call sp_AgregarFactura(2, 2, '2023-11-11', 599.99, 699.99);
 call sp_AgregarFactura(3, 3, '2023-11-12', 99.98, 119.98);
 call sp_AgregarFactura(4, 4, '2023-11-13', 199.99, 239.99);
 call sp_AgregarFactura(5, 5, '2023-11-14', 399.99, 479.99);
-
-call sp_AgregarProveedor('Suministros Moda S.A.', 'Proveedor mayorista de accesorios de moda', '5551234567', 'contacto@suministrosmoda.com', 'Av. Principal 123, Ciudad de México', '2023-01-15', 'activo');
-call sp_AgregarProveedor('Joyeria Fina Internacional', 'Especialistas en joyería de plata y oro', '5557654321', 'ventas@joyeriafina.com', 'Calle Diamante 45, Guadalajara', '2023-02-20', 'activo');
-call sp_AgregarProveedor('Accesorios Deportivos Ltda.', 'Distribuidor de artículos deportivos', '5559876543', 'info@accesoriosdeportivos.com', 'Blvd. Deportivo 678, Monterrey', '2023-03-10', 'activo');
-
-call sp_AgregarMarca('TimeMaster', 'Relojes de alta precisión y diseño', 1, 'Suiza');
-call sp_AgregarMarca('SilverPure', 'Joyeria en plata esterlina 925', 2, 'Italia');
-call sp_AgregarMarca('SportGear', 'Accesorios deportivos de alta calidad', 3, 'Estados Unidos');
-call sp_AgregarMarca('LuxuryGold', 'Joyas en oro de 18k y 24k', 2, 'Italia');
-call sp_AgregarMarca('UrbanStyle', 'Accesorios urbanos y modernos', 1, 'México');
 
 
 call sp_ListarCarritos();
@@ -875,6 +893,43 @@ delimiter //
             set P.cantidad = P.cantidad + DCP.cantidad
             where F.idFactura = new.idFactura;
         end if;
+    end//
+delimiter ;
+
+-- Cosas que no son tan necesarias creo
+delimiter //
+    create procedure sp_ListarProductosPorMarca(
+        in p_idMarca int
+    )
+    begin
+        select
+            P.idProducto,
+            P.nombre,
+            P.precio,
+            P.cantidad,
+            C.nombreCategoria as categoria
+        from Productos P
+        join Categorias C on P.idCategoria = C.idCategoria
+        where P.idMarca = p_idMarca;
+    end//
+delimiter ;
+
+delimiter //
+    create procedure sp_ListarProductosPorProveedor(
+        in p_idProveedor int
+    )
+    begin
+        select
+            P.idProducto,
+            P.nombre,
+            P.precio,
+            P.cantidad,
+            M.nombreMarca as marca,
+            C.nombreCategoria as categoria
+        from Productos P
+        join Marcas M on P.idMarca = M.idMarca
+        join Categorias C on P.idCategoria = C.idCategoria
+        where M.idProveedor = p_idProveedor;
     end//
 delimiter ;
 
