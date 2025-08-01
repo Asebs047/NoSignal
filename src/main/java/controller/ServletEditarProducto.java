@@ -31,11 +31,9 @@ public class ServletEditarProducto extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            Producto producto = productoDAO.buscarPorId(id);
-            
+            Producto producto = new Producto();
             producto.setIdProducto(Integer.parseInt(request.getParameter("id")));
             producto.setNombre(request.getParameter("nombre"));
             producto.setDescripcion(request.getParameter("descripcion"));
@@ -45,7 +43,9 @@ public class ServletEditarProducto extends HttpServlet {
             producto.setGenero(request.getParameter("genero"));
             producto.setCategoria(request.getParameter("categoria"));
             producto.setDetalle(request.getParameter("detalle"));
-            producto.setUrlImagen(request.getParameter("urlImagen"));
+
+            String nuevaUrlImagen = request.getParameter("urlImagen");
+            producto.setUrlImagen(nuevaUrlImagen);
 
             productoDAO.actualizar(producto);
             response.sendRedirect("ServletListarProductos");

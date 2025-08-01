@@ -88,7 +88,7 @@ public class ProductoDAO {
     }
 
     public void actualizar(Producto producto) throws SQLException {
-        String sql = "UPDATE Productos SET nombre=?, descripcion=?, color=?, precio=?, cantidad=?, genero=?, categoria=?, detalle=? WHERE idProducto=?";
+        String sql = "UPDATE Productos SET nombre=?, descripcion=?, color=?, precio=?, cantidad=?, genero=?, categoria=?, detalle=?, urlImagen=? WHERE idProducto=?";
 
         try (Connection conexion = DBConnection.getInstancia().getConnection(); PreparedStatement consulta = conexion.prepareStatement(sql)) {
 
