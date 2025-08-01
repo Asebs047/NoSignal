@@ -24,16 +24,28 @@ public class Producto {
    @Column
    private String genero;
    @Column
-   private String tipo;
+   private String categoria;
 
-    public Producto(int idProducto, String nombre, String descripcion, String color, Double precio, String genero, String tipo) {
+    public Producto() {
+    }
+   
+    public Producto(String nombre, String descripcion, String color, Double precio, String genero, String categoria) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.color = color;
+        this.precio = precio;
+        this.genero = genero;
+        this.categoria = categoria;
+    }
+   
+    public Producto(int idProducto, String nombre, String descripcion, String color, Double precio, String genero, String categoria) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.color = color;
         this.precio = precio;
         this.genero = genero;
-        this.tipo = tipo;
+        this.categoria = categoria;
     }
 
     public int getIdProducto() {
@@ -84,12 +96,12 @@ public class Producto {
         this.genero = genero;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getCategoria() {
+        return categoria;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
    
 }

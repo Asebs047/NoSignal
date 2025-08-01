@@ -8,6 +8,8 @@ import dao.ProductoDAO;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Producto;
@@ -16,17 +18,18 @@ import model.Producto;
  *
  * @author Klopez
  */
-public class ServletListarProducto {
+@WebServlet("/ServletListarProducto")
+public class ServletListarProducto extends HttpServlet {
      protected void doGet(HttpServletRequest solicitud, HttpServletResponse respuesta) 
             throws IOException, ServletException{
         //obtener la lista ->   Dao
         ProductoDAO dao = new ProductoDAO();
-        List<Producto> listaClientes = dao.ListarTodos();
+        List<Producto> listaProducto = dao.ListarTodos();
         
         //cargar la lista en un parametro(lista) a enviar
-        solicitud.setAttribute("listaProducto", listaClientes);
+        solicitud.setAttribute("listaProducto", listaProducto);
         
         //enviar la lista
-        solicitud.getRequestDispatcher("listarClientes.jsp").forward(solicitud, respuesta);
+        solicitud.getRequestDispatcher("administracion.jsp").forward(solicitud, respuesta);
     }
 }

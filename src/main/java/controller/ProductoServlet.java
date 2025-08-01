@@ -8,6 +8,8 @@ import dao.ProductoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Producto;
@@ -16,31 +18,43 @@ import model.Producto;
  *
  * @author Klopez
  */
-public class ProductoServlet {
-    
-    protected void doGet(HttpServletRequest solicitud, HttpServletResponse repuesta) 
-            throws IOException, ServletException{
-        repuesta.setContentType("text/html;charset=UTF-8");
-        PrintWriter impresoraHtml = repuesta.getWriter();
-        
+@WebServlet("/ProductoServlet")
+public class ProductoServlet extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest solicitud, HttpServletResponse respuesta)
+            throws IOException, ServletException {
+
+        // Leer datos del formulario
         String nombre = solicitud.getParameter("nombre");
-        String apellido = solicitud.getParameter("apellido");
-        String telefono = solicitud.getParameter("telefono");
-        String correo = solicitud.getParameter("correo");
+        String descripcion = solicitud.getParameter("descripcion");
+        String color = solicitud.getParameter("color");
         String genero = solicitud.getParameter("genero");
-        int edad = Integer.parseInt(solicitud.getParameter("edad"));
-        
+        String categoria = solicitud.getParameter("categoria");
+
+        double precio = 0.0;
+        try {
+            precio = Double.parseDouble(solicitud.getParameter("precio"));
+        } catch (NumberFormatException e) {
+            solicitud.setAttribute("error", "Precio inválido");
+            solicitud.getRequestDispatcher("administracion.jsp").forward(solicitud, respuesta);
+            return;
+        }
+
+        // Crear objeto producto
         Producto producto = new Producto();
         producto.setNombre(nombre);
-        producto.setApellido(apellido);
-        producto.setTelefono(telefono);
-        producto.setCorreo(correo);
+        producto.setDescripcion(descripcion);
+        producto.setColor(color);
+        producto.setPrecio(precio);
         producto.setGenero(genero);
-        producto.setEdad(edad);
-        
+        producto.setCategoria(categoria);
+
+        // Guardar en base de datos
         ProductoDAO dao = new ProductoDAO();
         dao.guardar(producto);
-        
 
+        // Redirigir a administración después de guardar
+        respuesta.sendRedirect("ServletListarProducto");
     }
 }

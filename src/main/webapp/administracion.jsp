@@ -8,7 +8,7 @@
 <%@page  import="java.util.List" %>
 <%@page  import="model.Usuario" %>
 <%@page import="model.Usuario"%>
-<%@page import="model.Usuario"%>
+<%@page import="model.Producto"%>
 <%
     Usuario usuario = (Usuario) session.getAttribute("usuario");
     if (usuario == null || !"administrador".equals(usuario.getRol())) {
@@ -43,20 +43,21 @@
                 </thead>
                 <tbody> 
                     <%
-                        List<Usuario> listaClientes = (List<Usuario>) request.getAttribute("listaClientes");
+                        List<Producto> listaProductos = (List<Producto>) request.getAttribute("listaProducto");
 
-                        if (listaClientes != null && !listaClientes.isEmpty()) {
-                            for (Usuario c : listaClientes) {
+                        if (listaProductos != null && !listaProductos.isEmpty()) {
+                            for (Producto p : listaProductos) {
                     %>
                     <tr>
-                        <td><%=c.getNombre()%></td>
-                        <td><%=c.getApellido()%></td>
-                        <td><%=c.getTelefono()%></td>
-                        <td><%=c.getCorreo()%></td>
-                        <td><%=c.getGenero()%></td>
+                        <td><%=p.getNombre()%></td>
+                        <td><%=p.getDescripcion()%></td>
+                        <td><%=p.getColor()%></td>
+                        <td><%=p.getPrecio()%></td>
+                        <td><%=p.getGenero()%></td>
+                        <td><%=p.getCategoria()%></td>
                         <td>
-                            <a href="ServletEditarProducto?id=<%=c.getNombre()%>" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="ServletEliminarProducto?id=<%=c.getNombre()%>" class="btn btn-danger btn-sm"
+                            <a href="ServletEditarProducto?id=<%=p.getNombre()%>" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="ServletEliminarProducto?id=<%=p.getNombre()%>" class="btn btn-danger btn-sm"
                                onclick="return confirm('¿Desea eliminar este cliente?')">Eliminar</a>
 
                         </td>  

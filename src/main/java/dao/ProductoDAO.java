@@ -12,7 +12,7 @@ import model.Producto;
 */
 public class ProductoDAO {
    
-    private EntityManagerFactory fabrica = Persistence.createEntityManagerFactory("LibreriaPU");
+    private EntityManagerFactory fabrica = Persistence.createEntityManagerFactory("NoSignalPU");
     public void guardar(Producto cliente){
         EntityManager admin = fabrica.createEntityManager();
         try {

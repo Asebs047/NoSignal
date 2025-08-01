@@ -15,40 +15,48 @@
     </head>
     <body>
         <div class="container">
-            <h1>Cliente</h1>
+            <h1>Producto</h1>
             <!--          nombre, apellido, telefono, correo, edad-->
 
-            <form action="ServletCliente" method="get">
+            <form action="ProductoServlet" method="post">
                 <div class="mb-3">
                     <label for="nombre" class="form-control">Nombre:</label>
                     <input type="text" id="nombre" name="nombre" class="form-control">
                 </div>
                 <div class="mb-3">
-                    <label for="nombre" class="form-control">Apellido:</label>
-                    <input type="text" id="apellido" name="apellido" class="form-control">
+                    <label for="nombre" class="form-control">Descripcion:</label>
+                    <input type="text" id="descripcion" name="descripcion" class="form-control">
                 </div>
                 <div class="mb-3">
-                    <label for="nombre" class="form-control">Telefono:</label>
-                    <input type="text" id="telefono" name="telefono" class="form-control">
+                    <label for="nombre" class="form-control">Color:</label>
+                    <input type="text" id="color" name="color" class="form-control">
                 </div>
                 <div class="mb-3">
-                    <label for="nombre" class="form-control">Correo:</label>
-                    <input type="email" name="correo"  name="correo" class="form-control">
+                    <label for="nombre" class="form-control">Precio</label>
+                    <input type="text" name="precio" class="form-control">
                 </div>
                 <div class = "mb-3">
                     <label for="genero" class="form-control">Genero:</label>
                     <select id="genero" name="genero">
-                        <option value="masculino">Masculino</option>
-                        <option value="femenino">Femenino</option>
-                        <option value="no">No especificado</option>
+                        <option value="hombre">hombre</option>
+                        <option value="mujer">mujer</option>
+                        <option value="unisex">unisex</option>
                     </select>
                 </div>
-                <div class="mb-3">
-                    <label for="edad" class="form-control">Edad:</label>
-                    <input type="numbre" id="edad" name="edad" class="form-control">
+                <div class = "mb-3">
+                    <label for="genero" class="form-control">Categoria:</label>
+                    <select id="categoria" name="categoria">
+                        <option value="reloj">reloj</option>
+                        <option value="cadena">cadena</option>
+                        <option value="anillo">anillo</option>
+                        <option value="gorra">gorra</option>
+                        <option value="gafas">gafas</option>
+                        <option value="piercing">piercing</option>
+                        <option value="guante">guante</option>
+                    </select>
                 </div>
                 
-                <input action="administracion.jsp" value="Agregar Producto" class="btn btn-primary">
+                <input type="submit" value="Agregar Producto" class="btn btn-primary">
             </form>
         </div>
 

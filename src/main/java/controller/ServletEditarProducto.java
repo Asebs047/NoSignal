@@ -42,7 +42,7 @@ public class ServletEditarProducto {
                 producto.setColor(solicitud.getParameter("telefono"));
                 producto.setPrecio(Double.parseDouble(solicitud.getParameter("precio")));
                 producto.setGenero(solicitud.getParameter("genero"));
-                producto.setTipo(solicitud.getParameter("setTipo"));
+                producto.setCategoria(solicitud.getParameter("categoria"));
  
                 productoDAO.actualizar(producto);
                 respuesta.sendRedirect("/listarClientesServlet");

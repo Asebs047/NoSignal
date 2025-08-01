@@ -9,8 +9,8 @@ create table Productos(
     color varchar(32) not null,
     precio decimal(10,2) not null,
     cantidad int not null,
-    genero enum('Hombre','Mujer','Unisex') not null,
-    categoria enum('Reloj','Cadena','Anillo','Gorra','Gafas','Piercing','Guante') not null,
+    genero enum('hombre','mujer','unisex') not null,
+    categoria enum('reloj','cadena','anillo','gorra','gafas','piercing','guante') not null,
     detalle varchar(255) not null,
     urlImagen varchar(255) not null,
     constraint pk_Productos primary key(idProducto)
