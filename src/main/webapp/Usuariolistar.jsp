@@ -37,14 +37,14 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Color</th>
-                        <th>Precio</th>
-                        <th>Cantidad</th>
+                        <th>Apellido</th>
+                        <th>Telefono</th>
+                        <th>Correo</th>
+                        <th>Direccion</th>
                         <th>Género</th>
-                        <th>Categoría</th>
-                        <th>Detalle</th>
-                        <th>Imagen</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Contraseña</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -63,6 +63,7 @@
                         <td><%= usuario.getDireccion()%></td>
                         <td><%= usuario.getGenero()%></td>
                         <td><%= usuario.getRol()%></td>
+                        <td><%= usuario.getEstado()%></td>
                         <td><%= usuario.getContrasena()%></td>
                         <td>
                             <a href="ServletEditarUsuario?accion=editar&id=<%= usuario.getIdUsuario()%>" 

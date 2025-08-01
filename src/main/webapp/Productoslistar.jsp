@@ -42,7 +42,6 @@
                         <th>Precio</th>
                         <th>Cantidad</th>
                         <th>Género</th>
-                        <th>Categoría</th>
                         <th>Detalle</th>
                         <th>Imagen</th>
                         <th>Acciones</th>
@@ -62,11 +61,10 @@
                         <td><%= p.getPrecio()%></td>
                         <td><%= p.getCantidad()%></td>
                         <td><%= p.getGenero()%></td>
-                        <td><%= p.getCategoria()%></td>
                         <td><%= p.getDetalle()%></td>
                         <td>
                             <%
-                                String tipo = p.getCategoria().toLowerCase().replace(" ", "-");
+                                String tipo = p.getUrlImagen().toLowerCase().replace(" ", "-");
                                 String nombreImagen = "producto-" + p.getIdProducto() + "-" + tipo + ".png";
                                 String rutaImagen = request.getContextPath() + "/images/productos/" + nombreImagen;
                             %>

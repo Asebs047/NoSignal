@@ -39,7 +39,7 @@ public class Usuario {
 
     public Usuario() {
     }
-
+    
     public Usuario(String nombre, String apellido, String telefono, String correo, String direccion, String genero, String rol, String estado, String contrasena) {
         this.nombre = nombre;
         this.apellido = apellido;
