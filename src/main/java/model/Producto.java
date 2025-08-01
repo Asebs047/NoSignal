@@ -5,47 +5,65 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;  
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
-@Table(name ="Productos")
+@Table(name = "Productos")
 public class Producto {
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private int idProducto;
-   
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private int idCategoria;
-   
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private int idMarca;
-   
-   @Column(name = "nombre")
-   private String nombre;
-   @Column(name = "descripcion")
-   private String descripcion;
-   @Column(name = "color")
-   private String color;
-   @Column(name = "precio")
-   private Double precio;
-   @Column(name = "cantidad")
-   private int cantidad;
-   @Column(name = "genero")
-   private String genero;
-   @Column(name = "detalle")
-   private String detalle;
-   @Column(name = "urlImagen")
-   private String urlImagen;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idProducto;
+    
+    @Column(name = "nombre")
+    private String nombre;
+    
+    @Column(name = "descripcion")
+    private String descripcion;
+    
+    @Column(name = "color")
+    private String color;
+    
+    @Column(name = "precio")
+    private Double precio;
+    
+    @Column(name = "cantidad")
+    private int cantidad;
+    
+    @Column(name = "genero")
+    private String genero;
+    
+    @Column(name = "detalle")
+    private String detalle;
+    
+    @Column(name = "urlImagen")
+    private String urlImagen;
+    
+    // Campos para las relaciones (no son columnas en la tabla)
+    @Transient
+    private int idCategoria;
+    
+    @Transient
+    private String categoria;
+    
+    @Transient
+    private int idMarca;
+    
+    @Transient
+    private String marca;
+    
+    @Transient
+    private String proveedor;
 
     public Producto() {
     }
 
-    public Producto(int idProducto, int idCategoria, int idMarca, String nombre, String descripcion, String color, Double precio, int cantidad, String genero, String detalle, String urlImagen) {
+    // Constructor completo
+    public Producto(int idProducto, String nombre, String descripcion, String color, 
+                   Double precio, int cantidad, String genero, String detalle, 
+                   String urlImagen, int idCategoria, String categoria, 
+                   int idMarca, String marca, String proveedor) {
         this.idProducto = idProducto;
-        this.idCategoria = idCategoria;
-        this.idMarca = idMarca;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.color = color;
@@ -54,30 +72,20 @@ public class Producto {
         this.genero = genero;
         this.detalle = detalle;
         this.urlImagen = urlImagen;
+        this.idCategoria = idCategoria;
+        this.categoria = categoria;
+        this.idMarca = idMarca;
+        this.marca = marca;
+        this.proveedor = proveedor;
     }
 
+    // Getters y Setters
     public int getIdProducto() {
         return idProducto;
     }
 
     public void setIdProducto(int idProducto) {
         this.idProducto = idProducto;
-    }
-
-    public int getIdCategoria() {
-        return idCategoria;
-    }
-
-    public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
-    }
-
-    public int getIdMarca() {
-        return idMarca;
-    }
-
-    public void setIdMarca(int idMarca) {
-        this.idMarca = idMarca;
     }
 
     public String getNombre() {
@@ -144,6 +152,63 @@ public class Producto {
         this.urlImagen = urlImagen;
     }
 
-    
-    
+    public int getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public int getIdMarca() {
+        return idMarca;
+    }
+
+    public void setIdMarca(int idMarca) {
+        this.idMarca = idMarca;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(String proveedor) {
+        this.proveedor = proveedor;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto{" +
+                "idProducto=" + idProducto +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", color='" + color + '\'' +
+                ", precio=" + precio +
+                ", cantidad=" + cantidad +
+                ", genero='" + genero + '\'' +
+                ", detalle='" + detalle + '\'' +
+                ", urlImagen='" + urlImagen + '\'' +
+                ", idCategoria=" + idCategoria +
+                ", categoria='" + categoria + '\'' +
+                ", idMarca=" + idMarca +
+                ", marca='" + marca + '\'' +
+                ", proveedor='" + proveedor + '\'' +
+                '}';
+    }
 }

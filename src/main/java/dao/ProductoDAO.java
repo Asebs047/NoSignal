@@ -1,6 +1,7 @@
 package dao;
 
 import database.DBConnection;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -57,10 +58,10 @@ public class ProductoDAO {
                 producto.setDetalle(resultado.getString("detalle"));
                 producto.setUrlImagen(resultado.getString("urlImagen"));
                 producto.setIdCategoria(resultado.getInt("idCategoria"));
-                producto.setCategoria(resultado.getString("categoria")); // Nombre de la categoría
+                producto.setCategoria(resultado.getString("categoria")); 
                 producto.setIdMarca(resultado.getInt("idMarca"));
-                producto.setMarca(resultado.getString("marca")); // Nombre de la marca
-                producto.setProveedor(resultado.getString("proveedor")); // Nombre del proveedor
+                producto.setMarca(resultado.getString("marca")); 
+                producto.setProveedor(resultado.getString("proveedor")); 
                 
                 productos.add(producto);
             }
@@ -69,7 +70,7 @@ public class ProductoDAO {
     }
 
     public Producto buscarPorId(int id) throws SQLException {
-        String sql = "{call sp_ListarProductos()}"; // Usamos el mismo procedimiento y filtramos después
+        String sql = "{call sp_ListarProductos()}"; 
         
         try (Connection conexion = DBConnection.getInstancia().getConnection(); 
              CallableStatement consulta = conexion.prepareCall(sql);
