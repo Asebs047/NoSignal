@@ -19,21 +19,21 @@ public class ServletUsuario extends HttpServlet{
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
-//        try {
-//            Usuario usuario = new Usuario();
-//            usuario.setNombre(request.getParameter("nombre"));
-//            usuario.setApellido(request.getParameter("apellido"));
-//            usuario.setTelefono(request.getParameter("telefono"));
-//            usuario.setCorreo(request.getParameter("correo"));
-//            usuario.setDireccion(request.getParameter("direccion"));
-//            usuario.setGenero(request.getParameter("genero"));
-//            usuario.setRol(request.getParameter("rol"));
-//            usuario.setContrasena(request.getParameter("contrasena"));
-//            
-//            usuarioDao.guardar(usuario);
-//            response.sendRedirect("ServletListarUsuario");
-//        } catch (SQLException e) {
-//            throw new ServletException("Error JDBC al guardar", e);
-//        }
+        try {
+            Usuario usuario = new Usuario();
+            usuario.setNombre(request.getParameter("nombre"));
+            usuario.setApellido(request.getParameter("apellido"));
+            usuario.setTelefono(request.getParameter("telefono"));
+            usuario.setCorreo(request.getParameter("correo"));
+            usuario.setDireccion(request.getParameter("direccion"));
+            usuario.setGenero(request.getParameter("genero"));
+            usuario.setRol(request.getParameter("rol"));
+            usuario.setContrasena(request.getParameter("contrasena"));
+            
+            usuarioDao.insertarUsuario(usuario);
+            response.sendRedirect("ServletListarUsuario");
+        } catch (SQLException e) {
+            throw new ServletException("Error JDBC al guardar", e);
+        }
     }
 }

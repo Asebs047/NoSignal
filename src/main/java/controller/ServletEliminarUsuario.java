@@ -15,12 +15,12 @@ public class ServletEliminarUsuario extends HttpServlet{
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
-//        try {
-//            int id = Integer.parseInt(request.getParameter("id"));
-//            usuarioDao.eliminar(id);
-//            response.sendRedirect("ServletListarUsuarios");
-//        } catch (SQLException e) {
-//            throw new ServletException("Error JDBC al eliminar: " , e);
-//        }
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            usuarioDao.eliminar(id);
+            response.sendRedirect("ServletListarUsuarios");
+        } catch (SQLException e) {
+            throw new ServletException("Error JDBC al eliminar: " , e);
+        }
     }
 }
