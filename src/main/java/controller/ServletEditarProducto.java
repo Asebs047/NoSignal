@@ -1,13 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controller;
 
 import dao.ProductoDAO;
 import java.io.IOException;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Producto;
@@ -17,43 +15,34 @@ import model.Producto;
  * @author Klopez
  */
 @WebServlet("/ServletEditarProducto")
-public class ServletEditarProducto {
-    
-    ProductoDAO productoDAO = new ProductoDAO();
-    
-    protected void doGet(HttpServletRequest solicitud, HttpServletResponse respuesta)
-            throws IOException, ServletException{
-        String accion = solicitud.getParameter("accion");
-        
-        switch (accion){
-            case "editar":
-                int idEditar = Integer.parseInt(solicitud.getParameter("id"));
-                Producto producto = productoDAO.buscarPorid(idEditar);
-                //prepara el objetoCliente para enviarlo
-                solicitud.setAttribute("producto", producto);
-                solicitud.getRequestDispatcher("editarProducto.jsp").forward(solicitud, respuesta);
-                
-                break;
-            case "actualizar":
-                int id = Integer.parseInt(solicitud.getParameter("id"));
-                producto = productoDAO.buscarPorid(id);
-                producto.setNombre(solicitud.getParameter("nombre"));
-                producto.setDescripcion(solicitud.getParameter("apellido"));
-                producto.setColor(solicitud.getParameter("telefono"));
-                producto.setPrecio(Double.parseDouble(solicitud.getParameter("precio")));
-                producto.setGenero(solicitud.getParameter("genero"));
-                producto.setCategoria(solicitud.getParameter("categoria"));
- 
-                productoDAO.actualizar(producto);
-                respuesta.sendRedirect("/listarClientesServlet");
- 
-                break;
-            default:
-                throw new AssertionError();
-        }
-        
-        
-    }
-    
-}
+public class ServletEditarProducto extends HttpServlet {
+    private ProductoDAO productoDAO = new ProductoDAO();
 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Producto producto = productoDAO.buscarPorId(id); // JDBC
+            request.setAttribute("producto", producto);
+            request.getRequestDispatcher("editarProducto.jsp").forward(request, response);
+        } catch (SQLException e) {
+            throw new ServletException("Error JDBC al buscar", e);
+        }
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Producto producto = productoDAO.buscarPorId(id);
+            
+            producto.setNombre(request.getParameter("nombre"));
+            // ... (actualizar todos los campos)
+            
+            productoDAO.actualizar(producto); // JDBC
+            response.sendRedirect("ServletListarProductos");
+        } catch (SQLException e) {
+            throw new ServletException("Error JDBC al actualizar", e);
+        }
+    }
+}

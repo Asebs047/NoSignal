@@ -22,30 +22,39 @@ public class Producto {
    @Column
    private Double precio;
    @Column
+   private int cantidad;
+   @Column
    private String genero;
    @Column
    private String categoria;
+   @Column
+   private String detalle;
+   
 
     public Producto() {
     }
-   
-    public Producto(String nombre, String descripcion, String color, Double precio, String genero, String categoria) {
+
+    public Producto(String nombre, String descripcion, String color, Double precio, int cantidad, String genero, String categoria, String detalle) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.color = color;
         this.precio = precio;
+        this.cantidad = cantidad;
         this.genero = genero;
         this.categoria = categoria;
+        this.detalle = detalle;
     }
-   
-    public Producto(int idProducto, String nombre, String descripcion, String color, Double precio, String genero, String categoria) {
+
+    public Producto(int idProducto, String nombre, String descripcion, String color, Double precio, int cantidad, String genero, String categoria, String detalle) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.color = color;
         this.precio = precio;
+        this.cantidad = cantidad;
         this.genero = genero;
         this.categoria = categoria;
+        this.detalle = detalle;
     }
 
     public int getIdProducto() {
@@ -88,6 +97,14 @@ public class Producto {
         this.precio = precio;
     }
 
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
     public String getGenero() {
         return genero;
     }
@@ -103,5 +120,13 @@ public class Producto {
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
-   
+
+    public String getDetalle() {
+        return detalle;
+    }
+
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
+    }
+    
 }

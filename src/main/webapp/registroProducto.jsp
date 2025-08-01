@@ -1,6 +1,6 @@
 <%-- 
-    Document   : agregarProducto
-    Created on : 1/08/2025, 01:16:38
+    Document   : registroProducto
+    Created on : 1/08/2025, 05:55:39
     Author     : Klopez
 --%>
 
@@ -15,10 +15,10 @@
     </head>
     <body>
         <div class="container">
-            <h1>Producto</h1>
+            <h1>Cliente</h1>
             <!--          nombre, apellido, telefono, correo, edad-->
 
-            <form action="ProductoServlet" method="post">
+            <form action="ServletProducto" method="post">
                 <div class="mb-3">
                     <label for="nombre" class="form-control">Nombre:</label>
                     <input type="text" id="nombre" name="nombre" class="form-control">
@@ -32,14 +32,18 @@
                     <input type="text" id="color" name="color" class="form-control">
                 </div>
                 <div class="mb-3">
-                    <label for="nombre" class="form-control">Precio</label>
-                    <input type="text" name="precio" class="form-control">
+                    <label for="nombre" class="form-control">Precio:</label>
+                    <input type="numbre" id="precio"  name="precio" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="nombre" class="form-control">Cantidad:</label>
+                    <input type="numbre" id="cantidad"  name="cantidad" class="form-control">
                 </div>
                 <div class = "mb-3">
                     <label for="genero" class="form-control">Genero:</label>
                     <select id="genero" name="genero">
-                        <option value="hombre">hombre</option>
-                        <option value="mujer">mujer</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="femenino">Femenino</option>
                         <option value="unisex">unisex</option>
                     </select>
                 </div>
@@ -55,8 +59,13 @@
                         <option value="guante">guante</option>
                     </select>
                 </div>
+                <div class="mb-3">
+                    <label for="edad" class="form-control">Detalle:</label>
+                    <input type="text" id="detalle" name="detalle" class="form-control">
+                </div>
                 
                 <input type="submit" value="Agregar Producto" class="btn btn-primary">
+                
             </form>
         </div>
 

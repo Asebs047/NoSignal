@@ -12,7 +12,6 @@ create table Productos(
     genero enum('hombre','mujer','unisex') not null,
     categoria enum('reloj','cadena','anillo','gorra','gafas','piercing','guante') not null,
     detalle varchar(255) not null,
-    urlImagen varchar(255) not null,
     constraint pk_Productos primary key(idProducto)
 );
 
@@ -142,14 +141,13 @@ delimiter //
         in p_color varchar(32),
         in p_precio decimal(10,2),
         in p_cantidad int,
-        in p_genero enum('Hombre','Mujer','Unisex'),
-        in p_categoria enum('Reloj','Cadena','Anillo','Gorra','Gafas','Piercing','Guante'),
-        in p_detalle varchar(255),
-        in p_urlimagen varchar(255)
+        in p_genero enum('hombre','mujer','unisex'),
+        in p_categoria enum('reloj','cadena','anillo','gorra','gafas','piercing','guante'),
+        in p_detalle varchar(255)
         )
         begin
-            insert into Productos (nombre, descripcion, color, precio, cantidad, genero, categoria, detalle, urlimagen)
-                values (p_nombre, p_descripcion, p_color, p_precio, p_cantidad, p_genero, p_categoria, p_detalle, p_urlimagen);
+            insert into Productos (nombre, descripcion, color, precio, cantidad, genero, categoria, detalle)
+                values (p_nombre, p_descripcion, p_color, p_precio, p_cantidad, p_genero, p_categoria, p_detalle);
         end//
 delimiter ;
 
@@ -165,8 +163,7 @@ delimiter //
             P.cantidad,
             P.genero,
             P.categoria,
-            P.detalle,
-            P.urlImagen
+            P.detalle
         from Productos P;
     end//
 delimiter ;
@@ -178,10 +175,9 @@ delimiter //
         in p_color varchar(32),
         in p_precio decimal(10,2),
         in p_cantidad int,
-        in p_genero enum('Hombre','Mujer','Unisex'),
-        in p_categoria enum('Reloj','Cadena','Anillo','Gorra','Gafas','Piercing','Guante'),
-        in p_detalle varchar(255),
-        in p_urlimagen varchar(255)
+        in p_genero enum('hombre','mujer','unisex'),
+        in p_categoria enum('reloj','cadena','anillo','gorra','gafas','piercing','guante'),
+        in p_detalle varchar(255)
         )
         begin
             update productos
@@ -192,8 +188,7 @@ delimiter //
                     cantidad = p_cantidad,
                     genero = p_genero,
                     categoria = p_categoria,
-                    detalle = p_detalle,
-                    urlimagen = p_urlimagen
+                    detalle = p_detalle
                 where idproducto = p_idproducto;
         end//
 delimiter ;
@@ -375,13 +370,6 @@ call sp_AgregarUsuario('Pedro Martínez', 'Díaz', '5556789012', 'pedro@email.co
 -- este es admin xd
 call sp_AgregarUsuario('Admin', 'Sistema', '5550000000', 'admin@tienda.com', 'Oficina Principal', 'masculino', 'administrador', 'admin123');
 
-call sp_AgregarProducto('Reloj Deportivo', 'Reloj resistente al agua', 'Negro', 129.99, 10, 'Hombre', 'Reloj', 'Resistente al agua hasta 100m', 'https://ejemplo.com/reloj.jpg');
-call sp_AgregarProducto('Cadena de Plata', 'Cadena 925 de alta calidad', 'Plateado', 299.99, 5, 'Unisex', 'Cadena', 'Cadena de plata esterlina 925, 50cm', 'https://ejemplo.com/cadena.jpg');
-call sp_AgregarProducto('Anillo de Oro', 'Anillo de oro 18k', 'Dorado', 599.99, 3, 'Mujer', 'Anillo', 'Anillo de oro amarillo 18 quilates', 'https://ejemplo.com/anillo.jpg');
-call sp_AgregarProducto('Gorra Béisbol', 'Gorra de algodón ajustable', 'Azul', 49.99, 15, 'Unisex', 'Gorra', 'Gorra con ajuste posterior, 100% algodón', 'https://ejemplo.com/gorra.jpg');
-call sp_AgregarProducto('Gafas de Sol', 'Gafas protección UV 400', 'Negro', 199.99, 8, 'Hombre', 'Gafas', 'Protección UV400, marco de acetato', 'https://ejemplo.com/gafas.jpg');
-call sp_AgregarProducto('Piercing Ombligo', 'Acero quirúrgico hipoalergénico', 'Plateado', 89.99, 12, 'Mujer', 'Piercing', 'Acero quirúrgico 316L, 10mm de largo', 'https://ejemplo.com/piercing.jpg');
-
 call sp_AgregarCarrito(1, 0);
 call sp_AgregarCarrito(2, 0);
 call sp_AgregarCarrito(3, 0);
@@ -399,6 +387,7 @@ call sp_AgregarFactura(2, 2, '2023-11-11', 599.99, 699.99);
 call sp_AgregarFactura(3, 3, '2023-11-12', 99.98, 119.98);
 call sp_AgregarFactura(4, 4, '2023-11-13', 199.99, 239.99);
 call sp_AgregarFactura(5, 5, '2023-11-14', 399.99, 479.99);
+
 
 call sp_ListarCarritos();
 call sp_ListarDetallesCarrito();
