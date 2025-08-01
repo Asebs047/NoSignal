@@ -8,13 +8,15 @@
 <%@page import="java.util.List"%>
 <%@page import="model.Usuario"%>
 <%@page import="model.Producto"%>
+<%@page import="model.Usuario"%>
 <%
     Usuario usuario = (Usuario) session.getAttribute("usuario");
-    if (usuario == null || !"administrador".equals(usuario.getRol())) {
+    if (usuario == null || !("administrador".equals(usuario.getRol()) || "jefe".equals(usuario.getRol()))) {
         response.sendRedirect("index.jsp");
         return;
     }
 %>
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -74,14 +76,17 @@
                         <td><%= p.getDetalle()%></td>
                         <td>
                             <%
-                                String nombreImagen = "producto-" + p.getIdProducto() + ".png";
+                                String tipo = p.getCategoria().toLowerCase().replace(" ", "-");
+                                String nombreImagen = "producto-" + p.getIdProducto() + "-" + tipo + ".png";
                                 String rutaImagen = request.getContextPath() + "/images/productos/" + nombreImagen;
                             %>
+
                             <img src="<%= rutaImagen%>" 
                                  alt="<%= p.getNombre()%>"
                                  style="max-width: 80px; height: auto;"
                                  class="img-thumbnail"
-                                 onerror="this.src='<%= request.getContextPath()%>/images/placeholder.jpg';this.onerror=null;">
+                                 onerror="this.src='<%= request.getContextPath()%>/images/placeholder.png';this.onerror=null;">
+                            <small class="d-block text-muted"><%= nombreImagen%></small>
                         </td>
                         <td>
                             <a href="ServletEditarProducto?accion=editar&id=<%= p.getIdProducto()%>" 
