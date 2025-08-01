@@ -26,7 +26,7 @@ public class LoginServlet extends HttpServlet {
             System.out.println("DEBUG: Login EXITOSO - Rol: " + usuario.getRol());
             String contextPath = request.getContextPath();
             if ("administrador".equals(usuario.getRol())) {
-                response.sendRedirect(contextPath + "/administracion.jsp");
+                response.sendRedirect(contextPath + "/ServletListarProductos");
             } else {
                 response.sendRedirect(contextPath + "/home.jsp");
             }

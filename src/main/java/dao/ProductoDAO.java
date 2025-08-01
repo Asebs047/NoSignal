@@ -1,77 +1,119 @@
 package dao;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import model.Producto;
- 
-/**
-*
-* @author informatica
-*/
-public class ProductoDAO {
-   
-    private EntityManagerFactory fabrica = Persistence.createEntityManagerFactory("LibreriaPU");
-    public void guardar(Producto cliente){
-        EntityManager admin = fabrica.createEntityManager();
-        try {
-            admin.getTransaction().begin();
-            admin.persist(cliente);
-            admin.getTransaction().commit();
-        } catch (Exception e) {
-            System.out.println("Error al guardad"+e.getMessage());
-        }finally {
-            admin.close();
-        }
 
-    }
-    public List<Producto> ListarTodos(){
-        EntityManager admin = fabrica.createEntityManager();
-        try {
-            
-            return admin.createQuery("SELECT c FROM Cliente c", Producto.class).getResultList();
-        }finally {
-            admin.close();
+import database.DBConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Producto;
+
+/**
+ *
+ * @author Klopez
+ */
+public class ProductoDAO {
+
+    public void guardar(Producto producto) throws SQLException {
+        String sql = "{call sp_AgregarProducto(?,?,?,?,?,?,?,?,?)}"; // Si usas procedimientos
+        // O si no:
+        // String sql = "INSERT INTO Productos (nombre, descripcion, color, precio, cantidad, genero, categoria, detalle) VALUES (?,?,?,?,?,?,?,?)";
+
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); PreparedStatement consulta = conexion.prepareStatement(sql)) {
+
+            consulta.setString(1, producto.getNombre());
+            consulta.setString(2, producto.getDescripcion());
+            consulta.setString(3, producto.getColor());
+            consulta.setDouble(4, producto.getPrecio());
+            consulta.setInt(5, producto.getCantidad());
+            consulta.setString(6, producto.getGenero());
+            consulta.setString(7, producto.getCategoria());
+            consulta.setString(8, producto.getDetalle());
+            consulta.setString(9, producto.getUrlImagen());
+
+            consulta.executeUpdate();
         }
     }
-    public Producto buscarPorid(int id){
-        EntityManager admin = fabrica.createEntityManager();
-        try {
-            return admin.find(Producto.class, id);
-        }finally{
-        }
-    }
-    public void actualizar(Producto cliente){
-        //em, et --> begin, proceso, commit, 
-        EntityManager admin = fabrica.createEntityManager();
-        EntityTransaction transaccion = admin.getTransaction();
-        try {
-            transaccion.begin();
-            admin.merge(cliente);
-            transaccion.commit();
-        } catch (Exception e) {
-            if (transaccion.isActive()) {
-                transaccion.rollback();
+
+    public List<Producto> listarTodos() throws SQLException {
+        String sql = "SELECT * FROM Productos";
+        List<Producto> productos = new ArrayList<>();
+
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); PreparedStatement consulta = conexion.prepareStatement(sql); ResultSet resultado = consulta.executeQuery()) {
+
+            while (resultado.next()) {
+                Producto producto = new Producto();
+                producto.setIdProducto(resultado.getInt("idProducto"));
+                producto.setNombre(resultado.getString("nombre"));
+                producto.setDescripcion(resultado.getString("descripcion"));
+                producto.setColor(resultado.getString("color"));
+                producto.setPrecio(resultado.getDouble("precio"));
+                producto.setCantidad(resultado.getInt("cantidad"));
+                producto.setGenero(resultado.getString("genero"));
+                producto.setCategoria(resultado.getString("categoria"));
+                producto.setDetalle(resultado.getString("detalle"));
+                producto.setUrlImagen(resultado.getString("urlImagen"));
+                
+                productos.add(producto);
             }
-        }finally{
-            admin.close();
+        }
+        return productos;
+    }
+
+    public Producto buscarPorId(int id) throws SQLException {
+        String sql = "SELECT * FROM Productos WHERE idProducto = ?";
+
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); PreparedStatement consulta = conexion.prepareStatement(sql)) {
+
+            consulta.setInt(1, id);
+            try (ResultSet resultado = consulta.executeQuery()) {
+                if (resultado.next()) {
+                    Producto producto = new Producto();
+                    producto.setIdProducto(resultado.getInt("idProducto"));
+                    producto.setNombre(resultado.getString("nombre"));
+                    producto.setDescripcion(resultado.getString("descripcion"));
+                    producto.setColor(resultado.getString("color"));
+                    producto.setPrecio(resultado.getDouble("precio"));
+                    producto.setCantidad(resultado.getInt("cantidad"));
+                    producto.setGenero(resultado.getString("genero"));
+                    producto.setCategoria(resultado.getString("categoria"));
+                    producto.setDetalle(resultado.getString("detalle"));
+                    producto.setUrlImagen(resultado.getString("urlImagen"));
+                    return producto;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void actualizar(Producto producto) throws SQLException {
+        String sql = "UPDATE Productos SET nombre=?, descripcion=?, color=?, precio=?, cantidad=?, genero=?, categoria=?, detalle=? WHERE idProducto=?";
+
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); PreparedStatement consulta = conexion.prepareStatement(sql)) {
+
+            consulta.setString(1, producto.getNombre());
+            consulta.setString(2, producto.getDescripcion());
+            consulta.setString(3, producto.getColor());
+            consulta.setDouble(4, producto.getPrecio());
+            consulta.setInt(5, producto.getCantidad());
+            consulta.setString(6, producto.getGenero());
+            consulta.setString(7, producto.getCategoria());
+            consulta.setString(8, producto.getDetalle());
+            consulta.setString(9, producto.getUrlImagen());
+            consulta.setInt(10, producto.getIdProducto());
+
+            consulta.executeUpdate();
         }
     }
-    public void eliminar(int id){
-        EntityManager admin = fabrica.createEntityManager();
-        EntityTransaction tr = admin.getTransaction();
-        try {
-            tr.begin();
-            Producto cliente = admin.find(Producto.class, id);
-            if (cliente!= null) {
-                admin.remove(cliente);
-            }
-            tr.commit();
-        } catch (Exception e) {
-            if (tr.isActive()) tr.rollback();
-        }finally{
-            admin.close();
+
+    public void eliminar(int id) throws SQLException {
+        String sql = "DELETE FROM Productos WHERE idProducto=?";
+
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); PreparedStatement consulta = conexion.prepareStatement(sql)) {
+
+            consulta.setInt(1, id);
+            consulta.executeUpdate();
         }
     }
 }

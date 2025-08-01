@@ -16,26 +16,38 @@ public class Producto {
    @Column
    private String nombre;
    @Column
-   private String material;
+   private String descripcion;
    @Column
    private String color;
    @Column
    private Double precio;
    @Column
+   private int cantidad;
+   @Column
    private String genero;
    @Column
-   private String tipo;
+   private String categoria;
+   @Column
+   private String detalle;
+   @Column
+   private String urlImagen;
 
-    public Producto(int idProducto, String nombre, String material, String color, Double precio, String genero, String tipo) {
-        this.idProducto = idProducto;
-        this.nombre = nombre;
-        this.material = material;
-        this.color = color;
-        this.precio = precio;
-        this.genero = genero;
-        this.tipo = tipo;
+    public Producto() {
     }
 
+    public Producto(int idProducto, String nombre, String descripcion, String color, Double precio, int cantidad, String genero, String categoria, String detalle, String urlImagen) {
+        this.idProducto = idProducto;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.color = color;
+        this.precio = precio;
+        this.cantidad = cantidad;
+        this.genero = genero;
+        this.categoria = categoria;
+        this.detalle = detalle;
+        this.urlImagen = urlImagen;
+    }
+    
     public int getIdProducto() {
         return idProducto;
     }
@@ -52,12 +64,12 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public String getMaterial() {
-        return material;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setMaterial(String material) {
-        this.material = material;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public String getColor() {
@@ -76,6 +88,14 @@ public class Producto {
         this.precio = precio;
     }
 
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
     public String getGenero() {
         return genero;
     }
@@ -84,12 +104,30 @@ public class Producto {
         this.genero = genero;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getCategoria() {
+        return categoria;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getDetalle() {
+        return detalle;
+    }
+
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
+    }
+
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
     }
    
+    
+    
 }
