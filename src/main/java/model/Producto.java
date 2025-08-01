@@ -13,47 +13,71 @@ public class Producto {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private int idProducto;
-   @Column
+   
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private int idCategoria;
+   
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private int idMarca;
+   
+   @Column(name = "nombre")
    private String nombre;
-   @Column
+   @Column(name = "descripcion")
    private String descripcion;
-   @Column
+   @Column(name = "color")
    private String color;
-   @Column
+   @Column(name = "precio")
    private Double precio;
-   @Column
+   @Column(name = "cantidad")
    private int cantidad;
-   @Column
+   @Column(name = "genero")
    private String genero;
-   @Column
-   private String categoria;
-   @Column
+   @Column(name = "detalle")
    private String detalle;
-   @Column
+   @Column(name = "urlImagen")
    private String urlImagen;
 
     public Producto() {
     }
 
-    public Producto(int idProducto, String nombre, String descripcion, String color, Double precio, int cantidad, String genero, String categoria, String detalle, String urlImagen) {
+    public Producto(int idProducto, int idCategoria, int idMarca, String nombre, String descripcion, String color, Double precio, int cantidad, String genero, String detalle, String urlImagen) {
         this.idProducto = idProducto;
+        this.idCategoria = idCategoria;
+        this.idMarca = idMarca;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.color = color;
         this.precio = precio;
         this.cantidad = cantidad;
         this.genero = genero;
-        this.categoria = categoria;
         this.detalle = detalle;
         this.urlImagen = urlImagen;
     }
-    
+
     public int getIdProducto() {
         return idProducto;
     }
 
     public void setIdProducto(int idProducto) {
         this.idProducto = idProducto;
+    }
+
+    public int getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
+    public int getIdMarca() {
+        return idMarca;
+    }
+
+    public void setIdMarca(int idMarca) {
+        this.idMarca = idMarca;
     }
 
     public String getNombre() {
@@ -104,14 +128,6 @@ public class Producto {
         this.genero = genero;
     }
 
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
     public String getDetalle() {
         return detalle;
     }
@@ -127,7 +143,7 @@ public class Producto {
     public void setUrlImagen(String urlImagen) {
         this.urlImagen = urlImagen;
     }
-   
+
     
     
 }

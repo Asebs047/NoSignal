@@ -32,13 +32,15 @@ public class Usuario {
     private String genero;
     @Column(name = "rol")
     private String rol;
+    @Column(name = "estado")
+    private String estado;
     @Column(name = "contrasena")
     private String contrasena;
 
     public Usuario() {
     }
 
-    public Usuario(String nombre, String apellido, String telefono, String correo, String direccion, String genero, String contrasena) {
+    public Usuario(String nombre, String apellido, String telefono, String correo, String direccion, String genero, String rol, String estado, String contrasena) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
@@ -46,6 +48,7 @@ public class Usuario {
         this.direccion = direccion;
         this.genero = genero;
         this.rol = rol;
+        this.estado = estado;
         this.contrasena = contrasena;
     }
 
@@ -113,6 +116,14 @@ public class Usuario {
         this.rol = rol;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public String getContrasena() {
         return contrasena;
     }
@@ -120,5 +131,7 @@ public class Usuario {
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
+
+    
 
 }
