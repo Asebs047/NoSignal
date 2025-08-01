@@ -24,7 +24,7 @@ create table Usuarios(
     correo varchar(32) not null,
     direccion varchar(255) not null,
     genero enum('masculino','femenino','no especificado') not null,
-    rol enum('administrador','cliente') default 'cliente' not null ,
+    rol enum('jefe','administrador','cliente') default 'cliente' not null ,
     contrasena varchar(32) not null,
     constraint pk_Usuarios primary key(idUsuario)
 );
@@ -76,7 +76,7 @@ delimiter //
         in p_correo varchar(32),
         in p_direccion varchar(255),
         in p_genero enum('masculino','femenino','no especificado'),
-        in p_rol enum('administrador','cliente'),
+        in p_rol enum('jefe','administrador','cliente'),
         in p_contrasena varchar(32)
         )
         begin
@@ -111,7 +111,7 @@ delimiter //
         in p_correo varchar(32),
         in p_direccion varchar(255),
         in p_genero enum('masculino','femenino','no especificado'),
-        in p_rol enum('administrador','cliente'),
+        in p_rol enum('jefe''administrador','cliente'),
         in p_contrasena varchar(32)
         )
         begin
@@ -371,9 +371,10 @@ call sp_AgregarUsuario('Juan Pérez', 'García', '5551234567', 'juan@email.com',
 call sp_AgregarUsuario('María López', 'Rodríguez', '5557654321', 'maria@email.com', 'Avenida 456, Ciudad', 'femenino', 'cliente', 'securepass');
 call sp_AgregarUsuario('Carlos Sánchez', 'Martínez', '5559876543', 'carlos@email.com', 'Boulevard 789, Ciudad', 'masculino', 'cliente', 'mypassword');
 call sp_AgregarUsuario('Ana García', 'Fernández', '5554567890', 'ana@email.com', 'Callejón 321, Ciudad', 'femenino', 'cliente', 'ana789');
-call sp_AgregarUsuario('Pedro Martínez', 'Díaz', '5556789012', 'pedro@email.com', 'Pasaje 654, Ciudad', 'masculino', 'cliente', 'pedro456');
 -- este es admin xd
 call sp_AgregarUsuario('Admin', 'Sistema', '5550000000', 'admin@tienda.com', 'Oficina Principal', 'masculino', 'administrador', 'admin123');
+-- este es jefe
+call sp_AgregarUsuario('Pedro Martínez', 'Díaz', '5556789012', 'pedro@email.com', 'Pasaje 654, Ciudad', 'masculino', 'jefe', 'pedro456');
 
 call sp_AgregarProducto('Reloj Deportivo', 'Reloj resistente al agua', 'Negro', 129.99, 10, 'Hombre', 'Reloj', 'Resistente al agua hasta 100m', 'https://ejemplo.com/reloj.jpg');
 call sp_AgregarProducto('Cadena de Plata', 'Cadena 925 de alta calidad', 'Plateado', 299.99, 5, 'Unisex', 'Cadena', 'Cadena de plata esterlina 925, 50cm', 'https://ejemplo.com/cadena.jpg');
@@ -507,7 +508,7 @@ delimiter ;
 delimiter //
     create procedure sp_CambiarRolUsuario(
         in p_idUsuario int,
-        in p_nuevoRol enum('administrador','cliente')
+        in p_nuevoRol enum('jefe''administrador','cliente')
     )
     begin
         update Usuarios
