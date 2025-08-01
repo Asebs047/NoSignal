@@ -6,11 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
+import java.util.List;
 
-/**
- *
- * @author reyes
- */
 @Entity
 @Table(name = "Usuarios")
 public class Usuario {
@@ -18,29 +17,63 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idUsuario;
+    
     @Column(name = "nombre")
     private String nombre;
+    
     @Column(name = "apellido")
     private String apellido;
+    
     @Column(name = "telefono")
     private String telefono;
+    
     @Column(name = "correo")
     private String correo;
+    
     @Column(name = "direccion")
     private String direccion;
+    
     @Column(name = "genero")
     private String genero;
+    
     @Column(name = "rol")
     private String rol;
+    
     @Column(name = "estado")
     private String estado;
+    
     @Column(name = "contrasena")
     private String contrasena;
+    
+    // Relación uno a muchos con CarritoProductos
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<Carrito> carritos;
+    
+    // Relación uno a muchos con Facturas
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<Factura> facturas;
 
     public Usuario() {
     }
 
-    public Usuario(String nombre, String apellido, String telefono, String correo, String direccion, String genero, String rol, String estado, String contrasena) {
+    public Usuario(int idUsuario, String nombre, String apellido, String telefono, 
+                  String correo, String direccion, String genero, 
+                  String rol, String estado, String contrasena) {
+        this.idUsuario = idUsuario;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.direccion = direccion;
+        this.genero = genero;
+        this.rol = rol;
+        this.estado = estado;
+        this.contrasena = contrasena;
+    }
+    
+    public Usuario(String nombre, String apellido, String telefono, 
+                  String correo, String direccion, String genero, 
+                  String rol, String estado, String contrasena) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
@@ -52,6 +85,7 @@ public class Usuario {
         this.contrasena = contrasena;
     }
 
+    // Getters y Setters
     public int getIdUsuario() {
         return idUsuario;
     }
@@ -132,6 +166,35 @@ public class Usuario {
         this.contrasena = contrasena;
     }
 
-    
+    public List<Carrito> getCarritos() {
+        return carritos;
+    }
 
+    public void setCarritos(List<Carrito> carritos) {
+        this.carritos = carritos;
+    }
+
+    public List<Factura> getFacturas() {
+        return facturas;
+    }
+
+    public void setFacturas(List<Factura> facturas) {
+        this.facturas = facturas;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "idUsuario=" + idUsuario +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", correo='" + correo + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", genero='" + genero + '\'' +
+                ", rol='" + rol + '\'' +
+                ", estado='" + estado + '\'' +
+                ", contrasena='" + contrasena + '\'' +
+                '}';
+    }
 }
