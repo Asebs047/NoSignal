@@ -24,7 +24,7 @@ public class ServletListarProductos extends HttpServlet {
         try {
             List<Producto> productos = productoDAO.listarTodos(); // JDBC
             request.setAttribute("listaProducto", productos);
-            request.getRequestDispatcher("administracion.jsp").forward(request, response);
+            request.getRequestDispatcher("Productoslistar.jsp").forward(request, response);
         } catch (SQLException e) {
             throw new ServletException("Error JDBC al listar", e);
         }

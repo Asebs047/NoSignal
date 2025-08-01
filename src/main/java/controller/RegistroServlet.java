@@ -40,6 +40,7 @@ public class RegistroServlet extends HttpServlet {
         usuario.setGenero(genero);
         usuario.setContrasena(contrasena);
         usuario.setRol("cliente");
+        usuario.setEstado("activo");
 
         UsuarioDAO dao = new UsuarioDAO();
         
