@@ -1,6 +1,7 @@
+
 package controller;
 
-import dao.ProductoDAO;
+import dao.MarcaDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -9,24 +10,24 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Producto;
+import model.Marca;
 
 /**
  *
  * @author Lu0
  */
-@WebServlet("/ServletListarProductos")
-public class ServletListarProductos extends HttpServlet {
-    private ProductoDAO productoDAO = new ProductoDAO();
+@WebServlet("/ServletListarMarcas")
+public class ServletListarMarcas extends HttpServlet {
+    private MarcaDAO marcaDAO = new MarcaDAO();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         try {
-            List<Producto> productos = productoDAO.listarTodos(); // JDBC
-            request.setAttribute("listaProducto", productos);
-            request.getRequestDispatcher("Productoslistar.jsp").forward(request, response);
+            List<Marca> marcas = marcaDAO.listarTodos();
+            request.setAttribute("listaMarcas", marcas);
+            request.getRequestDispatcher("Marcaslistar.jsp").forward(request, response);
         } catch (SQLException e) {
-            throw new ServletException("Error JDBC al listar", e);
+            throw new ServletException("Error al listar marcas", e);
         }
     }
 }

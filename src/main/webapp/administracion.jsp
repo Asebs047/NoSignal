@@ -291,22 +291,22 @@
                 <h3>Usuarios</h3>
             </a>
 
-            <a href="Marcaslistar.jsp" class="producto">
+            <a href="ServletListarMarcas" class="producto">
                 <img src="images/marcas.jpg" alt="Mochila Retro" />
                 <h3>Marcas</h3>
             </a>
 
-            <a href="Proveedoreslistar.jsp" class="producto">
+            <a href="ServletListarProveedores" class="producto">
                 <img src="images/proveedores.png" alt="Reloj Geek" />
                 <h3>Proveedores</h3>
             </a>
 
-            <a href="Productoslistar.jsp" class="producto">
+            <a href="ServletListarProductos" class="producto">
                 <img src="images/productos.png" alt="Pulsera Tech" />
                 <h3>Productos</h3>
             </a>
 
-            <a href="Categorialistar.jsp" class="producto">
+            <a href="ServletListarCategorias" class="producto">
                 <img src="images/categorias.png" alt="Audífonos LED" />
                 <h3>Categorias</h3>
             </a>

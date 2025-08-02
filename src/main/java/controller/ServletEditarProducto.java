@@ -12,7 +12,7 @@ import model.Producto;
 
 /**
  *
- * @author Klopez
+ * @author Lu0
  */
 @WebServlet("/ServletEditarProducto")
 public class ServletEditarProducto extends HttpServlet {
@@ -22,41 +22,64 @@ public class ServletEditarProducto extends HttpServlet {
             throws ServletException, IOException {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
-            Producto producto = productoDAO.buscarPorId(id); // JDBC
+            Producto producto = productoDAO.buscarPorId(id);
+            
+            if (producto == null) {
+                response.sendRedirect("ServletListarProductos");
+                return;
+            }
+            
             request.setAttribute("producto", producto);
-            request.getRequestDispatcher("editarProducto.jsp?id=1").forward(request, response);
+            request.getRequestDispatcher("editarProducto.jsp").forward(request, response);
+            
         } catch (SQLException e) {
-            throw new ServletException("Error JDBC al buscar", e);
+            request.setAttribute("error", "Error al buscar producto: " + e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("ServletListarProductos");
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         try {
             Producto producto = new Producto();
-            producto.setIdProducto(Integer.parseInt(request.getParameter("id")));
+            producto.setIdProducto(Integer.parseInt(request.getParameter("idProducto")));
             producto.setNombre(request.getParameter("nombre"));
             producto.setDescripcion(request.getParameter("descripcion"));
             producto.setColor(request.getParameter("color"));
             producto.setPrecio(Double.parseDouble(request.getParameter("precio")));
             producto.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
             producto.setGenero(request.getParameter("genero"));
-            producto.setCategoria(request.getParameter("categoria"));
             producto.setDetalle(request.getParameter("detalle"));
-
-            String nuevaUrlImagen = request.getParameter("urlImagen");
-            producto.setUrlImagen(nuevaUrlImagen);
+            producto.setUrlImagen(request.getParameter("urlImagen"));
+            producto.setIdCategoria(Integer.parseInt(request.getParameter("idCategoria")));
+            producto.setIdMarca(Integer.parseInt(request.getParameter("idMarca")));
 
             productoDAO.actualizar(producto);
+            request.getSession().setAttribute("mensaje", "Producto actualizado correctamente");
             response.sendRedirect("ServletListarProductos");
-
+            
         } catch (SQLException e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Error al actualizar producto: " + e.getMessage());
-            request.getRequestDispatcher("editarProducto.jsp?id=1").forward(request, response);
+            try {
+                int id = Integer.parseInt(request.getParameter("idProducto"));
+                Producto producto = productoDAO.buscarPorId(id);
+                request.setAttribute("producto", producto);
+                request.setAttribute("error", "Error al actualizar: " + e.getMessage());
+                request.getRequestDispatcher("editarProducto.jsp").forward(request, response);
+            } catch (Exception ex) {
+                response.sendRedirect("ServletListarProductos");
+            }
         } catch (NumberFormatException e) {
-            request.setAttribute("error", "Formato numérico inválido");
-            request.getRequestDispatcher("editarProducto.jsp").forward(request, response);
+            try {
+                int id = Integer.parseInt(request.getParameter("idProducto"));
+                Producto producto = productoDAO.buscarPorId(id);
+                request.setAttribute("producto", producto);
+                request.setAttribute("error", "Datos numéricos inválidos");
+                request.getRequestDispatcher("editarProducto.jsp").forward(request, response);
+            } catch (Exception ex) {
+                response.sendRedirect("ServletListarProductos");
+            }
         }
     }
 }

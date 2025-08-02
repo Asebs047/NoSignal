@@ -94,9 +94,12 @@ public class UsuarioDAO {
 
     public List<Usuario> listarTodos() throws SQLException {
         List<Usuario> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Usuarios WHERE estado = 'activo'";
+        String sql = "SELECT * FROM Usuarios"; // Elimina el filtro de estado temporalmente para pruebas
+        // String sql = "SELECT * FROM Usuarios WHERE estado = 'activo' OR estado = 'Activo'"; // Alternativa
 
         try (Connection conexion = DBConnection.getInstancia().getConnection(); PreparedStatement stmt = conexion.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            System.out.println("Consulta SQL ejecutada: " + sql); // Log adicional
 
             while (rs.next()) {
                 Usuario u = new Usuario();
@@ -111,10 +114,14 @@ public class UsuarioDAO {
                 u.setEstado(rs.getString("estado"));
                 u.setContrasena(rs.getString("contrasena"));
                 lista.add(u);
+                System.out.println("Usuario encontrado: " + u.getNombre()); // Log por usuario
             }
+        } catch (SQLException e) {
+            System.err.println("Error en listarTodos: " + e.getMessage());
+            throw e;
         }
 
-        System.out.println("Usuarios cargados: " + lista.size()); // <- Agrega esto
+        System.out.println("Total usuarios cargados: " + lista.size());
         return lista;
     }
 
