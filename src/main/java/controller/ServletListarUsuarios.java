@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Usuario;
 
-@WebServlet("/ServletListarUsuario")
-public class ServletListarUsuario extends HttpServlet{
+@WebServlet("/ServletListarUsuarios")
+public class ServletListarUsuarios extends HttpServlet{
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -3,6 +3,7 @@ package dao;
 import database.DBConnection;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -164,6 +165,19 @@ public class ProductoDAO {
         }
         return productos;
     }
+    
+    //no borrar este metodo xd
+    public void eliminarPorMarca(int idMarca) throws SQLException {
+        String sql = "DELETE FROM productos WHERE idMarca = ?";
+
+        try (Connection conn = DBConnection.getInstancia().getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idMarca);
+            stmt.executeUpdate();
+        }
+    }
+    
     
     public List<Producto> buscarPorMarca(int idMarca) throws SQLException {
         String sql = "{call sp_ListarProductos()}";

@@ -2,9 +2,7 @@ package controller;
 
 import dao.UsuarioDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,7 +29,7 @@ public class ServletUsuario extends HttpServlet{
             usuario.setContrasena(request.getParameter("contrasena"));
             
             usuarioDao.insertarUsuario(usuario);
-            response.sendRedirect("ServletListarUsuario");
+            response.sendRedirect("ServletListarUsuarios");
         } catch (SQLException e) {
             throw new ServletException("Error JDBC al guardar", e);
         }
