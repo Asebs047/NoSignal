@@ -98,11 +98,11 @@ public class UsuarioDAO {
     }
 
     public List<Usuario> listarTodos() throws SQLException {
-        String sql = "SELECT * FROM Usuarios";
+        String sql = "{call sp_ListarUsuarios()}";
         List<Usuario> usuarios = new ArrayList<>();
 
-        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
-             PreparedStatement consulta = conexion.prepareStatement(sql); 
+        try (Connection conexion = DBConnection.getInstancia().getConnection();
+             CallableStatement consulta = conexion.prepareCall(sql);
              ResultSet resultado = consulta.executeQuery()) {
 
             while (resultado.next()) {
@@ -120,6 +120,9 @@ public class UsuarioDAO {
 
                 usuarios.add(usuario);
             }
+        } catch (SQLException e) {
+            System.err.println("Error al listar usuarios: " + e.getMessage());
+            throw e;
         }
         return usuarios;
     }
@@ -171,4 +174,14 @@ public class UsuarioDAO {
             consulta.execute();
         }
     }
+    
+    public void cambiarRol(int idUsuario, String nuevoRol) throws SQLException {
+        String sql = "{call sp_CambiarRolUsuario(?,?)}";
+        try (Connection conexion = DBConnection.getInstancia().getConnection();
+             CallableStatement consulta = conexion.prepareCall(sql)) {
+            consulta.setInt(1, idUsuario);
+            consulta.setString(2, nuevoRol);
+            consulta.execute();
+        }
+}
 }

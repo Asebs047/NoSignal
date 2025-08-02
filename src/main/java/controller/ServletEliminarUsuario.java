@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ *
+ * @author Lu0
+ */
 @WebServlet("/ServletEliminarUsuario")
 public class ServletEliminarUsuario extends HttpServlet{
     private UsuarioDAO usuarioDao = new UsuarioDAO();

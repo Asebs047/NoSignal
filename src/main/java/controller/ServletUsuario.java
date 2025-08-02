@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Usuario;
-
+/**
+ *
+ * @author Lu0
+ */
 @WebServlet("/ServletUsuario")
 public class ServletUsuario extends HttpServlet{
     

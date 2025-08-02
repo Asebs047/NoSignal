@@ -11,12 +11,12 @@
 <html lang="es">
     <head>
         <meta charset="utf-8">
-        <title>Administración</title>
+        <title>Administración de Usuarios</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
         <div class="container mt-4">
-            <h2 class="text-center mb-4">Usuarios</h2>
+            <h2 class="text-center mb-4">Lista de Usuarios</h2>
 
             <% if (request.getAttribute("mensaje") != null) {%>
             <div class="alert alert-success">
@@ -30,7 +30,7 @@
             </div>
             <% } %>
 
-            <a href="registroProducto.jsp?id=4" class="btn btn-primary mb-3">Agregar Producto</a>
+            <a href="registroUsuario.jsp" class="btn btn-primary mb-3">Agregar Usuario</a>
 
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
@@ -38,13 +38,9 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
-                        <th>Telefono</th>
                         <th>Correo</th>
-                        <th>Direccion</th>
-                        <th>Género</th>
                         <th>Rol</th>
                         <th>Estado</th>
-                        <th>Contraseña</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -58,19 +54,36 @@
                         <td><%= usuario.getIdUsuario()%></td>
                         <td><%= usuario.getNombre()%></td>
                         <td><%= usuario.getApellido()%></td>
-                        <td><%= usuario.getTelefono()%></td>
                         <td><%= usuario.getCorreo()%></td>
-                        <td><%= usuario.getDireccion()%></td>
-                        <td><%= usuario.getGenero()%></td>
                         <td><%= usuario.getRol()%></td>
                         <td><%= usuario.getEstado()%></td>
-                        <td><%= usuario.getContrasena()%></td>
                         <td>
-                            <a href="ServletEditarUsuario?accion=editar&id=<%= usuario.getIdUsuario()%>" 
-                               class="btn btn-warning btn-sm">Editar</a>
-                            <a href="ServletEliminarUsuario?id=<%= usuario.getIdUsuario()%>" 
-                               class="btn btn-danger btn-sm"
-                               onclick="return confirm('¿Desea eliminar este producto?')">Eliminar</a>
+                            <div class="d-flex gap-2">
+                                <a href="ServletEditarUsuario?id=<%= usuario.getIdUsuario()%>" 
+                                   class="btn btn-warning btn-sm">Editar</a>
+                                <a href="ServletEliminarUsuario?id=<%= usuario.getIdUsuario()%>" 
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('¿Desea eliminar este usuario?')">Eliminar</a>
+                                
+                                <!-- Botón para cambiar rol -->
+                                <form action="ServletCambiarRol" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="<%= usuario.getIdUsuario()%>">
+                                    <select name="nuevoRol" class="form-select form-select-sm" onchange="this.form.submit()">
+                                        <option value="cliente" <%= "cliente".equals(usuario.getRol()) ? "selected" : ""%>>Cliente</option>
+                                        <option value="administrador" <%= "administrador".equals(usuario.getRol()) ? "selected" : ""%>>Admin</option>
+                                        <option value="jefe" <%= "jefe".equals(usuario.getRol()) ? "selected" : ""%>>Jefe</option>
+                                    </select>
+                                </form>
+                                
+                                <!-- Botón para cambiar estado -->
+                                <form action="ServletCambiarEstado" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="<%= usuario.getIdUsuario()%>">
+                                    <select name="nuevoEstado" class="form-select form-select-sm" onchange="this.form.submit()">
+                                        <option value="activo" <%= "activo".equals(usuario.getEstado()) ? "selected" : ""%>>Activo</option>
+                                        <option value="inactivo" <%= "inactivo".equals(usuario.getEstado()) ? "selected" : ""%>>Inactivo</option>
+                                    </select>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     <%
@@ -78,7 +91,7 @@
                     } else {
                     %>
                     <tr>
-                        <td class="text-center" colspan="11">No hay Usuarios registrados</td>
+                        <td class="text-center" colspan="7">No hay usuarios registrados</td>
                     </tr>
                     <%
                         }
