@@ -20,7 +20,7 @@ public class ServletListarUsuario extends HttpServlet{
         try {
             List<Usuario> usuarios = usuarioDAO.listarTodos();
             request.setAttribute("listaUsuario", usuarios);
-            request.getRequestDispatcher("url de jsp de tabla usuarios").forward(request, response);
+            request.getRequestDispatcher("Productoslistar.jsp").forward(request, response);
             
         } catch (SQLException e) {
             throw new ServletException("Error JDBC al listar usuarios: ", e);

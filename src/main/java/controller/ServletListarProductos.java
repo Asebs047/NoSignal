@@ -13,7 +13,7 @@ import model.Producto;
 
 /**
  *
- * @author Klopez
+ * @author Lu0
  */
 @WebServlet("/ServletListarProductos")
 public class ServletListarProductos extends HttpServlet {

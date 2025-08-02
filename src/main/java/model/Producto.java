@@ -39,7 +39,6 @@ public class Producto {
     @Column(name = "urlImagen")
     private String urlImagen;
     
-    // Campos para las relaciones (no son columnas en la tabla)
     @Transient
     private int idCategoria;
     
@@ -79,7 +78,6 @@ public class Producto {
         this.proveedor = proveedor;
     }
 
-    // Getters y Setters
     public int getIdProducto() {
         return idProducto;
     }

@@ -301,7 +301,7 @@
                 <h3>Proveedores</h3>
             </a>
 
-            <a href="Productoslistar.jsp" class="producto">
+            <a href="ServletListarProductos" class="producto">
                 <img src="images/productos.png" alt="Pulsera Tech" />
                 <h3>Productos</h3>
             </a>
