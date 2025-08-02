@@ -50,36 +50,28 @@
                 </thead>
                 <tbody>
                     <%
-                        List<Usuario> listaUsuarios = (List<Usuario>) request.getAttribute("listaUsuarios");
-                        if (listaUsuarios != null && !listaUsuarios.isEmpty()) {
-                            for (Usuario usuario : listaUsuarios) {
+                        List<Usuario> usuarios = (List<Usuario>) request.getAttribute("usuarios");
+                        if (usuarios != null && !usuarios.isEmpty()) {
+                            for (Usuario u : usuarios) {
                     %>
                     <tr>
-                        <td><%= usuario.getIdUsuario()%></td>
-                        <td><%= usuario.getNombre()%></td>
-                        <td><%= usuario.getApellido()%></td>
-                        <td><%= usuario.getTelefono()%></td>
-                        <td><%= usuario.getCorreo()%></td>
-                        <td><%= usuario.getDireccion()%></td>
-                        <td><%= usuario.getGenero()%></td>
-                        <td><%= usuario.getRol()%></td>
-                        <td><%= usuario.getEstado()%></td>
-                        <td><%= usuario.getContrasena()%></td>
-                        <td>
-                            <a href="ServletEditarUsuario?accion=editar&id=<%= usuario.getIdUsuario()%>" 
-                               class="btn btn-warning btn-sm">Editar</a>
-                            <a href="ServletEliminarUsuario?id=<%= usuario.getIdUsuario()%>" 
-                               class="btn btn-danger btn-sm"
-                               onclick="return confirm('¿Desea eliminar este producto?')">Eliminar</a>
-                        </td>
+                        <td><%= u.getIdUsuario()%></td>
+                        <td><%= u.getNombre()%></td>
+                        <td><%= u.getApellido()%></td>
+                        <td><%= u.getTelefono()%></td>
+                        <td><%= u.getCorreo()%></td>
+                        <td><%= u.getDireccion()%></td>
+                        <td><%= u.getGenero()%></td>
+                        <td><%= u.getRol()%></td>
+                        <td><%= u.getEstado()%></td>
+                        <td><%= u.getContrasena()%></td>
+                        <td>Acciones aquí</td>
                     </tr>
                     <%
                         }
                     } else {
                     %>
-                    <tr>
-                        <td class="text-center" colspan="11">No hay Usuarios registrados</td>
-                    </tr>
+                    <tr><td colspan="11">No hay usuarios registrados</td></tr>
                     <%
                         }
                     %>

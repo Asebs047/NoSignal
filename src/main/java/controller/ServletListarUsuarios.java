@@ -16,14 +16,16 @@ public class ServletListarUsuarios extends HttpServlet{
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException{
+            throws ServletException, IOException {
         try {
-            List<Usuario> usuarios = usuarioDAO.listarTodos();
-            request.setAttribute("listaUsuario", usuarios);
-            request.getRequestDispatcher("Productoslistar.jsp").forward(request, response);
-            
-        } catch (SQLException e) {
-            throw new ServletException("Error JDBC al listar usuarios: ", e);
+            UsuarioDAO dao = new UsuarioDAO();
+            List<Usuario> lista = dao.listarTodos();
+            System.out.println("Lista en servlet: " + lista.size()); // <- Agrega esto
+            request.setAttribute("usuarios", lista);
+            request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+
         }
     }
 }

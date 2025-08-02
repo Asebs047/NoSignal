@@ -14,13 +14,11 @@ import java.util.List;
  *
  * @author Lu0
  */
-
 public class UsuarioDAO {
 
     public boolean correoExistente(String correo) throws SQLException {
         String sql = "SELECT idUsuario FROM Usuarios WHERE correo = ? AND estado = 'activo'";
-        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); PreparedStatement consulta = conexion.prepareStatement(sql)) {
             consulta.setString(1, correo);
             ResultSet resultado = consulta.executeQuery();
             return resultado.next();
@@ -30,8 +28,7 @@ public class UsuarioDAO {
     public Usuario buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM Usuarios WHERE idUsuario = ?";
 
-        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); PreparedStatement consulta = conexion.prepareStatement(sql)) {
 
             consulta.setInt(1, id);
             try (ResultSet resultado = consulta.executeQuery()) {
@@ -52,11 +49,10 @@ public class UsuarioDAO {
         }
         return null;
     }
-    
+
     public boolean insertarUsuario(Usuario usuario) throws SQLException {
         String sql = "{call sp_AgregarUsuario(?,?,?,?,?,?,?,?)}";
-        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
-             CallableStatement consulta = conexion.prepareCall(sql)) {
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); CallableStatement consulta = conexion.prepareCall(sql)) {
             consulta.setString(1, usuario.getNombre());
             consulta.setString(2, usuario.getApellido());
             consulta.setString(3, usuario.getTelefono());
@@ -72,8 +68,7 @@ public class UsuarioDAO {
 
     public Usuario validarUsuario(String correo, String contrasena) {
         String sql = "SELECT * FROM Usuarios WHERE correo = ? AND contrasena = ? AND estado = 'activo'";
-        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); PreparedStatement consulta = conexion.prepareStatement(sql)) {
             consulta.setString(1, correo);
             consulta.setString(2, contrasena);
             ResultSet resultado = consulta.executeQuery();
@@ -98,37 +93,42 @@ public class UsuarioDAO {
     }
 
     public List<Usuario> listarTodos() throws SQLException {
-        String sql = "SELECT * FROM Usuarios";
-        List<Usuario> usuarios = new ArrayList<>();
+        List<Usuario> lista = new ArrayList<>();
+        String sql = "SELECT * FROM Usuarios"; // Elimina el filtro de estado temporalmente para pruebas
+        // String sql = "SELECT * FROM Usuarios WHERE estado = 'activo' OR estado = 'Activo'"; // Alternativa
 
-        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
-             PreparedStatement consulta = conexion.prepareStatement(sql); 
-             ResultSet resultado = consulta.executeQuery()) {
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); PreparedStatement stmt = conexion.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
-            while (resultado.next()) {
-                Usuario usuario = new Usuario();
-                usuario.setIdUsuario(resultado.getInt("idUsuario"));
-                usuario.setNombre(resultado.getString("nombre"));
-                usuario.setApellido(resultado.getString("apellido"));
-                usuario.setTelefono(resultado.getString("telefono"));
-                usuario.setCorreo(resultado.getString("correo"));
-                usuario.setDireccion(resultado.getString("direccion"));
-                usuario.setGenero(resultado.getString("genero"));
-                usuario.setRol(resultado.getString("rol"));
-                usuario.setEstado(resultado.getString("estado"));
-                usuario.setContrasena(resultado.getString("contrasena"));
+            System.out.println("Consulta SQL ejecutada: " + sql); // Log adicional
 
-                usuarios.add(usuario);
+            while (rs.next()) {
+                Usuario u = new Usuario();
+                u.setIdUsuario(rs.getInt("idUsuario"));
+                u.setNombre(rs.getString("nombre"));
+                u.setApellido(rs.getString("apellido"));
+                u.setTelefono(rs.getString("telefono"));
+                u.setCorreo(rs.getString("correo"));
+                u.setDireccion(rs.getString("direccion"));
+                u.setGenero(rs.getString("genero"));
+                u.setRol(rs.getString("rol"));
+                u.setEstado(rs.getString("estado"));
+                u.setContrasena(rs.getString("contrasena"));
+                lista.add(u);
+                System.out.println("Usuario encontrado: " + u.getNombre()); // Log por usuario
             }
+        } catch (SQLException e) {
+            System.err.println("Error en listarTodos: " + e.getMessage());
+            throw e;
         }
-        return usuarios;
+
+        System.out.println("Total usuarios cargados: " + lista.size());
+        return lista;
     }
 
     public void actualizar(Usuario usuario) throws SQLException {
         String sql = "{call sp_ActualizarUsuario(?,?,?,?,?,?,?,?,?)}";
 
-        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
-             CallableStatement consulta = conexion.prepareCall(sql)) {
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); CallableStatement consulta = conexion.prepareCall(sql)) {
 
             consulta.setInt(1, usuario.getIdUsuario());
             consulta.setString(2, usuario.getNombre());
@@ -147,8 +147,7 @@ public class UsuarioDAO {
 
     public void desactivarUsuario(int id) throws SQLException {
         String sql = "{call sp_DesactivarUsuario(?)}";
-        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
-             CallableStatement consulta = conexion.prepareCall(sql)) {
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); CallableStatement consulta = conexion.prepareCall(sql)) {
             consulta.setInt(1, id);
             consulta.execute();
         }
@@ -156,8 +155,7 @@ public class UsuarioDAO {
 
     public void activarUsuario(int id) throws SQLException {
         String sql = "{call sp_ActivarUsuario(?)}";
-        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
-             CallableStatement consulta = conexion.prepareCall(sql)) {
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); CallableStatement consulta = conexion.prepareCall(sql)) {
             consulta.setInt(1, id);
             consulta.execute();
         }
@@ -165,8 +163,7 @@ public class UsuarioDAO {
 
     public void eliminar(int id) throws SQLException {
         String sql = "{call sp_EliminarUsuario(?)}";
-        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
-             CallableStatement consulta = conexion.prepareCall(sql)) {
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); CallableStatement consulta = conexion.prepareCall(sql)) {
             consulta.setInt(1, id);
             consulta.execute();
         }
