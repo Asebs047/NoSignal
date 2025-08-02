@@ -92,11 +92,14 @@
                     <label for="detalle" class="form-label">Detalle:</label>
                     <input type="text" id="detalle" name="detalle" class="form-control" value="<%=producto.getDetalle()%>">
                 </div>
-
+                
+                
+                
                 <div class="mb-3">
                     <label for="urlImagen" class="form-label">URL Imagen:</label>
                     <input type="text" id="urlImagen" name="urlImagen" class="form-control" value="<%=producto.getUrlImagen()%>">
                 </div>
+                
 
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a href="ServletListarProductos" class="btn btn-secondary me-md-2">Cancelar</a>

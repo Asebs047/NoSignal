@@ -12,13 +12,11 @@ public class Marca {
     private String descripcionMarca;
     private int idProveedor;
     private String paisOrigen;
-    private Proveedor proveedor; // Objeto Proveedor relacionado
+    private Proveedor proveedor; 
 
-    // Constructor vacío
     public Marca() {
     }
 
-    // Constructor con parámetros básicos
     public Marca(int idMarca, String nombreMarca, String descripcionMarca, 
                 int idProveedor, String paisOrigen) {
         this.idMarca = idMarca;
@@ -28,7 +26,6 @@ public class Marca {
         this.paisOrigen = paisOrigen;
     }
 
-    // Constructor completo con objeto Proveedor
     public Marca(int idMarca, String nombreMarca, String descripcionMarca, 
                 int idProveedor, String paisOrigen, Proveedor proveedor) {
         this.idMarca = idMarca;
@@ -39,7 +36,6 @@ public class Marca {
         this.proveedor = proveedor;
     }
 
-    // Getters y Setters
     public int getIdMarca() {
         return idMarca;
     }

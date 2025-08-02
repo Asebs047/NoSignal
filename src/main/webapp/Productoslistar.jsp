@@ -1,5 +1,5 @@
 <%-- 
-    Document   : administacion
+    Document   : Productoslistar
     Created on : 29/07/2025, 18:36:38
     Author     : Klopez
 --%>
@@ -44,6 +44,9 @@
                         <th>Género</th>
                         <th>Detalle</th>
                         <th>Imagen</th>
+                        <th>Categoria</th>
+                        <th>Marca</th>
+                        <th>Proveedor</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -76,6 +79,9 @@
                                  onerror="this.src='<%= request.getContextPath()%>/images/placeholder.png';this.onerror=null;">
                             <small class="d-block text-muted"><%= nombreImagen%></small>
                         </td>
+                        <td><%= p.getCategoria()%></td>
+                        <td><%= p.getMarca()%></td>
+                        <td><%= p.getProveedor()%></td>
                         <td>
                             <a href="ServletEditarProducto?accion=editar&id=<%= p.getIdProducto()%>" 
                                class="btn btn-warning btn-sm">Editar</a>
