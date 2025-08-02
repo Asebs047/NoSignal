@@ -11,29 +11,60 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.Usuario;
 
 /**
  *
  * @author Lu0
  */
-
 @WebServlet("/ServletEliminarUsuario")
-    public class ServletEliminarUsuario extends HttpServlet {
-        private UsuarioDAO usuarioDao = new UsuarioDAO();
+public class ServletEliminarUsuario extends HttpServlet {
+    private UsuarioDAO usuarioDao = new UsuarioDAO();
 
-        protected void doGet(HttpServletRequest request, HttpServletResponse response)
-                throws ServletException, IOException {
-            
-            try {
-                int id = Integer.parseInt(request.getParameter("id"));
-
-                usuarioDao.desactivarUsuario(id);
-
-                request.getSession().setAttribute("mensaje", "Usuario desactivado correctamente");
-            } catch (SQLException e) {
-                request.getSession().setAttribute("error", "Error al desactivar usuario: " + e.getMessage());
-            } finally {
-                response.sendRedirect("ServletListarUsuarios");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        HttpSession session = request.getSession();
+        Usuario usuarioSesion = (Usuario) session.getAttribute("usuario");
+        
+        try {
+            if (usuarioSesion == null) {
+                throw new ServletException("Debe iniciar sesión primero");
             }
+            
+            int id = Integer.parseInt(request.getParameter("id"));
+            
+            Usuario usuarioEliminar = usuarioDao.buscarPorId(id);
+            
+            if (usuarioEliminar == null) {
+                throw new ServletException("Usuario no encontrado");
+            }
+            
+            if (!tienePermisosParaEliminar(usuarioSesion, usuarioEliminar)) {
+                throw new ServletException("No tiene permisos para esta acción");
+            }           
+            usuarioDao.eliminar(id); 
+            
+            session.setAttribute("mensaje", "Usuario eliminado correctamente");
+        } catch (SQLException e) {
+            session.setAttribute("error", "Error en la base de datos: " + e.getMessage());
+        } catch (Exception e) {
+            session.setAttribute("error", e.getMessage());
+        } finally {
+            response.sendRedirect(request.getContextPath() + "/ServletListarUsuarios");
         }
     }
+    
+    private boolean tienePermisosParaEliminar(Usuario usuarioSesion, Usuario usuarioEliminar) {
+        if ("jefe".equals(usuarioSesion.getRol())) {
+            return usuarioSesion.getIdUsuario() != usuarioEliminar.getIdUsuario();
+        }
+        
+        if ("administrador".equals(usuarioSesion.getRol())) {
+            return "cliente".equals(usuarioEliminar.getRol());
+        }
+        
+        return false;
+    }
+}

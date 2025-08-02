@@ -5,8 +5,12 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.List"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="model.Usuario"%>
+<%
+    Usuario usuarioSesion = (Usuario) session.getAttribute("usuario");
+    boolean esAdmin = usuarioSesion != null && "administrador".equals(usuarioSesion.getRol());
+%>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -37,83 +41,51 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Apellido</th>
                         <th>Correo</th>
+                        <th>Teléfono</th>
                         <th>Rol</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <%
-                        List<Usuario> usuarios = (List<Usuario>) request.getAttribute("usuarios");
-                        if (usuarios != null && !usuarios.isEmpty()) {
-                            for (Usuario u : usuarios) {
-                    %>
-                    <tr>
-<<<<<<< HEAD:src/main/webapp/Usuariolistar.jsp
-                        <td><%= usuario.getIdUsuario()%></td>
-                        <td><%= usuario.getNombre()%></td>
-                        <td><%= usuario.getApellido()%></td>
-                        <td><%= usuario.getCorreo()%></td>
-                        <td><%= usuario.getRol()%></td>
-                        <td><%= usuario.getEstado()%></td>
-                        <td>
-                            <div class="d-flex gap-2">
-                                <a href="ServletEditarUsuario?id=<%= usuario.getIdUsuario()%>" 
-                                   class="btn btn-warning btn-sm">Editar</a>
-                                <a href="ServletEliminarUsuario?id=<%= usuario.getIdUsuario()%>" 
-                                   class="btn btn-danger btn-sm"
-                                   onclick="return confirm('¿Desea eliminar este usuario?')">Eliminar</a>
+                    <c:forEach var="usuario" items="${listaUsuarios}">
+                        <tr>
+                            <td>${usuario.idUsuario}</td>
+                            <td>${usuario.nombre} ${usuario.apellido}</td>
+                            <td>${usuario.correo}</td>
+                            <td>${usuario.telefono}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${usuario.rol eq 'administrador'}">
+                                        <span class="badge bg-warning">Administrador</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="badge bg-primary">Cliente</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${usuario.estado eq 'activo'}">
+                                        <span class="text-success">Activo</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="text-danger">Inactivo</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td>
+                                <a href="ServletEditarUsuario?id=${usuario.idUsuario}" class="btn btn-warning btn-sm">Editar</a>
                                 
-                                <!-- Botón para cambiar rol -->
-                                <form action="ServletCambiarRol" method="post" class="d-inline">
-                                    <input type="hidden" name="id" value="<%= usuario.getIdUsuario()%>">
-                                    <select name="nuevoRol" class="form-select form-select-sm" onchange="this.form.submit()">
-                                        <option value="cliente" <%= "cliente".equals(usuario.getRol()) ? "selected" : ""%>>Cliente</option>
-                                        <option value="administrador" <%= "administrador".equals(usuario.getRol()) ? "selected" : ""%>>Admin</option>
-                                        <option value="jefe" <%= "jefe".equals(usuario.getRol()) ? "selected" : ""%>>Jefe</option>
-                                    </select>
-                                </form>
-                                
-                                <!-- Botón para cambiar estado -->
-                                <form action="ServletCambiarEstado" method="post" class="d-inline">
-                                    <input type="hidden" name="id" value="<%= usuario.getIdUsuario()%>">
-                                    <select name="nuevoEstado" class="form-select form-select-sm" onchange="this.form.submit()">
-                                        <option value="activo" <%= "activo".equals(usuario.getEstado()) ? "selected" : ""%>>Activo</option>
-                                        <option value="inactivo" <%= "inactivo".equals(usuario.getEstado()) ? "selected" : ""%>>Inactivo</option>
-                                    </select>
-                                </form>
-                            </div>
-                        </td>
-=======
-                        <td><%= u.getIdUsuario()%></td>
-                        <td><%= u.getNombre()%></td>
-                        <td><%= u.getApellido()%></td>
-                        <td><%= u.getTelefono()%></td>
-                        <td><%= u.getCorreo()%></td>
-                        <td><%= u.getDireccion()%></td>
-                        <td><%= u.getGenero()%></td>
-                        <td><%= u.getRol()%></td>
-                        <td><%= u.getEstado()%></td>
-                        <td><%= u.getContrasena()%></td>
-                        <td>Acciones aquí</td>
->>>>>>> 4172f136bc068321bfc2ecb64034001f846ceb45:src/main/webapp/listaUsuarios.jsp
-                    </tr>
-                    <%
-                        }
-                    } else {
-                    %>
-<<<<<<< HEAD:src/main/webapp/Usuariolistar.jsp
-                    <tr>
-                        <td class="text-center" colspan="7">No hay usuarios registrados</td>
-                    </tr>
-=======
-                    <tr><td colspan="11">No hay usuarios registrados</td></tr>
->>>>>>> 4172f136bc068321bfc2ecb64034001f846ceb45:src/main/webapp/listaUsuarios.jsp
-                    <%
-                        }
-                    %>
+                                <c:if test="${esAdmin && usuario.rol eq 'cliente'}">
+                                    <a href="ServletEliminarUsuario?id=${usuario.idUsuario}" 
+                                       class="btn btn-danger btn-sm"
+                                       onclick="return confirm('¿Eliminar a ${usuario.nombre}?')">Eliminar</a>
+                                </c:if>
+                            </td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>

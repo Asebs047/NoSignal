@@ -14,30 +14,21 @@ import model.Usuario;
  *
  * @author Lu0
  */
+
 @WebServlet("/ServletListarUsuarios")
 public class ServletListarUsuarios extends HttpServlet {
-    private UsuarioDAO usuarioDAO = new UsuarioDAO();
+    private final UsuarioDAO usuarioDAO = new UsuarioDAO();
     
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-<<<<<<< HEAD
             List<Usuario> usuarios = usuarioDAO.listarTodos();
-            request.setAttribute("listaUsuarios", usuarios); // Coincide con el nombre en tu JSP
-            request.getRequestDispatcher("Usuariolistar.jsp").forward(request, response);
+            request.setAttribute("listaUsuarios", usuarios);
+            request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
         } catch (SQLException e) {
             request.setAttribute("error", "Error al cargar la lista de usuarios: " + e.getMessage());
-            request.getRequestDispatcher("Usuariolistar.jsp").forward(request, response);
-=======
-            UsuarioDAO dao = new UsuarioDAO();
-            List<Usuario> lista = dao.listarTodos();
-            System.out.println("Lista en servlet: " + lista.size()); // <- Agrega esto
-            request.setAttribute("usuarios", lista);
-            request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-
->>>>>>> 4172f136bc068321bfc2ecb64034001f846ceb45
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 }

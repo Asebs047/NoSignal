@@ -286,7 +286,7 @@
 
         <div class="catalogo">
 
-            <a href="listaUsuarios.jsp" class="producto">
+            <a href="ServletListarUsuarios" class="producto">
                 <img src="images/usuarios.png" alt="Gorra Negra" />
                 <h3>Usuarios</h3>
             </a>

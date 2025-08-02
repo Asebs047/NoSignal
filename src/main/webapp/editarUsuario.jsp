@@ -60,16 +60,21 @@
                         <option value="no especificado" ${usuario.genero == 'no especificado' ? 'selected' : ''}>No especificado</option>
                     </select>
                 </div>
-
+                
                 <div class="mb-3">
                     <label for="rol" class="form-label">Rol:</label>
-                    <select id="rol" name="rol" class="form-select" required>
-                        <option value="cliente" ${usuario.rol == 'cliente' ? 'selected' : ''}>Cliente</option>
-                        <option value="administrador" ${usuario.rol == 'administrador' ? 'selected' : ''}>Administrador</option>
-                        <option value="jefe" ${usuario.rol == 'jefe' ? 'selected' : ''}>Jefe</option>
+                    <select id="rol" name="rol" class="form-select" ${not esJefe ? 'disabled' : ''}>
+                        <option value="cliente" ${usuario.rol eq 'cliente' ? 'selected' : ''}>Cliente</option>
+                        <option value="administrador" ${usuario.rol eq 'administrador' ? 'selected' : ''}>Administrador</option>
+                        <c:if test="${esJefe}">
+                            <option value="jefe" ${usuario.rol eq 'jefe' ? 'selected' : ''}>Jefe</option>
+                        </c:if>
                     </select>
+                    <c:if test="${not esJefe}">
+                        <input type="hidden" name="rol" value="${usuario.rol}">
+                    </c:if>
                 </div>
-
+                
                 <div class="mb-3">
                     <label for="estado" class="form-label">Estado:</label>
                     <select id="estado" name="estado" class="form-select" required>
