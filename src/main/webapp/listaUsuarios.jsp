@@ -46,11 +46,12 @@
                 </thead>
                 <tbody>
                     <%
-                        List<Usuario> listaUsuarios = (List<Usuario>) request.getAttribute("listaUsuarios");
-                        if (listaUsuarios != null && !listaUsuarios.isEmpty()) {
-                            for (Usuario usuario : listaUsuarios) {
+                        List<Usuario> usuarios = (List<Usuario>) request.getAttribute("usuarios");
+                        if (usuarios != null && !usuarios.isEmpty()) {
+                            for (Usuario u : usuarios) {
                     %>
                     <tr>
+<<<<<<< HEAD:src/main/webapp/Usuariolistar.jsp
                         <td><%= usuario.getIdUsuario()%></td>
                         <td><%= usuario.getNombre()%></td>
                         <td><%= usuario.getApellido()%></td>
@@ -85,14 +86,31 @@
                                 </form>
                             </div>
                         </td>
+=======
+                        <td><%= u.getIdUsuario()%></td>
+                        <td><%= u.getNombre()%></td>
+                        <td><%= u.getApellido()%></td>
+                        <td><%= u.getTelefono()%></td>
+                        <td><%= u.getCorreo()%></td>
+                        <td><%= u.getDireccion()%></td>
+                        <td><%= u.getGenero()%></td>
+                        <td><%= u.getRol()%></td>
+                        <td><%= u.getEstado()%></td>
+                        <td><%= u.getContrasena()%></td>
+                        <td>Acciones aquí</td>
+>>>>>>> 4172f136bc068321bfc2ecb64034001f846ceb45:src/main/webapp/listaUsuarios.jsp
                     </tr>
                     <%
                         }
                     } else {
                     %>
+<<<<<<< HEAD:src/main/webapp/Usuariolistar.jsp
                     <tr>
                         <td class="text-center" colspan="7">No hay usuarios registrados</td>
                     </tr>
+=======
+                    <tr><td colspan="11">No hay usuarios registrados</td></tr>
+>>>>>>> 4172f136bc068321bfc2ecb64034001f846ceb45:src/main/webapp/listaUsuarios.jsp
                     <%
                         }
                     %>
