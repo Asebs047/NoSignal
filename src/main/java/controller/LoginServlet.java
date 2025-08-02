@@ -14,18 +14,20 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/loginServlet")
 public class LoginServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
         String correo = request.getParameter("correo");
         String contrasena = request.getParameter("contrasena");
-        System.out.println("DEBUG: Intento de login - Correo: " + correo);
+        
         UsuarioDAO dao = new UsuarioDAO();
         Usuario usuario = dao.validarUsuario(correo, contrasena);
+        
         if (usuario != null) {
             HttpSession session = request.getSession();
             session.setAttribute("usuario", usuario);
-            System.out.println("DEBUG: Login EXITOSO - Rol: " + usuario.getRol());
+            
             String contextPath = request.getContextPath();
-            if ("administrador".equals(usuario.getRol())) {
+            if ("administrador".equals(usuario.getRol()) || "jefe".equals(usuario.getRol())) {
                 response.sendRedirect(contextPath + "/administracion.jsp");
             } else {
                 response.sendRedirect(contextPath + "/home.jsp");

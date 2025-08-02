@@ -2,9 +2,7 @@ package controller;
 
 import dao.ProductoDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +17,7 @@ import model.Producto;
 @WebServlet("/ServletProducto")
 public class ServletProducto extends HttpServlet {
 
-    private ProductoDAO productoDAO = new ProductoDAO(); // Instancia directa (JDBC)
+    private ProductoDAO productoDAO = new ProductoDAO(); 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
 
@@ -33,6 +31,7 @@ public class ServletProducto extends HttpServlet {
             producto.setGenero(request.getParameter("genero"));
             producto.setCategoria(request.getParameter("categoria"));
             producto.setDetalle(request.getParameter("detalle"));
+            producto.setUrlImagen(request.getParameter("urlImagen"));
             
             productoDAO.guardar(producto);
             response.sendRedirect("ServletListarProductos");
