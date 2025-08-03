@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author reyes
  */
+
 @WebServlet("/ServletEliminarCategoria")
 public class ServletEliminarCategoria extends HttpServlet {
     private CategoriaDAO categoriaDAO = new CategoriaDAO();
@@ -22,16 +23,13 @@ public class ServletEliminarCategoria extends HttpServlet {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             
-            CategoriaDAO categoriaDAO = new CategoriaDAO();
             categoriaDAO.eliminar(id);
-            request.getSession().getAttribute("categoria eliminada correctamente");
             
-        }catch (SQLException e){
-            request.getSession().getAttribute("Error al eliminar: " + e.getMessage());
-        } finally {
-            response.sendRedirect("ServletListarCategoria");
+            request.getSession().setAttribute("mensaje", "Categoría eliminada correctamente");
+        } catch (SQLException e) {
+            request.getSession().setAttribute("error", "Error al eliminar categoría: " + e.getMessage());
         }
         
-        }
-    
+        response.sendRedirect("ServletListarCategorias");
+    }
 }

@@ -6,31 +6,33 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
-<%@page import="model.Producto"%>
+<%@page import="model.Categoria"%>
 <!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="utf-8">
-        <title>Administración</title>
+        <title>Administración de Categorías</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
         <div class="container mt-4">
-            <h2 class="text-center mb-4">Categorias</h2>
+            <h2 class="text-center mb-4">Categorías</h2>
 
-            <% if (request.getAttribute("mensaje") != null) {%>
+            <% if (request.getSession().getAttribute("mensaje") != null) {%>
             <div class="alert alert-success">
-                <%= request.getAttribute("mensaje")%>
+                <%= request.getSession().getAttribute("mensaje")%>
+                <% request.getSession().removeAttribute("mensaje"); %>
             </div>
             <% } %>
 
-            <% if (request.getAttribute("error") != null) {%>
+            <% if (request.getSession().getAttribute("error") != null) {%>
             <div class="alert alert-danger">
-                <%= request.getAttribute("error")%>
+                <%= request.getSession().getAttribute("error")%>
+                <% request.getSession().removeAttribute("error"); %>
             </div>
             <% } %>
 
-            <a href="registroProducto.jsp?id=5" class="btn btn-primary mb-3">Agregar Producto</a>
+            <a href="registrarCategoria.jsp" class="btn btn-primary mb-3">Agregar Categoría</a>
 
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
@@ -38,60 +40,44 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
-                        <th>Color</th>
-                        <th>Precio</th>
-                        <th>Cantidad</th>
-                        <th>Género</th>
-                        <th>Categoría</th>
-                        <th>Detalle</th>
                         <th>Imagen</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <%
-                        List<Producto> listaProductos = (List<Producto>) request.getAttribute("listaProducto");
-                        if (listaProductos != null && !listaProductos.isEmpty()) {
-                            for (Producto p : listaProductos) {
+                        List<Categoria> listaCategorias = (List<Categoria>) request.getAttribute("listaCategorias");
+                        if (listaCategorias != null && !listaCategorias.isEmpty()) {
+                            for (Categoria c : listaCategorias) {
                     %>
                     <tr>
-                        <td><%= p.getIdProducto()%></td>
-                        <td><%= p.getNombre()%></td>
-                        <td><%= p.getDescripcion()%></td>
-                        <td><%= p.getColor()%></td>
-                        <td><%= p.getPrecio()%></td>
-                        <td><%= p.getCantidad()%></td>
-                        <td><%= p.getGenero()%></td>
-                        <td><%= p.getCategoria()%></td>
-                        <td><%= p.getDetalle()%></td>
+                        <td><%= c.getIdCategoria()%></td>
+                        <td><%= c.getNombreCategoria()%></td>
+                        <td><%= c.getDescripcionCategoria()%></td>
                         <td>
-                            <%
-                                String tipo = p.getCategoria().toLowerCase().replace(" ", "-");
-                                String nombreImagen = "producto-" + p.getIdProducto() + "-" + tipo + ".png";
-                                String rutaImagen = request.getContextPath() + "/images/productos/" + nombreImagen;
-                            %>
-
-                            <img src="<%= rutaImagen%>" 
-                                 alt="<%= p.getNombre()%>"
-                                 style="max-width: 80px; height: auto;"
-                                 class="img-thumbnail"
-                                 onerror="this.src='<%= request.getContextPath()%>/images/placeholder.png';this.onerror=null;">
-                            <small class="d-block text-muted"><%= nombreImagen%></small>
+                            <% if (c.getUrlImagen() != null && !c.getUrlImagen().isEmpty()) { %>
+                                <img src="<%= c.getUrlImagen()%>" 
+                                     alt="<%= c.getNombreCategoria()%>"
+                                     style="max-width: 80px; height: auto;"
+                                     class="img-thumbnail">
+                            <% } else { %>
+                                Sin imagen
+                            <% } %>
                         </td>
                         <td>
-                            <a href="editarProducto.jsp?id=2" href="ServletEditarProducto?accion=editar&id=<%= p.getIdProducto()%>" 
+                            <a href="ServletEditarCategoria?id=<%= c.getIdCategoria()%>" 
                                class="btn btn-warning btn-sm">Editar</a>
-                            <a href="ServletEliminarProducto?id=<%= p.getIdProducto()%>" 
+                            <a href="ServletEliminarCategoria?id=<%= c.getIdCategoria()%>" 
                                class="btn btn-danger btn-sm"
-                               onclick="return confirm('¿Desea eliminar este producto?')">Eliminar</a>
+                               onclick="return confirm('¿Desea eliminar esta categoría?')">Eliminar</a>
                         </td>
                     </tr>
                     <%
-                        }
-                    } else {
+                            }
+                        } else {
                     %>
                     <tr>
-                        <td class="text-center" colspan="11">No hay productos registrados</td>
+                        <td class="text-center" colspan="5">No hay categorías registradas</td>
                     </tr>
                     <%
                         }
