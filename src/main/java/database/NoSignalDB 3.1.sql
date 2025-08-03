@@ -673,7 +673,7 @@ call sp_AgregarFactura(3, 3, '2023-11-12', 99.98, 119.98);
 call sp_AgregarFactura(4, 4, '2023-11-13', 199.99, 239.99);
 call sp_AgregarFactura(5, 5, '2023-11-14', 399.99, 479.99);
 
--- Triggers, funciones y procedimientos para cambios en las tablas
+-- Triggers, funciones y procedimientos para cambios en las tablas, PARA SPRINT 3
 delimiter //
 	create function fn_CalcularTotalCarrito(p_idCarrito int)
 	returns decimal(10,2)
@@ -689,7 +689,7 @@ delimiter //
 		end//
         
 delimiter ;
-
+-- PARA SPRINT 3
 delimiter //
 	create trigger tr_ActualizarStock_Insert
 	after insert 
@@ -702,7 +702,7 @@ delimiter //
 		end//
         
 delimiter ;
-
+-- PARA SPRINT 3
 delimiter //
 	create trigger tr_ActualizarStock_Delete
 	after delete 
@@ -715,7 +715,7 @@ delimiter //
 		end//
         
 delimiter ;
-
+-- PARA SPRINT 3
 delimiter //
 	create trigger tr_ActualizarStock_Update
 	after update 
@@ -732,7 +732,7 @@ delimiter //
 		end//
         
 delimiter ;
-
+-- PARA SPRINT 3
 delimiter //
 	create trigger tr_ActualizarFechaDetalle
 	before insert 
@@ -743,7 +743,7 @@ delimiter //
 		end//
 delimiter ;
 
-
+-- PARA SPRINT 3
 delimiter //
     create procedure sp_ConfirmarPago(
         in p_idCarrito int,
@@ -770,7 +770,7 @@ delimiter //
 		end//
 
 delimiter ;
-
+-- para los admins y jefes
 delimiter //
     create procedure sp_CambiarRolUsuario(
         in p_idUsuario int,
@@ -784,7 +784,7 @@ delimiter //
     
 delimiter ;
 
--- Historial de compras
+-- PARA SPRINT 3
 delimiter //
     create procedure sp_ObtenerComprasUsuario(in p_idUsuario int)
     begin
@@ -804,7 +804,7 @@ delimiter //
     end//
 delimiter ;
 
--- para rembolsos
+-- PARA SPRINT 3
 delimiter //
     create procedure sp_SolicitarReembolso(
         in p_idFactura int,
@@ -833,7 +833,7 @@ delimiter //
         end if;
     end//
 delimiter ;
-
+-- PARA SPRINT 3
 delimiter //
     create procedure sp_ProcesarReembolso(
         in p_idReembolso int,
@@ -859,7 +859,6 @@ delimiter //
                 set estado = 'reembolsada'
                 where idFactura = v_idFactura;
                 
-                -- Aquí podrías agregar lógica para devolver el stock si es necesario
                 select 'Reembolso aprobado correctamente' as mensaje;
             else
                 update Facturas
@@ -874,8 +873,7 @@ delimiter //
     end//
 delimiter ;
 
-
--- para revertir el stock de reembolso
+-- para revertir el stock de reembolso SPRINT 3, aun no xd
 delimiter //
     create trigger tr_RevertirStockReembolso
     after update 
@@ -893,7 +891,7 @@ delimiter //
     end//
 delimiter ;
 
--- Cosas que no son tan necesarias creo
+-- Procedimientos almacenados de listado de productos de diferente para funciones del SPRINT 3
 delimiter //
     create procedure sp_ListarProductosPorMarca(
         in p_idMarca int
@@ -930,7 +928,7 @@ delimiter //
     end//
 delimiter ;
 
--- -------------------Procedimientos almacenados adicionales para 'CarritoProductos'-------------------
+-- -------------------Procedimientos almacenados adicionales para 'CarritoProductos' para SPRINT 3------------------
 delimiter //
     create procedure sp_ObtenerCarritoPorUsuario(
         in p_idUsuario int
@@ -998,7 +996,7 @@ delimiter //
     end//
 delimiter ;
 
--- -------------------Procedimientos almacenados adicionales para 'DetallesCarritosProductos'----------
+-- -------------------Procedimientos almacenados adicionales para 'DetallesCarritosProductos' para SPRINT 3----------
 delimiter //
     create procedure sp_EliminarDetallesCarrito(
         in p_idCarrito int
@@ -1032,8 +1030,7 @@ delimiter //
     end//
 delimiter ;
 
-
--- -------------------Procedimientos almacenados para integración con Facturas-------------------------
+-- -------------------Procedimientos almacenados para integración con Facturas es para SPRINT 3-------------------------
 delimiter //
     create procedure sp_VerificarCarritoFacturado(
         in p_idCarrito int,
@@ -1068,6 +1065,33 @@ begin
     set idcategoria = null 
     where idcategoria = p_idcategoria;
 end //
+delimiter ;
+
+-- Procedimiento para listar por Id en la parte de 'editar' de tabla foranea
+DELIMITER //
+	create procedure sp_BuscarProductoPorId(in p_idProducto int)
+	begin
+		select 
+			P.idProducto,
+			P.nombre,
+			P.descripcion,
+			P.color,
+			P.precio,
+			P.cantidad,
+			P.genero,
+			P.detalle,
+			P.urlImagen,
+			P.idCategoria,
+			C.nombreCategoria as categoria,
+			P.idMarca,
+			M.nombreMarca as marca,
+			PR.nombreProveedor as proveedor
+		from Productos P
+		left join Categorias C on P.idCategoria = C.idCategoria
+		left join Marcas M on P.idMarca = M.idMarca
+		left join Proveedores PR on M.idProveedor = PR.idProveedor
+		WHERE P.idProducto = p_idProducto;
+	end //
 delimiter ;
 
 call sp_ListarCarritos();
