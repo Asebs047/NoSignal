@@ -12,124 +12,295 @@
 <html lang="es">
     <head>
         <meta charset="utf-8">
-        <title>Administración de Proveedores</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Administración de Proveedores | Sistema de Gestión</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
-            .texto-largo {
-                max-width: 200px;
+            :root {
+                --primary-color: #4e73df;
+                --secondary-color: #2c3e50;
+                --success-color: #1cc88a;
+                --danger-color: #e74a3b;
+                --warning-color: #f6c23e;
+                --light-bg: #f8f9fc;
+                --card-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+                --border-radius: 0.35rem;
+            }
+            
+            body {
+                background-color: var(--light-bg);
+                font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+            }
+            
+            .header-container {
+                background: white;
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .table-container {
+                background: white;
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                padding: 1.5rem;
+            }
+            
+            .page-title {
+                color: var(--secondary-color);
+                font-weight: 700;
+                border-left: 5px solid var(--primary-color);
+                padding-left: 15px;
+            }
+            
+            .btn-primary {
+                background-color: var(--primary-color);
+                border: none;
+                padding: 0.5rem 1.5rem;
+                font-weight: 600;
+                transition: all 0.3s;
+            }
+            
+            .btn-primary:hover {
+                background-color: #2e59d9;
+                transform: translateY(-2px);
+            }
+            
+            .btn-success {
+                background-color: var(--success-color);
+                border: none;
+                padding: 0.5rem 1.5rem;
+                font-weight: 600;
+            }
+            
+            .table thead {
+                background-color: var(--primary-color);
+                color: white;
+            }
+            
+            .table th {
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                letter-spacing: 0.5px;
+            }
+            
+            .badge-success {
+                background-color: var(--success-color);
+            }
+            
+            .badge-secondary {
+                background-color: var(--secondary-color);
+            }
+            
+            .badge-warning {
+                background-color: var(--warning-color);
+            }
+            
+            .text-truncate-container {
+                position: relative;
+            }
+            
+            .text-truncate-content {
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                max-width: 200px;
+                display: inline-block;
+                vertical-align: middle;
             }
-            .texto-largo:hover {
+            
+            .text-truncate-content:hover {
+                position: absolute;
+                z-index: 100;
                 white-space: normal;
                 overflow: visible;
-                text-overflow: unset;
-                position: absolute;
-                z-index: 1000;
-                background-color: white;
+                background: white;
+                box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
                 border: 1px solid #dee2e6;
                 padding: 0.5rem;
-                box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+                border-radius: var(--border-radius);
+                max-width: 300px;
+                left: 0;
+                top: 100%;
             }
-            .table-responsive {
-                position: relative;
+            
+            .action-buttons .btn {
+                margin-right: 5px;
+                border-radius: 50px;
+                width: 35px;
+                height: 35px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .status-badge {
+                font-size: 0.75rem;
+                font-weight: 600;
+                padding: 0.35em 0.65em;
+                border-radius: 50px;
+            }
+            
+            .empty-state {
+                background-color: #f8f9fa;
+                border-radius: var(--border-radius);
+                padding: 2rem;
+                text-align: center;
+            }
+            
+            .empty-state i {
+                font-size: 3rem;
+                color: #d1d3e2;
+                margin-bottom: 1rem;
             }
         </style>
     </head>
     <body>
         <div class="container mt-4">
-            <h2 class="text-center mb-4">Listado Completo de Proveedores</h2>
-
-            <% if (request.getSession().getAttribute("mensaje") != null) {%>
-            <div class="alert alert-success">
-                <%= request.getSession().getAttribute("mensaje")%>
-                <% request.getSession().removeAttribute("mensaje"); %>
+            <div class="header-container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="page-title mb-0">Administración de Proveedores</h1>
+                    <div>
+                        <span class="badge bg-light text-dark">
+                            <i class="fas fa-truck me-1"></i> Total: ${listaProveedores.size()} proveedores
+                        </span>
+                    </div>
+                </div>
             </div>
+
+            <% if (request.getSession().getAttribute("mensaje") != null) { %>
+                <div class="alert alert-success alert-dismissible fade show">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <%= request.getSession().getAttribute("mensaje")%>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <% request.getSession().removeAttribute("mensaje"); %>
+                </div>
             <% } %>
 
-            <% if (request.getSession().getAttribute("error") != null) {%>
-            <div class="alert alert-danger">
-                <%= request.getSession().getAttribute("error")%>
-                <% request.getSession().removeAttribute("error"); %>
-            </div>
+            <% if (request.getSession().getAttribute("error") != null) { %>
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <%= request.getSession().getAttribute("error")%>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <% request.getSession().removeAttribute("error"); %>
+                </div>
             <% } %>
 
             <div class="d-flex justify-content-between mb-3">
                 <a href="registroProveedor.jsp" class="btn btn-success">
-                    <i class="bi bi-plus-circle"></i> Nuevo Proveedor
+                    <i class="fas fa-plus-circle me-2"></i> Nuevo Proveedor
                 </a>
-                <span class="text-muted">Total: ${listaProveedores.size()} proveedores</span>
+                <div class="input-group" style="max-width: 300px;">
+                    <input type="text" class="form-control" placeholder="Buscar proveedor...">
+                    <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover">
-                    <thead class="table-primary">
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th>Teléfono</th>
-                            <th>Correo</th>
-                            <th>Dirección</th>
-                            <th>Fecha Registro</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%
-                            List<Proveedor> listaProveedores = (List<Proveedor>) request.getAttribute("listaProveedores");
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Contacto</th>
+                                <th>Fecha Registro</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                List<Proveedor> listaProveedores = (List<Proveedor>) request.getAttribute("listaProveedores");
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-                            if (listaProveedores != null && !listaProveedores.isEmpty()) {
-                                for (Proveedor p : listaProveedores) {
-                        %>
-                        <tr>
-                            <td><%= p.getIdProveedor()%></td>
-                            <td><strong><%= p.getNombreProveedor()%></strong></td>
-                            <td class="texto-largo" title="<%= p.getDescripcionProveedor()%>">
-                                <%= p.getDescripcionProveedor()%>
-                            </td>
-                            <td><%= p.getTelefono()%></td>
-                            <td><%= p.getCorreo()%></td>
-                            <td class="texto-largo" title="<%= p.getDireccion()%>">
-                                <%= p.getDireccion()%>
-                            </td>
-                            <td><%= sdf.format(p.getFechaRegistro())%></td>
-                            <td>
-                                <span class="badge <%= "activo".equals(p.getEstado()) ? "bg-success" : "bg-secondary"%>">
-                                    <%= p.getEstado().toUpperCase()%>
-                                </span>
-                            </td>
-                            <td class="text-nowrap">
-                                <a href="ServletEditarProveedor?id=<%= p.getIdProveedor()%>" 
-                                   class="btn btn-sm btn-outline-primary" title="Editar">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <a href="ServletEliminarProveedor?id=<%= p.getIdProveedor()%>" 
-                                   class="btn btn-sm btn-outline-danger" 
-                                   onclick="return confirm('¿Eliminar el proveedor <%= p.getNombreProveedor()%>? \n\nLas marcas asociadas serán desvinculadas pero no eliminadas.')"
-                                   title="Eliminar">
-                                    <i class="bi bi-trash"></i> Eliminar
-                                </a>
-                            </td>
-                        </tr>
-                        <%
-                            }
-                        } else {
-                        %>
-                        <tr>
-                            <td class="text-center text-muted" colspan="9">No se encontraron proveedores registrados</td>
-                        </tr>
-                        <%
-                            }
-                        %>
-                    </tbody>
-                </table>
+                                if (listaProveedores != null && !listaProveedores.isEmpty()) {
+                                    for (Proveedor p : listaProveedores) {
+                            %>
+                            <tr>
+                                <td><span class="badge bg-light text-dark"><%= p.getIdProveedor()%></span></td>
+                                <td>
+                                    <strong><%= p.getNombreProveedor()%></strong>
+                                    <div class="text-muted small"><%= p.getCorreo()%></div>
+                                </td>
+                                <td class="text-truncate-container">
+                                    <span class="text-truncate-content" title="<%= p.getDescripcionProveedor()%>">
+                                        <%= p.getDescripcionProveedor()%>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div><i class="fas fa-phone me-2 text-muted"></i> <%= p.getTelefono()%></div>
+                                    <div class="text-truncate-container small">
+                                        <i class="fas fa-map-marker-alt me-2 text-muted"></i>
+                                        <span class="text-truncate-content" title="<%= p.getDireccion()%>">
+                                            <%= p.getDireccion()%>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td><%= sdf.format(p.getFechaRegistro())%></td>
+                                <td>
+                                    <span class="status-badge <%= "activo".equals(p.getEstado()) ? "bg-success" : "bg-secondary"%>">
+                                        <i class="fas <%= "activo".equals(p.getEstado()) ? "fa-check-circle" : "fa-times-circle"%> me-1"></i>
+                                        <%= p.getEstado().toUpperCase()%>
+                                    </span>
+                                </td>
+                                <td class="action-buttons">
+                                    <a href="ServletEditarProveedor?id=<%= p.getIdProveedor()%>" 
+                                       class="btn btn-sm btn-outline-primary" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="ServletEliminarProveedor?id=<%= p.getIdProveedor()%>" 
+                                       class="btn btn-sm btn-outline-danger" 
+                                       onclick="return confirm('¿Está seguro de eliminar el proveedor <%= p.getNombreProveedor()%>?\n\nLas marcas asociadas serán desvinculadas pero no eliminadas.');"
+                                       title="Eliminar">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <%
+                                }
+                            } else {
+                            %>
+                            <tr>
+                                <td colspan="7">
+                                    <div class="empty-state">
+                                        <i class="fas fa-truck-loading"></i>
+                                        <h5 class="text-muted">No se encontraron proveedores</h5>
+                                        <p class="text-muted mb-0">No hay proveedores registrados en el sistema</p>
+                                        <a href="registroProveedor.jsp" class="btn btn-primary mt-3">
+                                            <i class="fas fa-plus-circle me-2"></i> Registrar primer proveedor
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <%
+                                }
+                            %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+        
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            // Función para confirmar eliminación
+            function confirmDelete(event) {
+                if (!confirm('¿Está seguro de eliminar este proveedor?\n\nLas marcas asociadas serán desvinculadas pero no eliminadas.')) {
+                    event.preventDefault();
+                }
+            }
+            
+            // Asignar evento a todos los botones de eliminar
+            document.querySelectorAll('.btn-outline-danger').forEach(btn => {
+                btn.addEventListener('click', confirmDelete);
+            });
+        </script>
     </body>
 </html>
