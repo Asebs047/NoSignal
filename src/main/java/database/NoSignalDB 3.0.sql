@@ -17,7 +17,7 @@ create table Proveedores(
 
 create table Categorias(
     idCategoria int not null auto_increment,
-    nombreCategoria enum('Reloj','Cadena','Anillo','Gorra','Gafas','Piercing','Guante'),
+    nombreCategoria varchar(50),
     descripcionCategoria varchar(255) not null,
     urlImagen text,
     constraint pk_Categorias primary key(idCategoria)
@@ -33,7 +33,6 @@ create table Marcas(
     constraint fk_Marcas_Proveedores foreign key(idProveedor) 
         references Proveedores(idProveedor)
 );
-
 
 create table Productos(
     idProducto int not null auto_increment,
@@ -75,6 +74,7 @@ create table CarritoProductos(
     constraint pk_CarritoProductos primary key(idCarrito),
     constraint fk_CarritoProductos_Usuarios foreign key(idUsuario) 
 		references Usuarios(idUsuario)
+        on delete cascade
 );
 
 create table DetallesCarritosProductos(
@@ -139,7 +139,7 @@ delimiter //
         in p_genero enum('masculino','femenino','no especificado'),
         in p_rol enum('jefe','administrador','cliente'),
         in p_contrasena varchar(32),
-        in p_estado enum('activo', 'inactivo')
+        in p_estado enum('activo', 'inactivo') -- Parámetro agregado
         )
         begin
             update Usuarios
@@ -151,7 +151,7 @@ delimiter //
                     genero = p_genero,
                     rol = p_rol,
                     contrasena = p_contrasena,
-                    estado = p_estado
+                    estado = p_estado -- Campo agregado
                 where idUsuario = p_idUsuario;
         end//
 delimiter ;
@@ -519,16 +519,19 @@ delimiter //
 delimiter ;
 
 delimiter //
-    create procedure sp_ListarMarcas()
-    begin
-        select
-            M.idMarca,
-            M.nombreMarca,
-            M.descripcionMarca,
-            M.idProveedor,
-            M.paisOrigen
-        from Marcas M;
-    end//
+	create procedure sp_ListarMarcas()
+		begin
+			select
+				M.idMarca,
+				M.nombreMarca,
+				M.descripcionMarca,
+				M.idProveedor,
+				M.paisOrigen,
+				P.nombreProveedor
+			from Marcas M
+			left join Proveedores P on M.idProveedor = P.idProveedor;
+		end//
+        
 delimiter ;
 
 delimiter //
@@ -558,7 +561,7 @@ delimiter ;
 -- -------------------Procedimientos almacenados de 'Categorias'------------------------------------------
 delimiter //
     create procedure sp_AgregarCategoria(
-        in p_nombreCategoria enum('Reloj','Cadena','Anillo','Gorra','Gafas','Piercing','Guante'),
+        in p_nombreCategoria varchar(50),
         in p_descripcionCategoria varchar(255),
         in p_urlImagen text
         )
@@ -583,7 +586,7 @@ delimiter ;
 delimiter //
     create procedure sp_ActualizarCategoria(
         in p_idCategoria int,
-        in p_nombreCategoria enum('Reloj','Cadena','Anillo','Gorra','Gafas','Piercing','Guante'),
+        in p_nombreCategoria varchar(50),
         in p_descripcionCategoria varchar(255),
         in p_urlImagen text
         )
@@ -613,6 +616,7 @@ call sp_AgregarMarca('SportGear', 'Accesorios deportivos de alta calidad', 3, 'E
 call sp_AgregarMarca('LuxuryGold', 'Joyas en oro de 18k y 24k', 2, 'Italia');
 call sp_AgregarMarca('UrbanStyle', 'Accesorios urbanos y modernos', 1, 'México');
 
+-- No borrar los registros de abajo, por si alguien lo toca
 call sp_AgregarCategoria('Reloj', 'Relojes analógicos y digitales para hombre y mujer', 'https://ejemplo.com/categoria/relojes.jpg');
 call sp_AgregarCategoria('Cadena', 'Cadenas de diferentes metales y longitudes', 'https://ejemplo.com/categoria/cadenas.jpg');
 call sp_AgregarCategoria('Anillo', 'Anillos de compromiso, argollas y más', 'https://ejemplo.com/categoria/anillos.jpg');
@@ -668,13 +672,6 @@ call sp_AgregarFactura(2, 2, '2023-11-11', 599.99, 699.99);
 call sp_AgregarFactura(3, 3, '2023-11-12', 99.98, 119.98);
 call sp_AgregarFactura(4, 4, '2023-11-13', 199.99, 239.99);
 call sp_AgregarFactura(5, 5, '2023-11-14', 399.99, 479.99);
-
-
-call sp_ListarCarritos();
-call sp_ListarDetallesCarrito();
-call sp_ListarFacturas();
-call sp_ListarProductos();
-call sp_ListarUsuarios();
 
 -- Triggers, funciones y procedimientos para cambios en las tablas
 delimiter //
@@ -933,3 +930,151 @@ delimiter //
     end//
 delimiter ;
 
+-- -------------------Procedimientos almacenados adicionales para 'CarritoProductos'-------------------
+delimiter //
+    create procedure sp_ObtenerCarritoPorUsuario(
+        in p_idUsuario int
+    )
+    begin
+        select *
+        from CarritoProductos
+        where idUsuario = p_idUsuario;
+    end//
+delimiter ;
+
+delimiter //
+    create procedure sp_ObtenerCarritoActivoUsuario(
+        in p_idUsuario int
+    )
+    begin
+        select *
+        from CarritoProductos
+        where idUsuario = p_idUsuario and total = 0
+        limit 1;
+    end//
+delimiter ;
+
+delimiter //
+    create procedure sp_EliminarCarritosPorUsuario(
+        in p_idUsuario int
+    )
+    begin
+        delete from CarritoProductos where idUsuario = p_idUsuario;
+    end//
+delimiter ;
+
+delimiter //
+    create procedure sp_ActualizarTotalCarrito(
+        in p_idCarrito int,
+        in p_total decimal(10,2)
+    )
+    begin
+        update CarritoProductos
+        set total = p_total
+        where idCarrito = p_idCarrito;
+    end//
+delimiter ;
+
+delimiter //
+    create procedure sp_ContarCarritosUsuario(
+        in p_idUsuario int,
+        out p_cantidad int
+    )
+    begin
+        select count(*) into p_cantidad
+        from CarritoProductos
+        where idUsuario = p_idUsuario;
+    end//
+delimiter ;
+
+delimiter //
+    create procedure sp_ObtenerDetallesCarrito(
+        in p_idCarrito int
+    )
+    begin
+        select *
+        from DetallesCarritosProductos
+        where idCarrito = p_idCarrito;
+    end//
+delimiter ;
+
+-- -------------------Procedimientos almacenados adicionales para 'DetallesCarritosProductos'----------
+delimiter //
+    create procedure sp_EliminarDetallesCarrito(
+        in p_idCarrito int
+    )
+    begin
+        delete from DetallesCarritosProductos where idCarrito = p_idCarrito;
+    end//
+delimiter ;
+
+delimiter //
+    create procedure sp_ActualizarEstadoDetallesCarrito(
+        in p_idCarrito int,
+        in p_estado enum('pagado','sin pagar','en espera')
+    )
+    begin
+        update DetallesCarritosProductos
+        set estado = p_estado
+        where idCarrito = p_idCarrito;
+    end//
+delimiter ;
+
+delimiter //
+    create procedure sp_CalcularTotalCarrito(
+        in p_idCarrito int,
+        out p_total decimal(10,2)
+    )
+    begin
+        select ifnull(sum(subTotal), 0) into p_total
+        from DetallesCarritosProductos
+        where idCarrito = p_idCarrito;
+    end//
+delimiter ;
+
+
+-- -------------------Procedimientos almacenados para integración con Facturas-------------------------
+delimiter //
+    create procedure sp_VerificarCarritoFacturado(
+        in p_idCarrito int,
+        out p_facturado boolean
+    )
+    begin
+        declare v_count int;
+        
+        select count(*) into v_count
+        from Facturas
+        where idCarrito = p_idCarrito;
+        
+        set p_facturado = (v_count > 0);
+    end//
+delimiter ;
+
+-- Procedimiento que es util para desvincular datos de las tablas cuando le dan a 'eliminar' en tablas con fk NO TOCAR
+delimiter //
+	create procedure sp_DesvincularMarcasDeProveedor(in p_idProveedor int)
+	begin
+		update Marcas 
+		set idProveedor = null 
+		where idProveedor = p_idProveedor;
+	end //
+    
+delimiter ;
+
+delimiter //
+create procedure sp_desvincularproductosdecategoria(in p_idcategoria int)
+begin
+    update productos 
+    set idcategoria = null 
+    where idcategoria = p_idcategoria;
+end //
+delimiter ;
+
+call sp_ListarCarritos();
+call sp_ListarDetallesCarrito();
+call sp_ListarFacturas();
+call sp_ListarProductos();
+call sp_ListarUsuarios();
+call sp_ListarMarcas;
+call sp_ListarProveedores;
+call sp_ListarCategorias();
