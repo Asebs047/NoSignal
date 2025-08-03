@@ -32,13 +32,23 @@ public class ServletProducto extends HttpServlet {
         try {
             List<Categoria> categorias = categoriaDAO.listarTodos();
             List<Marca> marcas = marcaDAO.listarTodos();
-            
+
+            // Depuración detallada
+            System.out.println("=== MARCAS CARGADAS ===");
+            for (Marca marca : marcas) {
+                System.out.println("ID: " + marca.getIdMarca() + 
+                                 ", Nombre: " + marca.getNombreMarca() + 
+                                 ", Proveedor: " + (marca.getProveedor() != null ? 
+                                     marca.getProveedor().getNombreProveedor() : "Ninguno"));
+            }
+
             request.setAttribute("categorias", categorias);
             request.setAttribute("marcas", marcas);
             request.getRequestDispatcher("registroProducto.jsp").forward(request, response);
         } catch (SQLException e) {
-            request.getSession().setAttribute("error", "Error al cargar datos: " + e.getMessage());
-            response.sendRedirect("ServletListarProductos");
+            e.printStackTrace();
+            request.setAttribute("error", "Error al cargar datos: " + e.getMessage());
+            request.getRequestDispatcher("registroProducto.jsp").forward(request, response);
         }
     }
 

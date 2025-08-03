@@ -1,6 +1,7 @@
 package controller;
 
 import dao.CategoriaDAO;
+import dao.ProductoDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -23,9 +24,12 @@ public class ServletEliminarCategoria extends HttpServlet {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             
+            ProductoDAO productoDAO = new ProductoDAO();
+            productoDAO.desvincularDeCategoria(id);
+            
             categoriaDAO.eliminar(id);
             
-            request.getSession().setAttribute("mensaje", "Categoría eliminada correctamente");
+            request.getSession().setAttribute("mensaje", "Categoría eliminada correctamente. Los productos asociados ahora no tienen categoría.");
         } catch (SQLException e) {
             request.getSession().setAttribute("error", "Error al eliminar categoría: " + e.getMessage());
         }

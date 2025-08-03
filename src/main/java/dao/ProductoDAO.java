@@ -47,26 +47,37 @@ public class ProductoDAO {
              ResultSet resultado = consulta.executeQuery()) {
 
             while (resultado.next()) {
-                Producto producto = new Producto();
-                producto.setIdProducto(resultado.getInt("idProducto"));
-                producto.setNombre(resultado.getString("nombre"));
-                producto.setDescripcion(resultado.getString("descripcion"));
-                producto.setColor(resultado.getString("color"));
-                producto.setPrecio(resultado.getDouble("precio"));
-                producto.setCantidad(resultado.getInt("cantidad"));
-                producto.setGenero(resultado.getString("genero"));
-                producto.setDetalle(resultado.getString("detalle"));
-                producto.setUrlImagen(resultado.getString("urlImagen"));
-                producto.setIdCategoria(resultado.getInt("idCategoria"));
-                producto.setCategoria(resultado.getString("categoria")); 
-                producto.setIdMarca(resultado.getInt("idMarca"));
-                producto.setMarca(resultado.getString("marca")); 
-                producto.setProveedor(resultado.getString("proveedor")); 
-                
+                Producto producto = mapearProducto(resultado);
                 productos.add(producto);
             }
         }
         return productos;
+    }
+
+    private Producto mapearProducto(ResultSet resultado) throws SQLException {
+        Producto producto = new Producto();
+        producto.setIdProducto(resultado.getInt("idProducto"));
+        producto.setNombre(resultado.getString("nombre"));
+        producto.setDescripcion(resultado.getString("descripcion"));
+        producto.setColor(resultado.getString("color"));
+        producto.setPrecio(resultado.getDouble("precio"));
+        producto.setCantidad(resultado.getInt("cantidad"));
+        producto.setGenero(resultado.getString("genero"));
+        producto.setDetalle(resultado.getString("detalle"));
+        producto.setUrlImagen(resultado.getString("urlImagen"));
+
+        producto.setIdCategoria(resultado.getObject("idCategoria") != null ? 
+            resultado.getInt("idCategoria") : 0);
+        producto.setCategoria(resultado.getObject("categoria") != null ? 
+            resultado.getString("categoria") : "Sin categoría");
+        producto.setIdMarca(resultado.getObject("idMarca") != null ? 
+            resultado.getInt("idMarca") : 0);
+        producto.setMarca(resultado.getObject("marca") != null ? 
+            resultado.getString("marca") : "Sin marca");
+        producto.setProveedor(resultado.getObject("proveedor") != null ? 
+            resultado.getString("proveedor") : "Sin proveedor");
+
+        return producto;
     }
 
     public Producto buscarPorId(int id) throws SQLException {
@@ -177,15 +188,26 @@ public class ProductoDAO {
         return productos;
     }
     
-    //no borrar este metodo xd
-    public void eliminarPorMarca(int idMarca) throws SQLException {
-        String sql = "DELETE FROM productos WHERE idMarca = ?";
-
-        try (Connection conn = DBConnection.getInstancia().getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, idMarca);
-            stmt.executeUpdate();
+    
+    public void desvincularDeMarca(int idMarca) throws SQLException {
+        String sql = "{call sp_DesvincularProductosDeMarca(?)}";
+        
+        try (Connection conexion = DBConnection.getInstancia().getConnection();
+             CallableStatement consulta = conexion.prepareCall(sql)) {
+            
+            consulta.setInt(1, idMarca);
+            consulta.executeUpdate();
+        }
+    }
+    
+    public void desvincularDeCategoria(int idCategoria) throws SQLException {
+        String sql = "{call sp_desvincularproductosdecategoria(?)}";
+        
+        try (Connection conexion = DBConnection.getInstancia().getConnection();
+             CallableStatement consulta = conexion.prepareCall(sql)) {
+            
+            consulta.setInt(1, idCategoria);
+            consulta.executeUpdate();
         }
     }
     
