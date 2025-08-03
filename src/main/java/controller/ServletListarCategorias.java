@@ -17,18 +17,19 @@ import model.Categoria;
  * @author reyes
  */
 
-@WebServlet("/ServletListarCategoria")
-public class ServletListarCategoria extends HttpServlet {
+@WebServlet("/ServletListarCategorias")
+public class ServletListarCategorias extends HttpServlet {
     private CategoriaDAO categoriaDAO = new CategoriaDAO();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         try {
-            List<Categoria> categorias = categoriaDAO.listarTodo();
+            List<Categoria> categorias = categoriaDAO.listarTodos();
             request.setAttribute("listaCategorias", categorias);
             request.getRequestDispatcher("Categorialistar.jsp").forward(request, response);
         } catch (SQLException e) {
-            throw new ServletException("Error al listar categorias", e);
+            request.getSession().setAttribute("error", "Error al listar categorías: " + e.getMessage());
+            response.sendRedirect("index.jsp");
         }
     }
 }

@@ -15,10 +15,12 @@ import model.Categoria;
  *
  * @author reyes
  */
+
 @WebServlet("/ServletCategoria")
 public class ServletCategoria extends HttpServlet {
     
     private CategoriaDAO categoriaDAO = new CategoriaDAO();
+    
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         try {
@@ -26,11 +28,14 @@ public class ServletCategoria extends HttpServlet {
             categoria.setNombreCategoria(request.getParameter("nombreCategoria"));
             categoria.setDescripcionCategoria(request.getParameter("descripcionCategoria"));
             categoria.setUrlImagen(request.getParameter("urlImagen"));
+            
             categoriaDAO.guardar(categoria);
-            response.sendRedirect("ServletListarCategoria");
+            
+            request.getSession().setAttribute("mensaje", "Categoría agregada correctamente");
         } catch(SQLException e) {
-            throw  new ServletException("Error al agregar categoria", e);
+            request.getSession().setAttribute("error", "Error al agregar categoría: " + e.getMessage());
         }
-    
+        
+        response.sendRedirect("ServletListarCategorias");
     }
 }
