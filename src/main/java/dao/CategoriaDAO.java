@@ -4,6 +4,7 @@ package dao;
 import database.DBConnection;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -93,5 +94,23 @@ public class CategoriaDAO {
             consulta.setInt(1, id);
             consulta.executeUpdate();
         }
+    }
+
+    public List<Categoria> listarParaProductos() throws SQLException {
+        List<Categoria> categorias = new ArrayList<>();
+        String sql = "select idCategoria, nombreCategoria from Categorias";
+
+        try (Connection conn = DBConnection.getInstancia().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Categoria categoria = new Categoria();
+                categoria.setIdCategoria(rs.getInt("idCategoria"));
+                categoria.setNombreCategoria(rs.getString("nombreCategoria"));
+                categorias.add(categoria);
+            }
+        }
+        return categorias;
     }
 }

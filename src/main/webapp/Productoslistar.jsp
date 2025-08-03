@@ -4,6 +4,7 @@
     Author     : Klopez
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
 <%@page import="model.Producto"%>
@@ -30,7 +31,7 @@
             </div>
             <% } %>
 
-            <a href="registroProducto.jsp?id=1" class="btn btn-primary mb-3">Agregar Producto</a>
+            <a href="ServletProducto" class="btn btn-primary mb-3">Agregar Producto</a>
 
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">

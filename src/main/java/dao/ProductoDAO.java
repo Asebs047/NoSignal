@@ -70,15 +70,17 @@ public class ProductoDAO {
     }
 
     public Producto buscarPorId(int id) throws SQLException {
-        String sql = "{call sp_ListarProductos()}"; 
-        
-        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
-             CallableStatement consulta = conexion.prepareCall(sql);
-             ResultSet resultado = consulta.executeQuery()) {
+        String sql = "{call sp_BuscarProductoPorId(?)}";
+        Producto producto = null;
 
-            while (resultado.next()) {
-                if (resultado.getInt("idProducto") == id) {
-                    Producto producto = new Producto();
+        try (Connection conexion = DBConnection.getInstancia().getConnection();
+             CallableStatement consulta = conexion.prepareCall(sql)) {
+
+            consulta.setInt(1, id);
+
+            try (ResultSet resultado = consulta.executeQuery()) {
+                if (resultado.next()) {
+                    producto = new Producto();
                     producto.setIdProducto(resultado.getInt("idProducto"));
                     producto.setNombre(resultado.getString("nombre"));
                     producto.setDescripcion(resultado.getString("descripcion"));
@@ -89,15 +91,24 @@ public class ProductoDAO {
                     producto.setDetalle(resultado.getString("detalle"));
                     producto.setUrlImagen(resultado.getString("urlImagen"));
                     producto.setIdCategoria(resultado.getInt("idCategoria"));
-                    producto.setCategoria(resultado.getString("categoria"));
+
+                    if (resultado.getString("categoria") != null) {
+                        producto.setCategoria(resultado.getString("categoria"));
+                    }
+
                     producto.setIdMarca(resultado.getInt("idMarca"));
-                    producto.setMarca(resultado.getString("marca"));
-                    producto.setProveedor(resultado.getString("proveedor"));
-                    return producto;
+
+                    if (resultado.getString("marca") != null) {
+                        producto.setMarca(resultado.getString("marca"));
+                    }
+
+                    if (resultado.getString("proveedor") != null) {
+                        producto.setProveedor(resultado.getString("proveedor"));
+                    }
                 }
             }
         }
-        return null;
+        return producto;
     }
 
     public void actualizar(Producto producto) throws SQLException {

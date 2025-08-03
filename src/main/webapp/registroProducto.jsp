@@ -5,72 +5,103 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Registrar Producto</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    </head>
-    <body>
-        <div class="container">
-            <h1>Registrar Producto</h1>
-            <form action="ServletProducto" method="post">
-                <div class="mb-3">
-                    <label for="nombre" class="form-control">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="nombre" class="form-control">Descripcion:</label>
-                    <input type="text" id="descripcion" name="descripcion" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="nombre" class="form-control">Color:</label>
-                    <input type="text" id="color" name="color" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="nombre" class="form-control">Precio:</label>
-                    <input type="numbre" id="precio"  name="precio" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="nombre" class="form-control">Cantidad:</label>
-                    <input type="numbre" id="cantidad"  name="cantidad" class="form-control">
-                </div>
-                <div class = "mb-3">
-                    <label for="genero" class="form-control">Genero:</label>
-                    <select id="genero" name="genero">
-                        <option value="hombre">Masculino</option>
-                        <option value="mujer">Femenino</option>
-                        <option value="unisex">unisex</option>
-                    </select>
-                </div>
-                <div class = "mb-3">
-                    <label for="genero" class="form-control">Categoria:</label>
-                    <select id="categoria" name="categoria">
-                        <option value="reloj">reloj</option>
-                        <option value="cadena">cadena</option>
-                        <option value="anillo">anillo</option>
-                        <option value="gorra">gorra</option>
-                        <option value="gafas">gafas</option>
-                        <option value="piercing">piercing</option>
-                        <option value="guante">guante</option>
-                    </select>
-                </div>          
-                <div class="mb-3">
-                    <label for="edad" class="form-control">Detalle:</label>
-                    <input type="text" id="detalle" name="detalle" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="nombre" class="form-control">Imagen</label>
-                    <input type="text" id="urlImagen"  name="urlImagen" class="form-control">
-                </div>    
-                <input type="submit" value="Agregar Producto" class="btn btn-primary">
-
-            </form>
-        </div>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registrar Producto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Registrar Producto</h1>
         
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger">${error}</div>
+        </c:if>
         
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-    </body>
+        <form action="ServletProducto" method="post">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" class="form-control" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción:</label>
+                <input type="text" id="descripcion" name="descripcion" class="form-control" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="color" class="form-label">Color:</label>
+                <input type="text" id="color" name="color" class="form-control" required>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="precio" class="form-label">Precio:</label>
+                    <input type="number" step="0.01" id="precio" name="precio" class="form-control" required>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="cantidad" class="form-label">Cantidad:</label>
+                    <input type="number" id="cantidad" name="cantidad" class="form-control" required>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="genero" class="form-label">Género:</label>
+                <select id="genero" name="genero" class="form-select" required>
+                    <option value="">-- Seleccione --</option>
+                    <option value="Hombre">Hombre</option>
+                    <option value="Mujer">Mujer</option>
+                    <option value="Unisex">Unisex</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="idCategoria" class="form-label">Categoría:</label>
+                <select id="idCategoria" name="idCategoria" class="form-select" required>
+                    <option value="">-- Seleccione --</option>
+                    <c:forEach items="${categorias}" var="categoria">
+                        <option value="${categoria.idCategoria}">${categoria.nombreCategoria}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="idMarca" class="form-label">Marca:</label>
+                <select id="idMarca" name="idMarca" class="form-select" required>
+                    <option value="">-- Seleccione --</option>
+                    <c:forEach items="${marcas}" var="marca">
+                        <option value="${marca.idMarca}">
+                            ${marca.nombreMarca}
+                            <c:if test="${not empty marca.proveedor}">
+                                (${marca.proveedor.nombreProveedor})
+                            </c:if>
+                        </option>
+                    </c:forEach>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="detalle" class="form-label">Detalle:</label>
+                <textarea id="detalle" name="detalle" class="form-control" rows="3" required></textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label for="urlImagen" class="form-label">URL de Imagen:</label>
+                <input type="text" id="urlImagen" name="urlImagen" class="form-control" required>
+            </div>
+            
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="ServletListarProductos" class="btn btn-secondary me-md-2">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Guardar Producto</button>
+            </div>
+        </form>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
