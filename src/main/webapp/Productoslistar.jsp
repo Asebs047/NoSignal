@@ -5,11 +5,11 @@
 --%>
 
 <%@page import="dao.ProductoDAO"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
 <%@page import="model.Usuario"%>
 <%@page import="model.Producto"%>
-<%@page import="model.Usuario"%>
 
 <%
     Usuario usuario = (Usuario) session.getAttribute("usuario");
@@ -18,9 +18,8 @@
         return;
     }
     
-    ProductoDAO ventaDAO = new ProductoDAO();
+    ProductoDAO productoDAO = new ProductoDAO();
 %>
-
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -266,7 +265,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             <% } %>
-            
+
             <!-- Card de productos -->
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Klopez
  */
+
 @WebServlet("/ServletEliminarProducto")
 public class ServletEliminarProducto extends HttpServlet {
     private ProductoDAO productoDAO = new ProductoDAO();

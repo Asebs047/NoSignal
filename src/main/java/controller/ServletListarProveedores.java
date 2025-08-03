@@ -1,7 +1,6 @@
-
 package controller;
 
-import dao.CategoriaDAO;
+import dao.ProveedorDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -10,25 +9,25 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Categoria;
-
+import model.Proveedor;
 /**
  *
- * @author reyes
+ * @author Lu0
  */
 
-@WebServlet("/ServletListarCategoria")
-public class ServletListarCategoria extends HttpServlet {
-    private CategoriaDAO categoriaDAO = new CategoriaDAO();
+
+@WebServlet("/ServletListarProveedores")
+public class ServletListarProveedores extends HttpServlet {
+    private ProveedorDAO proveedorDAO = new ProveedorDAO();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         try {
-            List<Categoria> categorias = categoriaDAO.listarTodo();
-            request.setAttribute("listaCategorias", categorias);
-            request.getRequestDispatcher("Categorialistar.jsp").forward(request, response);
+            List<Proveedor> proveedores = proveedorDAO.listarTodos();
+            request.setAttribute("listaProveedores", proveedores);
+            request.getRequestDispatcher("listarProveedor.jsp").forward(request, response);
         } catch (SQLException e) {
-            throw new ServletException("Error al listar categorias", e);
+            throw new ServletException("Error al listar proveedores", e);
         }
     }
 }

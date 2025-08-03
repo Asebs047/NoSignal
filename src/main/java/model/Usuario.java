@@ -9,7 +9,10 @@ import javax.persistence.Table;
 import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 import java.util.List;
- 
+ /**
+ *
+ * @author Lu0
+ */
 @Entity
 @Table(name = "Usuarios")
 public class Usuario {

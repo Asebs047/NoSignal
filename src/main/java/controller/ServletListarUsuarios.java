@@ -10,22 +10,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Usuario;
+/**
+ *
+ * @author Lu0
+ */
 
 @WebServlet("/ServletListarUsuarios")
-public class ServletListarUsuarios extends HttpServlet{
-    private UsuarioDAO usuarioDAO = new UsuarioDAO();
+public class ServletListarUsuarios extends HttpServlet {
+    private final UsuarioDAO usuarioDAO = new UsuarioDAO();
     
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            UsuarioDAO dao = new UsuarioDAO();
-            List<Usuario> lista = dao.listarTodos();
-            System.out.println("Lista en servlet: " + lista.size()); // <- Agrega esto
-            request.setAttribute("usuarios", lista);
+            List<Usuario> usuarios = usuarioDAO.listarTodos();
+            request.setAttribute("listaUsuarios", usuarios);
             request.getRequestDispatcher("listaUsuarios.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-
+        } catch (SQLException e) {
+            request.setAttribute("error", "Error al cargar la lista de usuarios: " + e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 }

@@ -15,6 +15,7 @@ import model.Producto;
  *
  * @author Lu0
  */
+
 @WebServlet("/ServletListarProductos")
 public class ServletListarProductos extends HttpServlet {
     private ProductoDAO productoDAO = new ProductoDAO();
@@ -22,7 +23,7 @@ public class ServletListarProductos extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         try {
-            List<Producto> productos = productoDAO.listarTodos(); // JDBC
+            List<Producto> productos = productoDAO.listarTodos(); 
             request.setAttribute("listaProducto", productos);
             request.getRequestDispatcher("Productoslistar.jsp").forward(request, response);
         } catch (SQLException e) {

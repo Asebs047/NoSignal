@@ -14,6 +14,7 @@ import model.Categoria;
  *
  * @author reyes
  */
+
 @WebServlet("/ServletEditarCategoria")
 public class ServletEditarCategoria extends HttpServlet {
 
@@ -24,10 +25,17 @@ public class ServletEditarCategoria extends HttpServlet {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             Categoria categoria = categoriaDAO.buscarPorId(id);
-            request.setAttribute("categoria", categoria);
-            request.getRequestDispatcher("editarCategoria.jsp").forward(request, response);
-        } catch (SQLException e) {
-            throw new ServletException("Error al buscar categoria", e);
+            
+            if (categoria != null) {
+                request.setAttribute("categoria", categoria);
+                request.getRequestDispatcher("editarCategoria.jsp").forward(request, response);
+            } else {
+                request.getSession().setAttribute("error", "No se encontró la categoría solicitada");
+                response.sendRedirect("ServletListarCategorias");
+            }
+        } catch (Exception e) {
+            request.getSession().setAttribute("error", "Error al buscar categoría: " + e.getMessage());
+            response.sendRedirect("ServletListarCategorias");
         }
     }
     
@@ -41,12 +49,12 @@ public class ServletEditarCategoria extends HttpServlet {
             categoria.setUrlImagen(request.getParameter("urlImagen"));
        
             categoriaDAO.actualizar(categoria);
-            response.sendRedirect("ServletListarCategoria");
             
-        } catch (SQLException e){
-            throw new ServletException("Error al actualizar marca", e);
-            
+            request.getSession().setAttribute("mensaje", "Categoría actualizada correctamente");
+        } catch (Exception e) {
+            request.getSession().setAttribute("error", "Error al actualizar categoría: " + e.getMessage());
         }
         
-        }
+        response.sendRedirect("ServletListarCategorias");
+    }
 }
