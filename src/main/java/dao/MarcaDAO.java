@@ -112,4 +112,15 @@ public class MarcaDAO {
             consulta.executeUpdate();
         }
     }
+    
+    public void desvincularDeProveedor(int idProveedor) throws SQLException {
+        String sql = "{call sp_DesvincularMarcasDeProveedor(?)}";
+
+        try (Connection conexion = DBConnection.getInstancia().getConnection();
+             CallableStatement consulta = conexion.prepareCall(sql)) {
+
+            consulta.setInt(1, idProveedor);
+            consulta.executeUpdate();
+        }
+    }
 }
