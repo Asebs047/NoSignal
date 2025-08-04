@@ -22,7 +22,7 @@ public class ServletEliminarProducto extends HttpServlet {
             throws ServletException, IOException {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
-            productoDAO.eliminar(id); // JDBC
+            productoDAO.eliminar(id);
             response.sendRedirect("ServletListarProductos");
         } catch (SQLException e) {
             throw new ServletException("Error JDBC al eliminar", e);

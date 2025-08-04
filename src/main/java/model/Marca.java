@@ -17,8 +17,7 @@ public class Marca {
     public Marca() {
     }
 
-    public Marca(int idMarca, String nombreMarca, String descripcionMarca, 
-                int idProveedor, String paisOrigen) {
+    public Marca(int idMarca, String nombreMarca, String descripcionMarca, int idProveedor, String paisOrigen) {
         this.idMarca = idMarca;
         this.nombreMarca = nombreMarca;
         this.descripcionMarca = descripcionMarca;
@@ -26,8 +25,7 @@ public class Marca {
         this.paisOrigen = paisOrigen;
     }
 
-    public Marca(int idMarca, String nombreMarca, String descripcionMarca, 
-                int idProveedor, String paisOrigen, Proveedor proveedor) {
+    public Marca(int idMarca, String nombreMarca, String descripcionMarca, int idProveedor, String paisOrigen, Proveedor proveedor) {
         this.idMarca = idMarca;
         this.nombreMarca = nombreMarca;
         this.descripcionMarca = descripcionMarca;

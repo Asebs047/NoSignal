@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Lu0
  */
+
 @WebServlet("/ServletEliminarMarca")
 public class ServletEliminarMarca extends HttpServlet {
     private MarcaDAO marcaDAO = new MarcaDAO();
@@ -24,14 +25,14 @@ public class ServletEliminarMarca extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
 
             ProductoDAO productoDAO = new ProductoDAO();
-            productoDAO.eliminarPorMarca(id);
+            productoDAO.desvincularDeMarca(id);
 
             marcaDAO.eliminar(id);
 
-            request.getSession().setAttribute("mensaje", "Marca y productos asociados eliminados correctamente");
+            request.getSession().setAttribute("mensaje", "Marca eliminada correctamente. Los productos asociados ahora no tienen marca.");
         } catch (SQLException e) {
             request.getSession().setAttribute("error", 
-                "Error al eliminar: " + e.getMessage());
+                "Error al eliminar marca: " + e.getMessage());
         } finally {
             response.sendRedirect("ServletListarMarcas");
         }

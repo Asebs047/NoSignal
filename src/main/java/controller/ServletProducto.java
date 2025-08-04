@@ -29,16 +29,22 @@ public class ServletProducto extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
+        System.out.println("Ejecutando doGet de ServletProducto"); // Log de depuración
+
         try {
             List<Categoria> categorias = categoriaDAO.listarTodos();
             List<Marca> marcas = marcaDAO.listarTodos();
-            
+
+            System.out.println("Categorías encontradas: " + categorias.size()); // Log
+            System.out.println("Marcas encontradas: " + marcas.size()); // Log
+
             request.setAttribute("categorias", categorias);
             request.setAttribute("marcas", marcas);
             request.getRequestDispatcher("registroProducto.jsp").forward(request, response);
         } catch (SQLException e) {
-            request.getSession().setAttribute("error", "Error al cargar datos: " + e.getMessage());
-            response.sendRedirect("ServletListarProductos");
+            e.printStackTrace();
+            request.setAttribute("error", "Error al cargar datos: " + e.getMessage());
+            request.getRequestDispatcher("registroProducto.jsp").forward(request, response);
         }
     }
 

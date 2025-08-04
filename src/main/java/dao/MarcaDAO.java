@@ -6,6 +6,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.Marca;
@@ -14,6 +15,7 @@ import model.Proveedor;
  *
  * @author Lu0
  */
+
 public class MarcaDAO {
     
     public void guardar(Marca marca) throws SQLException {
@@ -34,11 +36,11 @@ public class MarcaDAO {
     public List<Marca> listarTodos() throws SQLException {
         String sql = "{call sp_ListarMarcas()}";
         List<Marca> marcas = new ArrayList<>();
-        
+
         try (Connection conexion = DBConnection.getInstancia().getConnection();
              CallableStatement consulta = conexion.prepareCall(sql);
              ResultSet resultado = consulta.executeQuery()) {
-            
+
             while (resultado.next()) {
                 Marca marca = new Marca();
                 marca.setIdMarca(resultado.getInt("idMarca"));
@@ -46,39 +48,47 @@ public class MarcaDAO {
                 marca.setDescripcionMarca(resultado.getString("descripcionMarca"));
                 marca.setIdProveedor(resultado.getInt("idProveedor"));
                 marca.setPaisOrigen(resultado.getString("paisOrigen"));
-                
-                Proveedor proveedor = new Proveedor();
-                proveedor.setIdProveedor(resultado.getInt("idProveedor"));
-                proveedor.setNombreProveedor(resultado.getString("nombreProveedor"));
-                marca.setProveedor(proveedor);
-                
+
+                if (resultado.getString("nombreProveedor") != null) {
+                    Proveedor proveedor = new Proveedor();
+                    proveedor.setIdProveedor(resultado.getInt("idProveedor"));
+                    proveedor.setNombreProveedor(resultado.getString("nombreProveedor"));
+                    marca.setProveedor(proveedor);
+                }
+
                 marcas.add(marca);
             }
+        } catch (SQLException e) {
+            System.out.println("Error en MarcaDAO.listarTodos(): " + e.getMessage());
+            throw e;
         }
         return marcas;
     }
     
     public Marca buscarPorId(int id) throws SQLException {
-        String sql = "{call sp_ListarMarcas()}";
-        
+        String sql = "{call sp_BuscarMarcaPorId(?)}"; 
+
         try (Connection conexion = DBConnection.getInstancia().getConnection();
-             CallableStatement consulta = conexion.prepareCall(sql);
-             ResultSet resultado = consulta.executeQuery()) {
-            
-            while (resultado.next()) {
-                if (resultado.getInt("idMarca") == id) {
+             CallableStatement consulta = conexion.prepareCall(sql)) {
+
+            consulta.setInt(1, id);
+
+            try (ResultSet resultado = consulta.executeQuery()) {
+                if (resultado.next()) {
                     Marca marca = new Marca();
                     marca.setIdMarca(resultado.getInt("idMarca"));
                     marca.setNombreMarca(resultado.getString("nombreMarca"));
                     marca.setDescripcionMarca(resultado.getString("descripcionMarca"));
                     marca.setIdProveedor(resultado.getInt("idProveedor"));
                     marca.setPaisOrigen(resultado.getString("paisOrigen"));
-                    
-                    Proveedor proveedor = new Proveedor();
-                    proveedor.setIdProveedor(resultado.getInt("idProveedor"));
-                    proveedor.setNombreProveedor(resultado.getString("nombreProveedor"));
-                    marca.setProveedor(proveedor);
-                    
+
+                    if (resultado.getString("nombreProveedor") != null) {
+                        Proveedor proveedor = new Proveedor();
+                        proveedor.setIdProveedor(resultado.getInt("idProveedor"));
+                        proveedor.setNombreProveedor(resultado.getString("nombreProveedor"));
+                        marca.setProveedor(proveedor);
+                    }
+
                     return marca;
                 }
             }
