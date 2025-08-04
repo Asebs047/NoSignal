@@ -6,13 +6,14 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
-<%@page import="model.Producto"%>
+<%@page import="model.Proveedor"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Administración de Productos | Sistema de Gestión</title>
+        <title>Administración de Proveedores | Sistema de Gestión</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
@@ -40,18 +41,18 @@
                 margin-bottom: 1.5rem;
             }
             
-            .page-title {
-                color: var(--secondary-color);
-                font-weight: 700;
-                border-left: 5px solid var(--primary-color);
-                padding-left: 15px;
-            }
-            
             .table-container {
                 background: white;
                 border-radius: var(--border-radius);
                 box-shadow: var(--card-shadow);
                 padding: 1.5rem;
+            }
+            
+            .page-title {
+                color: var(--secondary-color);
+                font-weight: 700;
+                border-left: 5px solid var(--primary-color);
+                padding-left: 15px;
             }
             
             .btn-primary {
@@ -65,6 +66,20 @@
             .btn-primary:hover {
                 background-color: #2e59d9;
                 transform: translateY(-2px);
+            }
+            
+            .btn-warning {
+                background-color: var(--warning-color);
+                border: none;
+                padding: 0.25rem 0.75rem;
+                font-weight: 600;
+            }
+            
+            .btn-danger {
+                background-color: var(--danger-color);
+                border: none;
+                padding: 0.25rem 0.75rem;
+                font-weight: 600;
             }
             
             .table thead {
@@ -87,7 +102,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                max-width: 150px;
+                max-width: 200px;
                 display: inline-block;
                 vertical-align: middle;
             }
@@ -130,40 +145,16 @@
                 margin-bottom: 1rem;
             }
             
-            .product-img {
-                max-width: 80px;
-                height: auto;
-                border-radius: var(--border-radius);
-                border: 1px solid #dee2e6;
+            .badge-secondary {
+                background-color: #858796;
+                color: white;
             }
             
-            .filename {
+            .status-badge {
                 font-size: 0.75rem;
-                color: #6e707e;
-                word-break: break-all;
-            }
-            
-            .price {
                 font-weight: 600;
-                color: var(--primary-color);
-            }
-            
-            .badge-category {
-                background-color: #e3f2fd;
-                color: #1976d2;
-                padding: 0.35rem 0.6rem;
+                padding: 0.35em 0.65em;
                 border-radius: 50px;
-                font-weight: 500;
-                font-size: 0.75rem;
-            }
-            
-            .badge-gender {
-                background-color: #f3e5f5;
-                color: #8e24aa;
-                padding: 0.35rem 0.6rem;
-                border-radius: 50px;
-                font-weight: 500;
-                font-size: 0.75rem;
             }
         </style>
     </head>
@@ -171,37 +162,39 @@
         <div class="container mt-4">
             <div class="header-container">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h1 class="page-title mb-0">Administración de Productos</h1>
+                    <h1 class="page-title mb-0">Administración de Proveedores</h1>
                     <div>
                         <span class="badge bg-light text-dark">
-                            <i class="fas fa-boxes me-1"></i> Total: ${listaProducto.size()} productos
+                            <i class="fas fa-truck me-1"></i> Total: ${listaProveedores.size()} proveedores
                         </span>
                     </div>
                 </div>
             </div>
 
-            <% if (request.getAttribute("mensaje") != null) { %>
+            <% if (request.getSession().getAttribute("mensaje") != null) { %>
                 <div class="alert alert-success alert-dismissible fade show">
                     <i class="fas fa-check-circle me-2"></i>
-                    <%= request.getAttribute("mensaje")%>
+                    <%= request.getSession().getAttribute("mensaje")%>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <% request.getSession().removeAttribute("mensaje"); %>
                 </div>
             <% } %>
 
-            <% if (request.getAttribute("error") != null) { %>
+            <% if (request.getSession().getAttribute("error") != null) { %>
                 <div class="alert alert-danger alert-dismissible fade show">
                     <i class="fas fa-exclamation-circle me-2"></i>
-                    <%= request.getAttribute("error")%>
+                    <%= request.getSession().getAttribute("error")%>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <% request.getSession().removeAttribute("error"); %>
                 </div>
             <% } %>
 
             <div class="d-flex justify-content-between mb-3">
-                <a href="registroProducto.jsp?id=3" class="btn btn-primary">
-                    <i class="fas fa-plus-circle me-2"></i> Nuevo Producto
+                <a href="registroProveedor.jsp" class="btn btn-primary">
+                    <i class="fas fa-plus-circle me-2"></i> Nuevo Proveedor
                 </a>
                 <div class="input-group" style="max-width: 300px;">
-                    <input type="text" class="form-control" placeholder="Buscar producto...">
+                    <input type="text" class="form-control" placeholder="Buscar proveedor...">
                     <button class="btn btn-primary" type="button">
                         <i class="fas fa-search"></i>
                     </button>
@@ -216,75 +209,72 @@
                                 <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Descripción</th>
-                                <th>Color</th>
-                                <th>Precio</th>
-                                <th>Cantidad</th>
-                                <th>Género</th>
-                                <th>Categoría</th>
-                                <th>Detalle</th>
-                                <th>Imagen</th>
+                                <th>Contacto</th>
+                                <th>Fecha Registro</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <%
-                                List<Producto> listaProductos = (List<Producto>) request.getAttribute("listaProducto");
-                                if (listaProductos != null && !listaProductos.isEmpty()) {
-                                    for (Producto p : listaProductos) {
-                                        String tipo = p.getCategoria().toLowerCase().replace(" ", "-");
-                                        String nombreImagen = "producto-" + p.getIdProducto() + "-" + tipo + ".png";
-                                        String rutaImagen = request.getContextPath() + "/images/productos/" + nombreImagen;
+                                List<Proveedor> listaProveedores = (List<Proveedor>) request.getAttribute("listaProveedores");
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+                                if (listaProveedores != null && !listaProveedores.isEmpty()) {
+                                    for (Proveedor p : listaProveedores) {
                             %>
                             <tr>
-                                <td><span class="badge bg-light text-dark"><%= p.getIdProducto()%></span></td>
-                                <td><strong><%= p.getNombre()%></strong></td>
-                                <td class="text-truncate-container">
-                                    <span class="text-truncate-content" title="<%= p.getDescripcion()%>">
-                                        <%= p.getDescripcion()%>
-                                    </span>
+                                <td><span class="badge bg-light text-dark"><%= p.getIdProveedor()%></span></td>
+                                <td>
+                                    <strong><%= p.getNombreProveedor()%></strong>
+                                    <div class="text-muted small"><%= p.getCorreo()%></div>
                                 </td>
-                                <td><%= p.getColor()%></td>
-                                <td class="price">S/ <%= p.getPrecio()%></td>
-                                <td><%= p.getCantidad()%></td>
-                                <td><span class="badge-gender"><%= p.getGenero()%></span></td>
-                                <td><span class="badge-category"><%= p.getCategoria()%></span></td>
                                 <td class="text-truncate-container">
-                                    <span class="text-truncate-content" title="<%= p.getDetalle()%>">
-                                        <%= p.getDetalle()%>
+                                    <span class="text-truncate-content" title="<%= p.getDescripcionProveedor()%>">
+                                        <%= p.getDescripcionProveedor()%>
                                     </span>
                                 </td>
                                 <td>
-                                    <img src="<%= rutaImagen%>" 
-                                         alt="<%= p.getNombre()%>"
-                                         class="product-img"
-                                         onerror="this.src='<%= request.getContextPath()%>/images/placeholder.png';this.onerror=null;">
-                                    <div class="filename"><%= nombreImagen%></div>
+                                    <div><i class="fas fa-phone me-2 text-muted"></i> <%= p.getTelefono()%></div>
+                                    <div class="text-truncate-container small">
+                                        <i class="fas fa-map-marker-alt me-2 text-muted"></i>
+                                        <span class="text-truncate-content" title="<%= p.getDireccion()%>">
+                                            <%= p.getDireccion()%>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td><%= sdf.format(p.getFechaRegistro())%></td>
+                                <td>
+                                    <span class="status-badge <%= "activo".equals(p.getEstado()) ? "bg-success" : "bg-secondary"%>">
+                                        <i class="fas <%= "activo".equals(p.getEstado()) ? "fa-check-circle" : "fa-times-circle"%> me-1"></i>
+                                        <%= p.getEstado().toUpperCase()%>
+                                    </span>
                                 </td>
                                 <td class="action-buttons">
-                                    <a href="ServletEditarProducto?accion=editar&id=<%= p.getIdProducto()%>" 
+                                    <a href="ServletEditarProveedor?id=<%= p.getIdProveedor()%>" 
                                        class="btn btn-sm btn-warning" title="Editar">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="ServletEliminarProducto?id=<%= p.getIdProducto()%>" 
-                                       class="btn btn-sm btn-danger"
-                                       onclick="return confirm('¿Está seguro de eliminar el producto <%= p.getNombre()%>?')"
+                                    <a href="ServletEliminarProveedor?id=<%= p.getIdProveedor()%>" 
+                                       class="btn btn-sm btn-danger" 
+                                       onclick="return confirm('¿Está seguro de eliminar el proveedor <%= p.getNombreProveedor()%>?\n\nLas marcas asociadas serán desvinculadas pero no eliminadas.');"
                                        title="Eliminar">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
                                 </td>
                             </tr>
                             <%
-                                    }
-                                } else {
+                                }
+                            } else {
                             %>
                             <tr>
-                                <td colspan="11">
+                                <td colspan="7">
                                     <div class="empty-state">
-                                        <i class="fas fa-box-open"></i>
-                                        <h5 class="text-muted">No se encontraron productos</h5>
-                                        <p class="text-muted mb-0">No hay productos registrados en el sistema</p>
-                                        <a href="registroProducto.jsp?id=3" class="btn btn-primary mt-3">
-                                            <i class="fas fa-plus-circle me-2"></i> Registrar primer producto
+                                        <i class="fas fa-truck-loading"></i>
+                                        <h5 class="text-muted">No se encontraron proveedores</h5>
+                                        <p class="text-muted mb-0">No hay proveedores registrados en el sistema</p>
+                                        <a href="registroProveedor.jsp" class="btn btn-primary mt-3">
+                                            <i class="fas fa-plus-circle me-2"></i> Registrar primer proveedor
                                         </a>
                                     </div>
                                 </td>
@@ -302,7 +292,7 @@
         <script>
             // Función para confirmar eliminación
             function confirmDelete(event) {
-                if (!confirm('¿Está seguro de eliminar este producto?')) {
+                if (!confirm('¿Está seguro de eliminar este proveedor?\n\nLas marcas asociadas serán desvinculadas pero no eliminadas.')) {
                     event.preventDefault();
                 }
             }
