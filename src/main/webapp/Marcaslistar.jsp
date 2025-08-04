@@ -11,6 +11,7 @@
     <body>
         <div class="container mt-4">
             <h2 class="text-center mb-4">Marcas</h2>
+            <a  class="btn btn-light me-3" href="administracion.jsp">Regresar</a>
 
             <% if (request.getSession().getAttribute("mensaje") != null) {%>
             <div class="alert alert-success">

@@ -240,6 +240,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <h2><i class="bi bi-speedometer2"></i> Panel de Productos</h2>
                     <div class="user-info">
+                        <a  class="btn btn-light me-3" href="administracion.jsp">Regresar</a>
                         <img src="https://ui-avatars.com/api/?name=<%= usuario.getNombre()%>&background=random" alt="Usuario">
                         <div>
                             <div class="fw-bold"><%= usuario.getNombre()%></div>

@@ -165,6 +165,7 @@
                     <h1 class="page-title mb-0">Administración de Proveedores</h1>
                     <div>
                         <span class="badge bg-light text-dark">
+                            <a  class="btn btn-light me-3" href="administracion.jsp">Regresar</a>
                             <i class="fas fa-truck me-1"></i> Total: ${listaProveedores.size()} proveedores
                         </span>
                     </div>
