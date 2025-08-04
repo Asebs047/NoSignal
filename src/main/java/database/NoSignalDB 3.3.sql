@@ -1074,13 +1074,13 @@ call sp_AgregarMarca('LuxuryGold', 'Joyas en oro de 18k y 24k', 2, 'Italia');
 call sp_AgregarMarca('UrbanStyle', 'Accesorios urbanos y modernos', 1, 'México');
 
 -- No borrar los registros de abajo, por si alguien lo toca
-call sp_AgregarCategoria('Reloj', 'Relojes analógicos y digitales para hombre y mujer', 'https://ejemplo.com/categoria/relojes.jpg');
-call sp_AgregarCategoria('Cadena', 'Cadenas de diferentes metales y longitudes', 'https://ejemplo.com/categoria/cadenas.jpg');
-call sp_AgregarCategoria('Anillo', 'Anillos de compromiso, argollas y más', 'https://ejemplo.com/categoria/anillos.jpg');
-call sp_AgregarCategoria('Gorra', 'Gorras deportivas y de moda', 'https://ejemplo.com/categoria/gorras.jpg');
-call sp_AgregarCategoria('Gafas', 'Gafas de sol y protección visual', 'https://ejemplo.com/categoria/gafas.jpg');
-call sp_AgregarCategoria('Piercing', 'Piercings de acero quirúrgico y titanio', 'https://ejemplo.com/categoria/piercings.jpg');
-call sp_AgregarCategoria('Guante', 'Guantes deportivos y de moda', 'https://ejemplo.com/categoria/guantes.jpg');
+call sp_AgregarCategoria('Reloj', 'Relojes analógicos y digitales para hombre y mujer', 'categoria-reloj');
+call sp_AgregarCategoria('Cadena', 'Cadenas de diferentes metales y longitudes', 'categoria-cadena');
+call sp_AgregarCategoria('Anillo', 'Anillos de compromiso, argollas y más', 'categoria-anillo');
+call sp_AgregarCategoria('Gorra', 'Gorras deportivas y de moda', 'categoria-gorra');
+call sp_AgregarCategoria('Gafas', 'Gafas de sol y protección visual', 'categoria-gafa');
+call sp_AgregarCategoria('Piercing', 'Piercings de acero quirúrgico y titanio', 'categoria-piercing');
+call sp_AgregarCategoria('Guante', 'Guantes deportivos y de moda', 'categoria-guante');
 
 call sp_AgregarUsuario('Juan Pérez', 'García', '5551234567', 'juan@email.com', 'Calle 123, Ciudad', 'masculino', 'cliente', 'clave123');
 call sp_AgregarUsuario('María López', 'Rodríguez', '5557654321', 'maria@email.com', 'Avenida 456, Ciudad', 'femenino', 'cliente', 'securepass');
@@ -1089,7 +1089,7 @@ call sp_AgregarUsuario('Ana García', 'Fernández', '5554567890', 'ana@email.com
 -- este es admin xd
 call sp_AgregarUsuario('Admin', 'Sistema', '5550000000', 'admin@tienda.com', 'Oficina Principal', 'masculino', 'administrador', 'admin123');
 -- este es jefe
-call sp_AgregarUsuario('Pedro Martínez', 'Díaz', '5556789012', 'pedro@email.com', 'Pasaje 654, Ciudad', 'masculino', 'jefe', 'pedro456');
+call sp_AgregarUsuario('Pedro Martínez', 'Díaz', '5556789012', 'jefe@gmail.com', 'Pasaje 654, Ciudad', 'masculino', 'jefe', 'jefe123');
 
 call sp_AgregarProducto('Anillo Plata Unisex', 'Anillo de plata 925', 'Plateado', 89.99, 15, 'Unisex', 'Talla ajustable', 'anillo-1-unisex', 3, 2);
 call sp_AgregarProducto('Anillo Oro Hombre', 'Anillo de oro 18k', 'Dorado', 199.99, 8, 'Hombre', 'Talla 19', 'anillo-2-hombre', 3, 4);

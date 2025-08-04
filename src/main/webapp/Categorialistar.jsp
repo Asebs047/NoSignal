@@ -26,12 +26,12 @@
                 --card-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
                 --border-radius: 0.35rem;
             }
-            
+
             body {
                 background-color: var(--light-bg);
                 font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
             }
-            
+
             .header-container {
                 background: white;
                 border-radius: var(--border-radius);
@@ -39,21 +39,21 @@
                 padding: 1.5rem;
                 margin-bottom: 1.5rem;
             }
-            
+
             .page-title {
                 color: var(--secondary-color);
                 font-weight: 700;
                 border-left: 5px solid var(--primary-color);
                 padding-left: 15px;
             }
-            
+
             .table-container {
                 background: white;
                 border-radius: var(--border-radius);
                 box-shadow: var(--card-shadow);
                 padding: 1.5rem;
             }
-            
+
             .btn-primary {
                 background-color: var(--primary-color);
                 border: none;
@@ -61,28 +61,28 @@
                 font-weight: 600;
                 transition: all 0.3s;
             }
-            
+
             .btn-primary:hover {
                 background-color: #2e59d9;
                 transform: translateY(-2px);
             }
-            
+
             .table thead {
                 background-color: var(--primary-color);
                 color: white;
             }
-            
+
             .table th {
                 font-weight: 600;
                 text-transform: uppercase;
                 font-size: 0.75rem;
                 letter-spacing: 0.5px;
             }
-            
+
             .text-truncate-container {
                 position: relative;
             }
-            
+
             .text-truncate-content {
                 white-space: nowrap;
                 overflow: hidden;
@@ -91,7 +91,7 @@
                 display: inline-block;
                 vertical-align: middle;
             }
-            
+
             .text-truncate-content:hover {
                 position: absolute;
                 z-index: 100;
@@ -106,7 +106,7 @@
                 left: 0;
                 top: 100%;
             }
-            
+
             .action-buttons .btn {
                 margin-right: 5px;
                 border-radius: 50px;
@@ -116,27 +116,27 @@
                 align-items: center;
                 justify-content: center;
             }
-            
+
             .empty-state {
                 background-color: #f8f9fa;
                 border-radius: var(--border-radius);
                 padding: 2rem;
                 text-align: center;
             }
-            
+
             .empty-state i {
                 font-size: 3rem;
                 color: #d1d3e2;
                 margin-bottom: 1rem;
             }
-            
+
             .category-img {
                 max-width: 80px;
                 height: auto;
                 border-radius: var(--border-radius);
                 border: 1px solid #dee2e6;
             }
-            
+
             .badge-secondary {
                 background-color: #858796;
                 color: white;
@@ -156,25 +156,24 @@
                         </span>
                     </div>
                 </div>
->>>>>>> f92b8bb42c2a346650512bdc3c19fdd895960283
             </div>
 
-            <% if (request.getSession().getAttribute("mensaje") != null) { %>
-                <div class="alert alert-success alert-dismissible fade show">
-                    <i class="fas fa-check-circle me-2"></i>
-                    <%= request.getSession().getAttribute("mensaje")%>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    <% request.getSession().removeAttribute("mensaje"); %>
-                </div>
+            <% if (request.getSession().getAttribute("mensaje") != null) {%>
+            <div class="alert alert-success alert-dismissible fade show">
+                <i class="fas fa-check-circle me-2"></i>
+                <%= request.getSession().getAttribute("mensaje")%>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <% request.getSession().removeAttribute("mensaje"); %>
+            </div>
             <% } %>
 
-            <% if (request.getSession().getAttribute("error") != null) { %>
-                <div class="alert alert-danger alert-dismissible fade show">
-                    <i class="fas fa-exclamation-circle me-2"></i>
-                    <%= request.getSession().getAttribute("error")%>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    <% request.getSession().removeAttribute("error"); %>
-                </div>
+            <% if (request.getSession().getAttribute("error") != null) {%>
+            <div class="alert alert-danger alert-dismissible fade show">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <%= request.getSession().getAttribute("error")%>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <% request.getSession().removeAttribute("error"); %>
+            </div>
             <% } %>
 
             <div class="d-flex justify-content-between mb-3">
@@ -216,13 +215,15 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <% if (c.getUrlImagen() != null && !c.getUrlImagen().isEmpty()) { %>
-                                        <img src="<%= c.getUrlImagen()%>" 
-                                             alt="<%= c.getNombreCategoria()%>"
-                                             class="category-img">
-                                    <% } else { %>
-                                        <span class="badge badge-secondary">Sin imagen</span>
-                                    <% } %>
+                                    <%
+                                        String rutaImagen = request.getContextPath() + "/images/categorias/" + c.getUrlImagen() + ".png";
+                                        String rutaImagenDefault = request.getContextPath() + "/images/categorias/placeholder.png";
+                                    %>
+                                    <img src="<%= rutaImagen%>" 
+                                         alt="<%= c.getNombreCategoria()%>"
+                                         class="category-img"
+                                         onerror="this.src='<%= rutaImagenDefault%>';this.onerror=null;">
+                                    <div class="filename"><%= c.getUrlImagen() != null ? c.getUrlImagen() + ".png" : "Sin imagen"%></div>
                                 </td>
                                 <td class="action-buttons">
                                     <a href="ServletEditarCategoria?id=<%= c.getIdCategoria()%>" 
@@ -238,8 +239,8 @@
                                 </td>
                             </tr>
                             <%
-                                    }
-                                } else {
+                                }
+                            } else {
                             %>
                             <tr>
                                 <td colspan="5">
@@ -261,20 +262,20 @@
                 </div>
             </div>
         </div>
-        
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-            // Función para confirmar eliminación
-            function confirmDelete(event) {
-                if (!confirm('¿Está seguro de eliminar esta categoría?')) {
-                    event.preventDefault();
-                }
-            }
-            
-            // Asignar evento a todos los botones de eliminar
-            document.querySelectorAll('.btn-danger').forEach(btn => {
-                btn.addEventListener('click', confirmDelete);
-            });
+                                           // Función para confirmar eliminación
+                                           function confirmDelete(event) {
+                                               if (!confirm('¿Está seguro de eliminar esta categoría?')) {
+                                                   event.preventDefault();
+                                               }
+                                           }
+
+                                           // Asignar evento a todos los botones de eliminar
+                                           document.querySelectorAll('.btn-danger').forEach(btn => {
+                                               btn.addEventListener('click', confirmDelete);
+                                           });
         </script>
     </body>
 </html>
