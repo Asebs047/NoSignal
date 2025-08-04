@@ -34,24 +34,34 @@ public class MarcaDAO {
     }
     
     public List<Marca> listarTodos() throws SQLException {
-        String sql = "SELECT idMarca, nombreMarca, descripcionMarca, idProveedor, paisOrigen FROM Marcas";
+        String sql = "{call sp_ListarMarcas()}";
         List<Marca> marcas = new ArrayList<>();
 
         try (Connection conexion = DBConnection.getInstancia().getConnection();
-             Statement stmt = conexion.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+             CallableStatement consulta = conexion.prepareCall(sql);
+             ResultSet resultado = consulta.executeQuery()) {
 
-            while (rs.next()) {
+            while (resultado.next()) {
                 Marca marca = new Marca();
-                marca.setIdMarca(rs.getInt("idMarca"));
-                marca.setNombreMarca(rs.getString("nombreMarca"));
-                marca.setDescripcionMarca(rs.getString("descripcionMarca"));
-                marca.setIdProveedor(rs.getInt("idProveedor"));
-                marca.setPaisOrigen(rs.getString("paisOrigen"));
+                marca.setIdMarca(resultado.getInt("idMarca"));
+                marca.setNombreMarca(resultado.getString("nombreMarca"));
+                marca.setDescripcionMarca(resultado.getString("descripcionMarca"));
+                marca.setIdProveedor(resultado.getInt("idProveedor"));
+                marca.setPaisOrigen(resultado.getString("paisOrigen"));
+
+                if (resultado.getString("nombreProveedor") != null) {
+                    Proveedor proveedor = new Proveedor();
+                    proveedor.setIdProveedor(resultado.getInt("idProveedor"));
+                    proveedor.setNombreProveedor(resultado.getString("nombreProveedor"));
+                    marca.setProveedor(proveedor);
+                }
+
                 marcas.add(marca);
             }
+        } catch (SQLException e) {
+            System.out.println("Error en MarcaDAO.listarTodos(): " + e.getMessage());
+            throw e;
         }
-
         return marcas;
     }
     

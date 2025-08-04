@@ -270,7 +270,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-box-seam"></i> Gestión de Productos</span>
-                    <a href="registroProducto.jsp" class="btn btn-add">
+                    <a href="ServletProducto" class="btn btn-add">
                         <i class="bi bi-plus-lg"></i> Agregar Producto
                     </a>
                 </div>

@@ -29,18 +29,14 @@ public class ServletProducto extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
+        System.out.println("Ejecutando doGet de ServletProducto"); // Log de depuración
+
         try {
             List<Categoria> categorias = categoriaDAO.listarTodos();
             List<Marca> marcas = marcaDAO.listarTodos();
 
-            // Depuración detallada
-            System.out.println("=== MARCAS CARGADAS ===");
-            for (Marca marca : marcas) {
-                System.out.println("ID: " + marca.getIdMarca() + 
-                                 ", Nombre: " + marca.getNombreMarca() + 
-                                 ", Proveedor: " + (marca.getProveedor() != null ? 
-                                     marca.getProveedor().getNombreProveedor() : "Ninguno"));
-            }
+            System.out.println("Categorías encontradas: " + categorias.size()); // Log
+            System.out.println("Marcas encontradas: " + marcas.size()); // Log
 
             request.setAttribute("categorias", categorias);
             request.setAttribute("marcas", marcas);
