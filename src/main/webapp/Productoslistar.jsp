@@ -17,129 +17,101 @@
         response.sendRedirect("index.jsp");
         return;
     }
-
-    ProductoDAO productoDAO = new ProductoDAO();
 %>
 <!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Panel de Productos</title>
+        <title>Administracion de | | Sistema de Gestión</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
             :root {
-                --primary-color: #2c3e50;
-                --secondary-color: #34495e;
-                --accent-color: #3498db;
-                --light-color: #ecf0f1;
-                --success-color: #2ecc71;
-                --danger-color: #e74c3c;
-                --warning-color: #f39c12;
+                --primary-color: #4e73df;
+                --secondary-color: #2c3e50;
+                --success-color: #1cc88a;
+                --danger-color: #e74a3b;
+                --warning-color: #f6c23e;
+                --light-bg: #f8f9fc;
+                --card-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+                --border-radius: 0.35rem;
             }
-
+            
             body {
-                background-color: #f8f9fa;
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: var(--light-bg);
+                font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
             }
-
-            .admin-header {
-                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            
+            .header-container {
+                background: var(--primary-color);
                 color: white;
-                padding: 1.5rem 0;
-                margin-bottom: 2rem;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                border-radius: 0 0 var(--border-radius) var(--border-radius);
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+                box-shadow: var(--card-shadow);
             }
-
-            .admin-header h2 {
-                font-weight: 600;
+            
+            .page-title {
+                font-weight: 700;
                 margin: 0;
             }
-
+            
             .user-info {
                 display: flex;
                 align-items: center;
-                gap: 10px;
+                gap: 0.75rem;
             }
-
+            
             .user-info img {
                 width: 40px;
                 height: 40px;
                 border-radius: 50%;
                 border: 2px solid white;
             }
-
-            .card {
-                border: none;
-                border-radius: 10px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-                margin-bottom: 2rem;
+            
+            .table-container {
+                background: white;
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                padding: 1.5rem;
             }
-
-            .card-header {
-                background-color: white;
-                border-bottom: 1px solid rgba(0,0,0,0.05);
-                font-weight: 600;
-                padding: 1rem 1.5rem;
-                border-radius: 10px 10px 0 0 !important;
-            }
-
-            .table-responsive {
-                border-radius: 0 0 10px 10px;
-                overflow: hidden;
-            }
-
-            .table {
-                margin-bottom: 0;
-            }
-
-            .table thead th {
+            
+            .table thead {
                 background-color: var(--primary-color);
                 color: white;
-                border-bottom: none;
-                padding: 1rem;
-                font-weight: 500;
             }
-
-            .table tbody tr {
-                transition: all 0.2s ease;
+            
+            .table th {
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                letter-spacing: 0.5px;
             }
-
-            .table tbody tr:hover {
-                background-color: rgba(52, 152, 219, 0.05);
+            
+            .btn-primary {
+                background-color: var(--primary-color);
+                border: none;
+                padding: 0.5rem 1.5rem;
+                font-weight: 600;
+                transition: all 0.3s;
             }
-
-            .table tbody td {
-                padding: 1rem;
-                vertical-align: middle;
-                border-top: 1px solid rgba(0,0,0,0.03);
+            
+            .btn-primary:hover {
+                background-color: #2e59d9;
+                transform: translateY(-2px);
             }
-
-            .btn-action {
-                padding: 0.35rem 0.75rem;
-                font-size: 0.85rem;
-                border-radius: 6px;
+            
+            .action-buttons .btn {
+                margin-right: 5px;
+                border-radius: 50px;
+                width: 35px;
+                height: 35px;
                 display: inline-flex;
                 align-items: center;
-                gap: 5px;
+                justify-content: center;
             }
-
-            .btn-add {
-                background-color: var(--success-color);
-                border-color: var(--success-color);
-                font-weight: 500;
-                padding: 0.5rem 1.25rem;
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .btn-add:hover {
-                background-color: #27ae60;
-                border-color: #27ae60;
-            }
-
+            
             .img-product {
                 width: 80px;
                 height: 80px;
@@ -147,21 +119,22 @@
                 background-color: #f8f9fa;
                 border-radius: 6px;
                 padding: 5px;
-                border: 1px solid #eee;
+                border: 1px solid #dee2e6;
             }
-
+            
             .empty-state {
-                padding: 3rem;
+                background-color: #f8f9fa;
+                border-radius: var(--border-radius);
+                padding: 2rem;
                 text-align: center;
-                color: #7f8c8d;
             }
-
+            
             .empty-state i {
                 font-size: 3rem;
+                color: #d1d3e2;
                 margin-bottom: 1rem;
-                color: #bdc3c7;
             }
-
+            
             .badge-category {
                 background-color: #e3f2fd;
                 color: #1976d2;
@@ -170,7 +143,7 @@
                 font-weight: 500;
                 font-size: 0.75rem;
             }
-
+            
             .badge-gender {
                 background-color: #f3e5f5;
                 color: #8e24aa;
@@ -179,53 +152,47 @@
                 font-weight: 500;
                 font-size: 0.75rem;
             }
-
+            
             .price {
                 font-weight: 600;
                 color: var(--primary-color);
             }
-
+            
             .status-badge {
                 padding: 0.35rem 0.6rem;
                 border-radius: 50px;
                 font-weight: 500;
                 font-size: 0.75rem;
             }
-
+            
             .status-available {
                 background-color: #e8f5e9;
                 color: #2e7d32;
             }
-
+            
             .status-low {
                 background-color: #fff8e1;
                 color: #ff8f00;
             }
-
+            
             .status-out {
                 background-color: #ffebee;
                 color: #c62828;
             }
-
+            
             .filename {
                 font-size: 0.75rem;
-                color: #7f8c8d;
+                color: #6e707e;
                 word-break: break-all;
             }
-
-            /* Estilos para el modal de compras */
-            #comprasModal .modal-header {
-                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            
+            .modal-header {
+                background-color: var(--primary-color);
                 color: white;
             }
-
-            #comprasList {
-                max-height: 300px;
-                overflow-y: auto;
-            }
-
+            
             .compra-item {
-                border-left: 4px solid var(--accent-color);
+                border-left: 4px solid var(--primary-color);
                 margin-bottom: 10px;
                 padding: 10px;
                 background-color: #f8f9fa;
@@ -235,16 +202,20 @@
     </head>
     <body>
         <!-- Encabezado -->
-        <div class="admin-header">
+        <div class="header-container">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h2><i class="bi bi-speedometer2"></i> Panel de Productos</h2>
+                    <h1 class="page-title">
+                        <i class="fas fa-boxes me-2"></i>Panel de Productos
+                    </h1>
                     <div class="user-info">
                         <a  class="btn btn-light me-3" href="administracion.jsp">Regresar</a>
                         <img src="https://ui-avatars.com/api/?name=<%= usuario.getNombre()%>&background=random" alt="Usuario">
                         <div>
                             <div class="fw-bold"><%= usuario.getNombre()%></div>
                             <div class="small text-white-50"><%= usuario.getRol().substring(0, 1).toUpperCase() + usuario.getRol().substring(1)%></div>
+                            <a  class="btn btn-light me-3" href="administracion.jsp">Regresar</a>
+
                         </div>
                     </div>
                 </div>
@@ -254,30 +225,34 @@
         <div class="container">
             <!-- Mensajes de alerta -->
             <% if (request.getAttribute("mensaje") != null) {%>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle-fill"></i> <%= request.getAttribute("mensaje")%>
+            <div class="alert alert-success alert-dismissible fade show">
+                <i class="fas fa-check-circle me-2"></i> <%= request.getAttribute("mensaje")%>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             <% } %>
 
             <% if (request.getAttribute("error") != null) {%>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle-fill"></i> <%= request.getAttribute("error")%>
+            <div class="alert alert-danger alert-dismissible fade show">
+                <i class="fas fa-exclamation-circle me-2"></i> <%= request.getAttribute("error")%>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             <% } %>
 
-            <!-- Card de productos -->
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-box-seam"></i> Gestión de Productos</span>
-                    <a href="ServletProducto" class="btn btn-add">
-                        <i class="bi bi-plus-lg"></i> Agregar Producto
+            <!-- Tabla de productos -->
+            <div class="table-container">
+                <div class="d-flex justify-content-between mb-3">
+                    <div>
+                        <span class="badge bg-light text-dark">
+                            <i class="fas fa-box me-1"></i> Total: ${listaProductos.size()} productos
+                        </span>
+                    </div>
+                    <a href="ServletProducto" class="btn btn-primary">
+                        <i class="fas fa-plus-circle me-2"></i> Agregar Producto
                     </a>
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-hover align-middle">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -306,13 +281,19 @@
                                         }
                             %>
                             <tr>
-                                <td>#<%= p.getIdProducto()%></td>
+                                <td><span class="badge bg-light text-dark">#<%= p.getIdProducto()%></span></td>
                                 <td>
                                     <strong><%= p.getNombre()%></strong><br>
                                     <small class="text-muted"><%= p.getColor()%></small>
                                 </td>
-                                <td><%= p.getDescripcion().length() > 50 ? p.getDescripcion().substring(0, 50) + "..." : p.getDescripcion()%></td>
-                                <td class="price">$<%= String.format("%.2f", p.getPrecio())%></td>
+                                <td>
+                                    <div class="text-truncate-container">
+                                        <span class="text-truncate-content" title="<%= p.getDescripcion()%>">
+                                            <%= p.getDescripcion()%>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="price">S/ <%= String.format("%.2f", p.getPrecio())%></td>
                                 <td>
                                     <span class="status-badge <%= statusClass%>">
                                         <%= p.getCantidad()%> unidades
@@ -331,28 +312,24 @@
                                          onerror="this.src='<%= rutaImagenDefault%>';this.onerror=null;">
                                     <div class="filename"><%= p.getUrlImagen() + ".png"%></div>
                                 </td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="ServletEditarProducto?accion=editar&id=<%= p.getIdProducto()%>" 
-                                           class="btn btn-warning btn-action"
-                                           data-bs-toggle="tooltip" data-bs-title="Editar">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        <a href="ServletEliminarProducto?id=<%= p.getIdProducto()%>" 
-                                           class="btn btn-danger btn-action"
-                                           onclick="return confirm('¿Está seguro que desea eliminar este producto?')"
-                                           data-bs-toggle="tooltip" data-bs-title="Eliminar">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
-                                        <button class="btn btn-info btn-action"
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#comprasModal"
-                                                onclick="cargarComprasProducto(<%= p.getIdProducto()%>, '<%= p.getNombre()%>')"
-                                                data-bs-toggle="tooltip" 
-                                                data-bs-title="Ver compras de este producto (esto es para SPRINT 3 AAAAA)">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                    </div>
+                                <td class="action-buttons">
+                                    <a href="ServletEditarProducto?accion=editar&id=<%= p.getIdProducto()%>" 
+                                       class="btn btn-sm btn-warning" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="ServletEliminarProducto?id=<%= p.getIdProducto()%>" 
+                                       class="btn btn-sm btn-danger"
+                                       onclick="return confirm('¿Está seguro de eliminar el producto <%= p.getNombre()%>?')"
+                                       title="Eliminar">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-info"
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#comprasModal"
+                                            onclick="cargarComprasProducto(<%= p.getIdProducto()%>, '<%= p.getNombre()%>')"
+                                            title="Ver compras">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
                                 </td>
                             </tr>
                             <%
@@ -362,11 +339,11 @@
                             <tr>
                                 <td colspan="9">
                                     <div class="empty-state">
-                                        <i class="bi bi-box"></i>
-                                        <h4>No hay productos registrados</h4>
-                                        <p>Comienza agregando nuevos productos al sistema</p>
-                                        <a href="registroProducto.jsp" class="btn btn-add">
-                                            <i class="bi bi-plus-lg"></i> Agregar Producto
+                                        <i class="fas fa-box-open"></i>
+                                        <h5 class="text-muted">No se encontraron productos</h5>
+                                        <p class="text-muted mb-0">No hay productos registrados en el sistema</p>
+                                        <a href="registroProducto.jsp" class="btn btn-primary mt-3">
+                                            <i class="fas fa-plus-circle me-2"></i> Registrar primer producto
                                         </a>
                                     </div>
                                 </td>
@@ -378,6 +355,7 @@
                     </table>
                 </div>
             </div>
+            
             <!-- Modal para mostrar compras -->
             <div class="modal fade" id="comprasModal" tabindex="-1" aria-labelledby="comprasModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -398,78 +376,75 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-            <script>
-                                            // Activar tooltips
-                                            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-                                            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            // Función para cargar las compras del producto
+            function cargarComprasProducto(productId, productName) {
+                // Actualizar el título del modal
+                document.getElementById('comprasModalLabel').textContent = `Compras del producto: ${productName}`;
 
-                                            // Función para cargar las compras del producto
-                                            function cargarComprasProducto(productId, productName) {
-                                                // Actualizar el título del modal
-                                                document.getElementById('comprasModalLabel').textContent = `Compras del producto: ${productName}`;
+                // Mostrar mensaje de carga
+                document.getElementById('totalCompras').textContent = 'Cargando información de compras...';
+                document.getElementById('comprasList').innerHTML = '';
 
-                                                // Mostrar mensaje de carga
-                                                document.getElementById('totalCompras').textContent = 'Cargando información de compras...';
-                                                document.getElementById('comprasList').innerHTML = '';
+                // Simular la obtención de datos (en tu caso real, harías una llamada AJAX)
+                setTimeout(() => {
+                    // Esto es un ejemplo - reemplázalo con tu llamada AJAX real
+                    const compras = obtenerComprasSimuladas(productId);
 
-                                                // Simular la obtención de datos (en tu caso real, harías una llamada AJAX)
-                                                setTimeout(() => {
-                                                    // Esto es un ejemplo - reemplázalo con tu llamada AJAX real
-                                                    const compras = obtenerComprasSimuladas(productId);
+                    // Actualizar la información
+                    document.getElementById('totalCompras').innerHTML =
+                            `Total de compras para este producto: <strong>${compras.length}</strong>`;
 
-                                                    // Actualizar la información
-                                                    document.getElementById('totalCompras').innerHTML =
-                                                            `Total de compras para este producto: <strong>${compras.length}</strong>`;
-
-                                                    if (compras.length > 0) {
-                                                        let html = '<div class="list-group">';
-                                                        compras.forEach(compra => {
-                                                            html += `
-                                    <div class="list-group-item compra-item">
-                                        <div class="d-flex justify-content-between">
-                                            <strong>Usuario:</strong> ${compra.usuario}
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <strong>Fecha:</strong> ${compra.fecha}
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <strong>Cantidad:</strong> ${compra.cantidad}
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <strong>Total:</strong> $${compra.total.toFixed(2)}
-                                        </div>
+                    if (compras.length > 0) {
+                        let html = '<div class="list-group">';
+                        compras.forEach(compra => {
+                            html += `
+                                <div class="list-group-item compra-item">
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Usuario:</strong> ${compra.usuario}
                                     </div>
-                                `;
-                                                        });
-                                                        html += '</div>';
-                                                        document.getElementById('comprasList').innerHTML = html;
-                                                    } else {
-                                                        document.getElementById('comprasList').innerHTML =
-                                                                '<div class="alert alert-info">No se encontraron compras para este producto.</div>';
-                                                    }
-                                                }, 500);
-                                            }
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Fecha:</strong> ${compra.fecha}
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Cantidad:</strong> ${compra.cantidad}
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Total:</strong> S/ ${compra.total.toFixed(2)}
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                        document.getElementById('comprasList').innerHTML = html;
+                    } else {
+                        document.getElementById('comprasList').innerHTML =
+                                '<div class="alert alert-info">No se encontraron compras para este producto.</div>';
+                    }
+                }, 500);
+            }
 
-                                            // Función de ejemplo - elimínala y reemplázala por tu llamada AJAX real
-                                            function obtenerComprasSimuladas(productId) {
-                                                // Datos simulados - en tu caso real, esto vendría de tu servidor
-                                                return [
-                                                    {
-                                                        usuario: "Cliente Ejemplo 1",
-                                                        fecha: "2023-11-15",
-                                                        cantidad: 2,
-                                                        total: 59.98
-                                                    },
-                                                    {
-                                                        usuario: "Cliente Ejemplo 2",
-                                                        fecha: "2023-11-10",
-                                                        cantidad: 1,
-                                                        total: 29.99
-                                                    }
-                                                ];
-                                            }
-            </script>
+            // Función de ejemplo - elimínala y reemplázala por tu llamada AJAX real
+            function obtenerComprasSimuladas(productId) {
+                // Datos simulados - en tu caso real, esto vendría de tu servidor
+                return [
+                    {
+                        usuario: "Cliente Ejemplo 1",
+                        fecha: "2023-11-15",
+                        cantidad: 2,
+                        total: 59.98
+                    },
+                    {
+                        usuario: "Cliente Ejemplo 2",
+                        fecha: "2023-11-10",
+                        cantidad: 1,
+                        total: 29.99
+                    }
+                ];
+            }
+        </script>
     </body>
 </html>

@@ -13,107 +13,89 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Editar Producto | Sistema de Gestión</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #6c5ce7;
-            --secondary-color: #2d3436;
-            --success-color: #00b894;
-            --danger-color: #d63031;
-            --warning-color: #fdcb6e;
-            --light-bg: #f8f9fa;
-            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            --border-radius: 8px;
+            --primary-color: #4e73df;
+            --secondary-color: #2c3e50;
+            --success-color: #1cc88a;
+            --danger-color: #e74a3b;
+            --warning-color: #f6c23e;
+            --light-bg: #f8f9fc;
+            --card-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            --border-radius: 0.35rem;
         }
         
         body {
             background-color: var(--light-bg);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
-        .edit-product-container {
+        .form-container {
             background: white;
             border-radius: var(--border-radius);
             box-shadow: var(--card-shadow);
-            padding: 2.5rem;
-            margin-top: 2rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
         }
         
-        .form-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #edf2f7;
-        }
-        
-        .form-header i {
-            font-size: 2.2rem;
-            color: var(--primary-color);
-            margin-right: 1.2rem;
-        }
-        
-        .form-title {
+        .page-title {
             color: var(--secondary-color);
             font-weight: 700;
-            margin: 0;
-            font-size: 1.8rem;
+            border-left: 5px solid var(--primary-color);
+            padding-left: 15px;
+            margin-bottom: 1.5rem;
         }
         
         .form-label {
             font-weight: 600;
             color: var(--secondary-color);
-            margin-bottom: 0.6rem;
-            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
         }
         
         .form-control, .form-select {
             border-radius: var(--border-radius);
-            padding: 0.8rem 1.2rem;
-            border: 1px solid #e2e8f0;
-            transition: all 0.3s ease;
+            border: 1px solid #d1d3e2;
+            padding: 0.5rem 0.75rem;
+            transition: all 0.3s;
         }
         
         .form-control:focus, .form-select:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.25rem rgba(108, 92, 231, 0.2);
+            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
         }
         
         .btn-primary {
             background-color: var(--primary-color);
             border: none;
-            padding: 0.8rem 1.8rem;
+            padding: 0.5rem 1.5rem;
             font-weight: 600;
-            border-radius: var(--border-radius);
             transition: all 0.3s;
         }
         
         .btn-primary:hover {
-            background-color: #5649c0;
+            background-color: #2e59d9;
             transform: translateY(-2px);
         }
         
         .btn-secondary {
             background-color: var(--secondary-color);
             border: none;
-            padding: 0.8rem 1.8rem;
+            padding: 0.5rem 1.5rem;
             font-weight: 600;
-            border-radius: var(--border-radius);
         }
         
         .input-group-text {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            border-radius: var(--border-radius) 0 0 var(--border-radius) !important;
         }
         
         .alert-danger {
-            background-color: #fff5f5;
-            border-color: #fed7d7;
+            background-color: rgba(231, 74, 59, 0.1);
+            border-color: rgba(231, 74, 59, 0.3);
             color: var(--danger-color);
-            border-radius: var(--border-radius);
         }
         
         .required-field::after {
@@ -128,18 +110,17 @@
             border-radius: var(--border-radius);
             margin-top: 1rem;
             display: block;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #d1d3e2;
         }
         
         .invalid-feedback {
             color: var(--danger-color);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
         
         .section-divider {
-            border-top: 1px dashed #e2e8f0;
-            margin: 2rem 0;
+            border-top: 1px dashed #d1d3e2;
+            margin: 1.5rem 0;
         }
     </style>
 </head>
@@ -147,11 +128,10 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10">
-                <div class="edit-product-container">
-                    <div class="form-header">
-                        <i class="fas fa-box-open"></i>
-                        <h1 class="form-title">Editar Producto</h1>
-                    </div>
+                <div class="form-container">
+                    <h1 class="page-title">
+                        <i class="fas fa-box-open me-2"></i>Editar Producto
+                    </h1>
                     
                     <c:if test="${not empty error}">
                         <div class="alert alert-danger alert-dismissible fade show">
@@ -165,7 +145,7 @@
                         <input type="hidden" name="idProducto" value="${producto.idProducto}">
                         
                         <div class="row">
-                            <div class="col-md-6 mb-4">
+                            <div class="col-md-6 mb-3">
                                 <label for="nombre" class="form-label required-field">Nombre del Producto</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-tag"></i></span>
@@ -177,7 +157,7 @@
                                 </div>
                             </div>
                             
-                            <div class="col-md-6 mb-4">
+                            <div class="col-md-6 mb-3">
                                 <label for="color" class="form-label required-field">Color</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-palette"></i></span>
@@ -190,7 +170,7 @@
                             </div>
                         </div>
                         
-                        <div class="mb-4">
+                        <div class="mb-3">
                             <label for="descripcion" class="form-label required-field">Descripción</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-align-left"></i></span>
@@ -205,7 +185,7 @@
                         <div class="section-divider"></div>
                         
                         <div class="row">
-                            <div class="col-md-4 mb-4">
+                            <div class="col-md-4 mb-3">
                                 <label for="precio" class="form-label required-field">Precio (S/)</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
@@ -217,7 +197,7 @@
                                 </div>
                             </div>
                             
-                            <div class="col-md-4 mb-4">
+                            <div class="col-md-4 mb-3">
                                 <label for="cantidad" class="form-label required-field">Cantidad</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-boxes"></i></span>
@@ -229,7 +209,7 @@
                                 </div>
                             </div>
                             
-                            <div class="col-md-4 mb-4">
+                            <div class="col-md-4 mb-3">
                                 <label for="genero" class="form-label required-field">Género</label>
                                 <select id="genero" name="genero" class="form-select" required>
                                     <option value="Hombre" ${producto.genero == 'Hombre' ? 'selected' : ''}>Hombre</option>
@@ -245,7 +225,7 @@
                         <div class="section-divider"></div>
                         
                         <div class="row">
-                            <div class="col-md-6 mb-4">
+                            <div class="col-md-6 mb-3">
                                 <label for="idCategoria" class="form-label required-field">Categoría</label>
                                 <select id="idCategoria" name="idCategoria" class="form-select" required>
                                     <c:forEach items="${categorias}" var="categoria">
@@ -259,7 +239,7 @@
                                 </div>
                             </div>
                             
-                            <div class="col-md-6 mb-4">
+                            <div class="col-md-6 mb-3">
                                 <label for="idMarca" class="form-label required-field">Marca</label>
                                 <select id="idMarca" name="idMarca" class="form-select" required>
                                     <c:forEach items="${marcas}" var="marca">
@@ -279,7 +259,7 @@
                         
                         <div class="section-divider"></div>
                         
-                        <div class="mb-4">
+                        <div class="mb-3">
                             <label for="detalle" class="form-label required-field">Detalles del Producto</label>
                             <textarea id="detalle" name="detalle" class="form-control" rows="4" required>${producto.detalle}</textarea>
                             <div class="invalid-feedback">
@@ -287,7 +267,7 @@
                             </div>
                         </div>
                         
-                        <div class="mb-4">
+                        <div class="mb-3">
                             <label for="urlImagen" class="form-label required-field">URL de Imagen</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-image"></i></span>
@@ -301,8 +281,8 @@
                             <img src="${producto.urlImagen}" alt="Vista previa de imagen" class="preview-image mt-2">
                         </div>
                         
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                            <a href="ServletListarProductos" class="btn btn-secondary me-md-2">
+                        <div class="d-flex justify-content-end mt-4">
+                            <a href="ServletListarProductos" class="btn btn-secondary me-2">
                                 <i class="fas fa-times-circle me-1"></i> Cancelar
                             </a>
                             <button type="submit" class="btn btn-primary">
@@ -315,7 +295,7 @@
         </div>
     </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Validación de formulario
         (function() {
