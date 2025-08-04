@@ -209,10 +209,13 @@
                         <i class="fas fa-boxes me-2"></i>Panel de Productos
                     </h1>
                     <div class="user-info">
+                        <a  class="btn btn-light me-3" href="administracion.jsp">Regresar</a>
                         <img src="https://ui-avatars.com/api/?name=<%= usuario.getNombre()%>&background=random" alt="Usuario">
                         <div>
                             <div class="fw-bold"><%= usuario.getNombre()%></div>
                             <div class="small text-white-50"><%= usuario.getRol().substring(0, 1).toUpperCase() + usuario.getRol().substring(1)%></div>
+                            <a  class="btn btn-light me-3" href="administracion.jsp">Regresar</a>
+
                         </div>
                     </div>
                 </div>

@@ -148,12 +148,15 @@
             <div class="header-container">
                 <div class="d-flex justify-content-between align-items-center">
                     <h1 class="page-title mb-0">Administración de Categorías</h1>
+                    <a  class="btn btn-light me-3" href="administracion.jsp">Regresar</a>
+
                     <div>
                         <span class="badge bg-light text-dark">
                             <i class="fas fa-layer-group me-1"></i> Total: ${listaCategorias.size()} categorías
                         </span>
                     </div>
                 </div>
+>>>>>>> f92b8bb42c2a346650512bdc3c19fdd895960283
             </div>
 
             <% if (request.getSession().getAttribute("mensaje") != null) { %>
