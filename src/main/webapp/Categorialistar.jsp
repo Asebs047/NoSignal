@@ -148,9 +148,10 @@
             <div class="header-container">
                 <div class="d-flex justify-content-between align-items-center">
                     <h1 class="page-title mb-0">Administración de Categorías</h1>
-                    <a  class="btn btn-light me-3" href="administracion.jsp">Regresar</a>
+                    
 
                     <div>
+                        <a  class="btn btn-light me-3" href="administracion.jsp">Regresar</a>
                         <span class="badge bg-light text-dark">
                             <i class="fas fa-layer-group me-1"></i> Total: ${listaCategorias.size()} categorías
                         </span>

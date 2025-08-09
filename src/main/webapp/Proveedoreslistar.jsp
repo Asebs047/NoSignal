@@ -172,7 +172,6 @@
             <div class="header-container">
                 <div class="d-flex justify-content-between align-items-center">
                     <h1 class="page-title mb-0">Administración de Productos</h1>
-                    <a  class="btn btn-light me-3" href="administracion.jsp">Regresar</a>
 
                     <div>
                         <span class="badge bg-light text-dark">
