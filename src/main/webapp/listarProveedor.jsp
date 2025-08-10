@@ -68,10 +68,17 @@
                 transform: translateY(-2px);
             }
             
-            .btn-success {
-                background-color: var(--success-color);
+            .btn-warning {
+                background-color: var(--warning-color);
                 border: none;
-                padding: 0.5rem 1.5rem;
+                padding: 0.25rem 0.75rem;
+                font-weight: 600;
+            }
+            
+            .btn-danger {
+                background-color: var(--danger-color);
+                border: none;
+                padding: 0.25rem 0.75rem;
                 font-weight: 600;
             }
             
@@ -85,18 +92,6 @@
                 text-transform: uppercase;
                 font-size: 0.75rem;
                 letter-spacing: 0.5px;
-            }
-            
-            .badge-success {
-                background-color: var(--success-color);
-            }
-            
-            .badge-secondary {
-                background-color: var(--secondary-color);
-            }
-            
-            .badge-warning {
-                background-color: var(--warning-color);
             }
             
             .text-truncate-container {
@@ -137,13 +132,6 @@
                 justify-content: center;
             }
             
-            .status-badge {
-                font-size: 0.75rem;
-                font-weight: 600;
-                padding: 0.35em 0.65em;
-                border-radius: 50px;
-            }
-            
             .empty-state {
                 background-color: #f8f9fa;
                 border-radius: var(--border-radius);
@@ -156,6 +144,18 @@
                 color: #d1d3e2;
                 margin-bottom: 1rem;
             }
+            
+            .badge-secondary {
+                background-color: #858796;
+                color: white;
+            }
+            
+            .status-badge {
+                font-size: 0.75rem;
+                font-weight: 600;
+                padding: 0.35em 0.65em;
+                border-radius: 50px;
+            }
         </style>
     </head>
     <body>
@@ -163,8 +163,10 @@
             <div class="header-container">
                 <div class="d-flex justify-content-between align-items-center">
                     <h1 class="page-title mb-0">Administración de Proveedores</h1>
+
                     <div>
                         <span class="badge bg-light text-dark">
+                            <a  class="btn btn-light me-3" href="administracion.jsp">Regresar</a>
                             <i class="fas fa-truck me-1"></i> Total: ${listaProveedores.size()} proveedores
                         </span>
                     </div>
@@ -190,7 +192,7 @@
             <% } %>
 
             <div class="d-flex justify-content-between mb-3">
-                <a href="registroProveedor.jsp" class="btn btn-success">
+                <a href="registroProveedor.jsp" class="btn btn-primary">
                     <i class="fas fa-plus-circle me-2"></i> Nuevo Proveedor
                 </a>
                 <div class="input-group" style="max-width: 300px;">
@@ -252,11 +254,11 @@
                                 </td>
                                 <td class="action-buttons">
                                     <a href="ServletEditarProveedor?id=<%= p.getIdProveedor()%>" 
-                                       class="btn btn-sm btn-outline-primary" title="Editar">
+                                       class="btn btn-sm btn-warning" title="Editar">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <a href="ServletEliminarProveedor?id=<%= p.getIdProveedor()%>" 
-                                       class="btn btn-sm btn-outline-danger" 
+                                       class="btn btn-sm btn-danger" 
                                        onclick="return confirm('¿Está seguro de eliminar el proveedor <%= p.getNombreProveedor()%>?\n\nLas marcas asociadas serán desvinculadas pero no eliminadas.');"
                                        title="Eliminar">
                                         <i class="fas fa-trash-alt"></i>
@@ -298,7 +300,7 @@
             }
             
             // Asignar evento a todos los botones de eliminar
-            document.querySelectorAll('.btn-outline-danger').forEach(btn => {
+            document.querySelectorAll('.btn-danger').forEach(btn => {
                 btn.addEventListener('click', confirmDelete);
             });
         </script>

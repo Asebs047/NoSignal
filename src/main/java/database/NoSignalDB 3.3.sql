@@ -527,11 +527,34 @@ delimiter //
 				M.descripcionMarca,
 				M.idProveedor,
 				M.paisOrigen,
-				P.nombreProveedor
+				P.nombreProveedor,
+				P.idProveedor as prov_idProveedor  
 			from Marcas M
 			left join Proveedores P on M.idProveedor = P.idProveedor;
 		end//
-        
+       
+delimiter ;
+
+delimiter //
+	create procedure sp_BuscarMarcaPorId(
+		in p_idMarca int
+	)
+	begin
+		select 
+			m.idMarca,
+			m.nombreMarca,
+			m.descripcionMarca,
+			m.idProveedor,
+			m.paisOrigen,
+			p.nombreProveedor
+		from 
+			Marcas M
+		left join 
+			Proveedores p on M.idProveedor = p.idProveedor
+		where 
+			m.idMarca = p_idMarca;
+	end//
+    
 delimiter ;
 
 delimiter //
@@ -605,74 +628,7 @@ delimiter //
             delete from Categorias where idCategoria = p_id;
         end //
 delimiter ;
--- -------------------------Datos Temporales------------------------------------
-call sp_AgregarProveedor('Suministros Moda S.A.', 'Proveedor mayorista de accesorios de moda', '5551234567', 'contacto@suministrosmoda.com', 'Av. Principal 123, Ciudad de México', '2023-01-15', 'activo');
-call sp_AgregarProveedor('Joyeria Fina Internacional', 'Especialistas en joyería de plata y oro', '5557654321', 'ventas@joyeriafina.com', 'Calle Diamante 45, Guadalajara', '2023-02-20', 'activo');
-call sp_AgregarProveedor('Accesorios Deportivos Ltda.', 'Distribuidor de artículos deportivos', '5559876543', 'info@accesoriosdeportivos.com', 'Blvd. Deportivo 678, Monterrey', '2023-03-10', 'activo');
-
-call sp_AgregarMarca('TimeMaster', 'Relojes de alta precisión y diseño', 1, 'Suiza');
-call sp_AgregarMarca('SilverPure', 'Joyeria en plata esterlina 925', 2, 'Italia');
-call sp_AgregarMarca('SportGear', 'Accesorios deportivos de alta calidad', 3, 'Estados Unidos');
-call sp_AgregarMarca('LuxuryGold', 'Joyas en oro de 18k y 24k', 2, 'Italia');
-call sp_AgregarMarca('UrbanStyle', 'Accesorios urbanos y modernos', 1, 'México');
-
--- No borrar los registros de abajo, por si alguien lo toca
-call sp_AgregarCategoria('Reloj', 'Relojes analógicos y digitales para hombre y mujer', 'https://ejemplo.com/categoria/relojes.jpg');
-call sp_AgregarCategoria('Cadena', 'Cadenas de diferentes metales y longitudes', 'https://ejemplo.com/categoria/cadenas.jpg');
-call sp_AgregarCategoria('Anillo', 'Anillos de compromiso, argollas y más', 'https://ejemplo.com/categoria/anillos.jpg');
-call sp_AgregarCategoria('Gorra', 'Gorras deportivas y de moda', 'https://ejemplo.com/categoria/gorras.jpg');
-call sp_AgregarCategoria('Gafas', 'Gafas de sol y protección visual', 'https://ejemplo.com/categoria/gafas.jpg');
-call sp_AgregarCategoria('Piercing', 'Piercings de acero quirúrgico y titanio', 'https://ejemplo.com/categoria/piercings.jpg');
-call sp_AgregarCategoria('Guante', 'Guantes deportivos y de moda', 'https://ejemplo.com/categoria/guantes.jpg');
-
-call sp_AgregarUsuario('Juan Pérez', 'García', '5551234567', 'juan@email.com', 'Calle 123, Ciudad', 'masculino', 'cliente', 'clave123');
-call sp_AgregarUsuario('María López', 'Rodríguez', '5557654321', 'maria@email.com', 'Avenida 456, Ciudad', 'femenino', 'cliente', 'securepass');
-call sp_AgregarUsuario('Carlos Sánchez', 'Martínez', '5559876543', 'carlos@email.com', 'Boulevard 789, Ciudad', 'masculino', 'cliente', 'mypassword');
-call sp_AgregarUsuario('Ana García', 'Fernández', '5554567890', 'ana@email.com', 'Callejón 321, Ciudad', 'femenino', 'cliente', 'ana789');
--- este es admin xd
-call sp_AgregarUsuario('Admin', 'Sistema', '5550000000', 'admin@tienda.com', 'Oficina Principal', 'masculino', 'administrador', 'admin123');
--- este es jefe
-call sp_AgregarUsuario('Pedro Martínez', 'Díaz', '5556789012', 'pedro@email.com', 'Pasaje 654, Ciudad', 'masculino', 'jefe', 'pedro456');
-
--- Reloj TimeMaster (Marca 1)
-call sp_AgregarProducto('Reloj Deportivo TimeMaster', 'Reloj resistente al agua', 'Negro', 129.99, 10, 'Hombre', 
-    'Resistente al agua hasta 100m, cronómetro digital', 'https://ejemplo.com/reloj-deportivo.jpg', 1, 1);
-
--- Cadena SilverPure (Marca 2)
-call sp_AgregarProducto('Cadena de Plata 925', 'Cadena de plata esterlina', 'Plateado', 299.99, 5, 'Unisex', 
-    'Largo 50cm, eslabones italianos', 'https://ejemplo.com/cadena-plata.jpg', 2, 2);
-
--- Anillo LuxuryGold (Marca 4)
-call sp_AgregarProducto('Anillo de Oro 18k', 'Anillo clásico de oro', 'Dorado', 599.99, 3, 'Mujer', 
-    'Talla ajustable, peso 5g', 'https://ejemplo.com/anillo-oro.jpg', 3, 4);
-
--- Gorra UrbanStyle (Marca 5)
-call sp_AgregarProducto('Gorra Béisbol Clásica', 'Gorra de algodón ajustable', 'Azul', 49.99, 15, 'Unisex', 
-    '100% algodón, ajuste trasero', 'https://ejemplo.com/gorra-beisbol.jpg', 4, 5);
-
--- Gafas SportGear (Marca 3)
-call sp_AgregarProducto('Gafas de Sol Premium', 'Protección UV 400', 'Negro', 199.99, 8, 'Unisex', 
-    'Marco de acetato, lentes polarizados', 'https://ejemplo.com/gafas-premium.jpg', 5, 3);
-    
-    
-call sp_AgregarCarrito(1, 0);
-call sp_AgregarCarrito(2, 0);
-call sp_AgregarCarrito(3, 0);
-call sp_AgregarCarrito(4, 0);
-call sp_AgregarCarrito(5, 0);
-
-call sp_AgregarDetalleCarrito(1, 1, 1, 129.99, '2025-05-02', 'sin pagar');
-call sp_AgregarDetalleCarrito(1, 2, 1, 299.99, '2025-04-03', 'sin pagar');
-call sp_AgregarDetalleCarrito(2, 3, 1, 599.99, '2025-04-04', 'sin pagar');
-call sp_AgregarDetalleCarrito(3, 4, 2, 99.98, '2025-12-29', 'en espera');
-call sp_AgregarDetalleCarrito(4, 5, 1, 199.99, '2025-7-18', 'pagado');
-
-call sp_AgregarFactura(1, 1, '2023-11-10', 429.98, 500.98);
-call sp_AgregarFactura(2, 2, '2023-11-11', 599.99, 699.99);
-call sp_AgregarFactura(3, 3, '2023-11-12', 99.98, 119.98);
-call sp_AgregarFactura(4, 4, '2023-11-13', 199.99, 239.99);
-call sp_AgregarFactura(5, 5, '2023-11-14', 399.99, 479.99);
-
+  
 -- Triggers, funciones y procedimientos para cambios en las tablas, PARA SPRINT 3
 delimiter //
 	create function fn_CalcularTotalCarrito(p_idCarrito int)
@@ -1090,9 +1046,180 @@ DELIMITER //
 		left join Categorias C on P.idCategoria = C.idCategoria
 		left join Marcas M on P.idMarca = M.idMarca
 		left join Proveedores PR on M.idProveedor = PR.idProveedor
-		WHERE P.idProducto = p_idProducto;
+		where P.idProducto = p_idProducto;
 	end //
+    
 delimiter ;
+
+-- Procedimiento para desvincular productos de una marca antes de eliminarla
+delimiter //
+	create procedure sp_DesvincularProductosDeMarca(in p_idMarca int)
+	begin
+		update Productos 
+		set idMarca = null 
+		where idMarca = p_idMarca;
+	end //
+
+delimiter ;
+
+-- -------------------------Datos Temporales------------------------------------
+call sp_AgregarProveedor('Suministros Moda S.A.', 'Proveedor mayorista de accesorios de moda', '5551234567', 'contacto@suministrosmoda.com', 'Av. Principal 123, Ciudad de México', '2023-01-15', 'activo');
+call sp_AgregarProveedor('Joyeria Fina Internacional', 'Especialistas en joyería de plata y oro', '5557654321', 'ventas@joyeriafina.com', 'Calle Diamante 45, Guadalajara', '2023-02-20', 'activo');
+call sp_AgregarProveedor('Accesorios Deportivos Ltda.', 'Distribuidor de artículos deportivos', '5559876543', 'info@accesoriosdeportivos.com', 'Blvd. Deportivo 678, Monterrey', '2023-03-10', 'activo');
+
+call sp_AgregarMarca('TimeMaster', 'Relojes de alta precisión y diseño', 1, 'Suiza');
+call sp_AgregarMarca('SilverPure', 'Joyeria en plata esterlina 925', 2, 'Italia');
+call sp_AgregarMarca('SportGear', 'Accesorios deportivos de alta calidad', 3, 'Estados Unidos');
+call sp_AgregarMarca('LuxuryGold', 'Joyas en oro de 18k y 24k', 2, 'Italia');
+call sp_AgregarMarca('UrbanStyle', 'Accesorios urbanos y modernos', 1, 'México');
+
+-- No borrar los registros de abajo, por si alguien lo toca
+call sp_AgregarCategoria('Reloj', 'Relojes analógicos y digitales para hombre y mujer', 'categoria-reloj');
+call sp_AgregarCategoria('Cadena', 'Cadenas de diferentes metales y longitudes', 'categoria-cadena');
+call sp_AgregarCategoria('Anillo', 'Anillos de compromiso, argollas y más', 'categoria-anillo');
+call sp_AgregarCategoria('Gorra', 'Gorras deportivas y de moda', 'categoria-gorra');
+call sp_AgregarCategoria('Gafas', 'Gafas de sol y protección visual', 'categoria-gafa');
+call sp_AgregarCategoria('Piercing', 'Piercings de acero quirúrgico y titanio', 'categoria-piercing');
+call sp_AgregarCategoria('Guante', 'Guantes deportivos y de moda', 'categoria-guante');
+
+call sp_AgregarUsuario('Juan Pérez', 'García', '5551234567', 'juan@email.com', 'Calle 123, Ciudad', 'masculino', 'cliente', 'clave123');
+call sp_AgregarUsuario('María López', 'Rodríguez', '5557654321', 'maria@email.com', 'Avenida 456, Ciudad', 'femenino', 'cliente', 'securepass');
+call sp_AgregarUsuario('Carlos Sánchez', 'Martínez', '5559876543', 'carlos@email.com', 'Boulevard 789, Ciudad', 'masculino', 'cliente', 'mypassword');
+call sp_AgregarUsuario('Ana García', 'Fernández', '5554567890', 'ana@email.com', 'Callejón 321, Ciudad', 'femenino', 'cliente', 'ana789');
+-- este es admin xd
+call sp_AgregarUsuario('Admin', 'Sistema', '5550000000', 'admin@tienda.com', 'Oficina Principal', 'masculino', 'administrador', 'admin123');
+-- este es jefe
+call sp_AgregarUsuario('Pedro Martínez', 'Díaz', '5556789012', 'jefe@gmail.com', 'Pasaje 654, Ciudad', 'masculino', 'jefe', 'jefe123');
+
+call sp_AgregarProducto('Anillo Plata Unisex', 'Anillo de plata 925', 'Plateado', 89.99, 15, 'Unisex', 'Talla ajustable', 'anillo-1-unisex', 3, 2);
+call sp_AgregarProducto('Anillo Oro Hombre', 'Anillo de oro 18k', 'Dorado', 199.99, 8, 'Hombre', 'Talla 19', 'anillo-2-hombre', 3, 4);
+call sp_AgregarProducto('Anillo Acero Negro', 'Anillo de acero negro', 'Negro', 59.99, 20, 'Hombre', 'Talla 18', 'anillo-3-hombre', 3, 5);
+call sp_AgregarProducto('Anillo Diamante Mujer', 'Anillo con zirconia', 'Plateado', 129.99, 10, 'Mujer', 'Talla 15', 'anillo-4-mujer', 3, 2);
+call sp_AgregarProducto('Anillo Corazón', 'Anillo forma corazón', 'Dorado', 109.99, 7, 'Mujer', 'Talla 16', 'anillo-5-mujer', 3, 4);
+call sp_AgregarProducto('Anillo Plata Hombre', 'Anillo de plata liso', 'Plateado', 79.99, 12, 'Hombre', 'Talla 17', 'anillo-6-hombre', 3, 2);
+call sp_AgregarProducto('Anillo Negro Unisex', 'Anillo de tungsteno', 'Negro', 99.99, 9, 'Unisex', 'Talla 18', 'anillo-7-hombre', 3, 5);
+call sp_AgregarProducto('Anillo Perla Mujer', 'Anillo con perla', 'Blanco', 119.99, 6, 'Mujer', 'Talla 14', 'anillo-8-mujer', 3, 2);
+call sp_AgregarProducto('Anillo Oro Negro', 'Anillo de oro negro', 'Negro', 149.99, 5, 'Hombre', 'Talla 20', 'anillo-9-hombre', 3, 4);
+call sp_AgregarProducto('Anillo Plata Grueso', 'Anillo de plata 950', 'Plateado', 139.99, 7, 'Hombre', 'Talla 21', 'anillo-10-hombre', 3, 2);
+call sp_AgregarProducto('Anillo Diamante Negro', 'Anillo con zirconia negra', 'Negro', 169.99, 4, 'Hombre', 'Talla 19', 'anillo-11-hombre', 3, 5);
+call sp_AgregarProducto('Anillo Oro Rosa', 'Anillo de oro rosa', 'Rosa', 179.99, 5, 'Mujer', 'Talla 15', 'anillo-12-hombre', 3, 4);
+call sp_AgregarProducto('Anillo Plata Texturizado', 'Anillo con diseño grabado', 'Plateado', 89.99, 8, 'Hombre', 'Talla 18', 'anillo-13-hombre', 3, 2);
+call sp_AgregarProducto('Anillo Doble Aro', 'Anillo de dos aros', 'Plateado', 99.99, 6, 'Mujer', 'Talla 16', 'anillo-14-hombre', 3, 2);
+call sp_AgregarProducto('Anillo Oro Blanco', 'Anillo de oro blanco', 'Plateado', 209.99, 3, 'Unisex', 'Talla 17', 'anillo-15-hombre', 3, 4);
+
+call sp_AgregarProducto('Cadena Acero Hombre', 'Cadena de acero inoxidable', 'Plateado', 69.99, 18, 'Hombre', 'Largo 50cm', 'cadena-1-hombre', 2, 5);
+call sp_AgregarProducto('Cadena Plata Unisex', 'Cadena de plata 925', 'Plateado', 129.99, 12, 'Unisex', 'Largo 55cm', 'cadena-2-unisex', 2, 2);
+call sp_AgregarProducto('Cadena Oro Hombre', 'Cadena de oro 14k', 'Dorado', 299.99, 5, 'Hombre', 'Largo 60cm', 'cadena-3-hombre', 2, 4);
+call sp_AgregarProducto('Cadena Acero Negro', 'Cadena de acero negro', 'Negro', 79.99, 15, 'Hombre', 'Largo 45cm', 'cadena-4-hombre', 2, 5);
+call sp_AgregarProducto('Cadena Plata Gruesa', 'Cadena de plata 950', 'Plateado', 159.99, 8, 'Hombre', 'Largo 50cm', 'cadena-5-hombre', 2, 2);
+call sp_AgregarProducto('Cadena Oro Rosa', 'Cadena de oro rosa', 'Rosa', 249.99, 6, 'Mujer', 'Largo 40cm', 'cadena-6-hombre', 2, 4);
+call sp_AgregarProducto('Cadena Acero Liso', 'Cadena de acero pulido', 'Plateado', 59.99, 20, 'Hombre', 'Largo 55cm', 'cadena-7-hombre', 2, 5);
+call sp_AgregarProducto('Cadena Plata Delgada', 'Cadena de plata fina', 'Plateado', 89.99, 15, 'Mujer', 'Largo 45cm', 'cadena-8-hombre', 2, 2);
+call sp_AgregarProducto('Cadena Oro Blanco', 'Cadena de oro blanco', 'Plateado', 279.99, 4, 'Unisex', 'Largo 50cm', 'cadena-9-hombre', 2, 4);
+call sp_AgregarProducto('Cadena Acero Texturizado', 'Cadena con diseño', 'Plateado', 99.99, 10, 'Hombre', 'Largo 60cm', 'cadena-10-hombre', 2, 5);
+call sp_AgregarProducto('Cadena Diamante Unisex', 'Cadena con dije de zirconia', 'Plateado', 159.99, 8, 'Unisex', 'Largo 45cm', 'cadena-11-unisex', 2, 2);
+call sp_AgregarProducto('Cadena Plata Negra', 'Cadena de plata ennegrecida', 'Negro', 119.99, 7, 'Unisex', 'Largo 55cm', 'cadena-12-unisex', 2, 2);
+call sp_AgregarProducto('Cadena Oro Amarillo', 'Cadena de oro amarillo', 'Dorado', 269.99, 5, 'Hombre', 'Largo 50cm', 'cadena-13-hombre', 2, 4);
+call sp_AgregarProducto('Cadena Plata Unisex', 'Cadena de plata con dije', 'Plateado', 139.99, 9, 'Unisex', 'Largo 40cm', 'cadena-14-unisex', 2, 2);
+call sp_AgregarProducto('Cadena Oro Negro', 'Cadena de oro negro', 'Negro', 329.99, 3, 'Unisex', 'Largo 45cm', 'cadena-15-unisex', 2, 4);
+
+call sp_AgregarProducto('Gafas Vista Modernas', 'Antirreflejo', 'Plateado', 149.99, 8, 'Unisex', 'Montura delgada', 'gafas-1-vista', 5, 3);
+call sp_AgregarProducto('Gafas Sol Clásicas', 'Protección UV400', 'Negro', 89.99, 15, 'Unisex', 'Marco de acetato', 'gafas-2-sol', 5, 3);
+call sp_AgregarProducto('Gafas Sol Deportivas', 'Polarizadas', 'Azul', 119.99, 10, 'Hombre', 'Resistentes al agua', 'gafas-3-sol', 5, 3);
+call sp_AgregarProducto('Gafas Sol Elegantes', 'Marco fino', 'Dorado', 99.99, 12, 'Mujer', 'Estilo retro', 'gafas-4-sol', 5, 3);
+call sp_AgregarProducto('Gafas Sol Oversize', 'Marco grande', 'Negro', 109.99, 9, 'Mujer', 'Protección total', 'gafas-5-sol', 5, 3);
+call sp_AgregarProducto('Gafas Vista Clásicas', 'Progresivas', 'Dorado', 199.99, 5, 'Unisex', 'Estilo retro', 'gafas-6-vista', 5, 3);
+call sp_AgregarProducto('Gafas Vista Delgadas', 'Ultraligeras', 'Plateado', 179.99, 7, 'Unisex', 'Montura flexible', 'gafas-7-vista', 5, 3);
+call sp_AgregarProducto('Gafas Vista Rectangulares', 'Diseño moderno', 'Negro', 159.99, 8, 'Hombre', 'Marco resistente', 'gafas-8-vista', 5, 3);
+call sp_AgregarProducto('Gafas Vista Redondas', 'Estilo vintage', 'Dorado', 169.99, 6, 'Mujer', 'Marco fino', 'gafas-9-vista', 5, 3);
+call sp_AgregarProducto('Gafas Sol Deportivas', 'Polarizadas', 'Rojo', 129.99, 7, 'Hombre', 'Para deportes', 'gafas-10-sol', 5, 3);
+call sp_AgregarProducto('Gafas Sol Aviador', 'Estilo clásico', 'Dorado', 139.99, 8, 'Unisex', 'Marco metalico', 'gafas-11-sol', 5, 3);
+call sp_AgregarProducto('Gafas Vista Clásicas', 'Progresivas', 'Plateado', 189.99, 6, 'Unisex', 'Montura gruesa', 'gafas-12-vista', 5, 3);
+call sp_AgregarProducto('Gafas Vista Modernas', 'Antirreflejo', 'Negro', 149.99, 9, 'Hombre', 'Diseño angular', 'gafas-13-vista', 5, 3);
+call sp_AgregarProducto('Gafas Sol Espejadas', 'Protección total', 'Azul', 119.99, 11, 'Unisex', 'Lentes espejados', 'gafas-14-sol', 5, 3);
+call sp_AgregarProducto('Gafas Sol Elegantes', 'Marco fino', 'Plateado', 99.99, 13, 'Mujer', 'Estilo minimalista', 'gafas-15-sol', 5, 3);
+
+call sp_AgregarProducto('Gorra Negra Clásica', '100% algodón', 'Negro', 29.99, 25, 'Unisex', 'Ajuste trasero', 'gorra-1-recta', 4, 5);
+call sp_AgregarProducto('Gorra Azul Deportiva', 'Material transpirable', 'Azul', 34.99, 20, 'Hombre', 'Visera curva', 'gorra-2-recta', 4, 5);
+call sp_AgregarProducto('Gorra Roja Básica', 'Algodón orgánico', 'Rojo', 27.99, 22, 'Unisex', 'Ajuste estándar', 'gorra-3-recta', 4, 5);
+call sp_AgregarProducto('Gorra Negra Ajustable', 'Talla única', 'Negro', 39.99, 18, 'Unisex', 'Cierre trasero', 'gorra-4-recta', 4, 5);
+call sp_AgregarProducto('Gorra Verde Militar', 'Estilo militar', 'Verde', 32.99, 15, 'Hombre', 'Visera plana', 'gorra-5-recta', 4, 5);
+call sp_AgregarProducto('Gorra Negra Ajustable', 'Talla única', 'Negro', 39.99, 15, 'Unisex', 'Cierre trasero', 'gorra-6-ajustable', 4, 5);
+call sp_AgregarProducto('Gorra Negra Curva', 'Visera curva', 'Negro', 36.99, 17, 'Unisex', 'Ajuste cómodo', 'gorra-7-curva', 4, 5);
+call sp_AgregarProducto('Gorra Azul Curva', 'Visera curva', 'Azul', 37.99, 16, 'Unisex', 'Ajuste cómodo', 'gorra-8-curva', 4, 5);
+call sp_AgregarProducto('Gorra Gris Curva', 'Visera curva', 'Gris', 35.99, 18, 'Unisex', 'Ajuste cómodo', 'gorra-9-curva', 4, 5);
+call sp_AgregarProducto('Gorra Negra Ajustable', 'Talla única', 'Negro', 39.99, 14, 'Unisex', 'Cierre trasero', 'gorra-10-ajustable', 4, 5);
+call sp_AgregarProducto('Gorra Blanca Recta', 'Visera recta', 'Blanco', 31.99, 19, 'Unisex', 'Ajuste estándar', 'gorra-11-recta', 4, 5);
+call sp_AgregarProducto('Gorra Negra Recta', 'Visera recta', 'Negro', 29.99, 21, 'Unisex', 'Ajuste estándar', 'gorra-12-recta', 4, 5);
+call sp_AgregarProducto('Gorra Gris Ajustable', 'Talla única', 'Gris', 41.99, 12, 'Unisex', 'Cierre trasero', 'gorra-13-ajustable', 4, 5);
+call sp_AgregarProducto('Gorra Roja Recta', 'Visera recta', 'Rojo', 33.99, 16, 'Unisex', 'Ajuste estándar', 'gorra-14-recta', 4, 5);
+call sp_AgregarProducto('Gorra Azul Recta', 'Visera recta', 'Azul', 34.99, 15, 'Unisex', 'Ajuste estándar', 'gorra-15-recta', 4, 5);
+
+call sp_AgregarProducto('Guantes Piel Hombre', 'Piel genuina', 'Marrón', 49.99, 12, 'Hombre', 'Tallas S-XL', 'guantes-1-hombre', 7, 5);
+call sp_AgregarProducto('Guantes Cuero Negro', 'Cuero sintético', 'Negro', 44.99, 15, 'Hombre', 'Tallas M-L', 'guantes-2-hombre', 7, 5);
+call sp_AgregarProducto('Guantes Lana Hombre', 'Lana merino', 'Gris', 39.99, 18, 'Hombre', 'Tallas S-XL', 'guantes-3-hombre', 7, 5);
+call sp_AgregarProducto('Guantes Lana Mujer', 'Lana merino', 'Rojo', 39.99, 15, 'Mujer', 'Tallas S-M', 'guantes-4-mujer', 7, 5);
+call sp_AgregarProducto('Guantes Piel Mujer', 'Piel suave', 'Negro', 47.99, 13, 'Mujer', 'Tallas XS-M', 'guantes-5-mujer', 7, 5);
+call sp_AgregarProducto('Guantes Cuero Unisex', 'Cuero sintético', 'Negro', 44.99, 10, 'Unisex', 'Tallas M-L', 'guantes-6-unisex', 7, 5);
+call sp_AgregarProducto('Guantes Lana Unisex', 'Lana merino', 'Azul', 41.99, 12, 'Unisex', 'Tallas S-XL', 'guantes-7-unisex', 7, 5);
+call sp_AgregarProducto('Guantes Piel Hombre', 'Piel resistente', 'Marrón', 51.99, 9, 'Hombre', 'Tallas L-XL', 'guantes-8-hombre', 7, 5);
+call sp_AgregarProducto('Guantes Cuero Hombre', 'Cuero genuino', 'Negro', 54.99, 8, 'Hombre', 'Tallas M-XL', 'guantes-9-hombre', 7, 5);
+call sp_AgregarProducto('Guantes Lana Unisex', 'Lana merino', 'Verde', 42.99, 11, 'Unisex', 'Tallas S-L', 'guantes-10-unisex', 7, 5);
+call sp_AgregarProducto('Guantes Piel Hombre', 'Piel de cabra', 'Marrón', 59.99, 7, 'Hombre', 'Tallas L-XXL', 'guantes-11-hombre', 7, 5);
+call sp_AgregarProducto('Guantes Cuero Hombre', 'Cuero engrasado', 'Negro', 56.99, 6, 'Hombre', 'Tallas XL-XXL', 'guantes-12-hombre', 7, 5);
+call sp_AgregarProducto('Guantes Lana Hombre', 'Lana gruesa', 'Gris', 45.99, 9, 'Hombre', 'Tallas M-XL', 'guantes-13-hombre', 7, 5);
+call sp_AgregarProducto('Guantes Piel Mujer', 'Piel suave', 'Rosa', 49.99, 8, 'Mujer', 'Tallas XS-M', 'guantes-14-mujer', 7, 5);
+call sp_AgregarProducto('Guantes Cuero Hombre', 'Cuero resistente', 'Negro', 52.99, 7, 'Hombre', 'Tallas L-XXL', 'guantes-15-hombre', 7, 5);
+
+call sp_AgregarProducto('Piercing Diamante', 'Acero quirúrgico', 'Plateado', 29.99, 20, 'Mujer', 'Para oreja', 'pearcings-1-mujer', 6, 2);
+call sp_AgregarProducto('Piercing Negro', 'Titanio negro', 'Negro', 34.99, 18, 'Mujer', 'Para nariz', 'pearcings-2-mujer', 6, 5);
+call sp_AgregarProducto('Piercing Oro', 'Baño de oro', 'Dorado', 39.99, 15, 'Hombre', 'Para ceja', 'pearcings-3-hombre', 6, 4);
+call sp_AgregarProducto('Piercing Plata', 'Acero quirúrgico', 'Plateado', 27.99, 22, 'Mujer', 'Para labio', 'pearcings-4-mujer', 6, 2);
+call sp_AgregarProducto('Piercing Negro Unisex', 'Titanio negro', 'Negro', 32.99, 16, 'Unisex', 'Para oreja', 'pearcings-5-unisex', 6, 5);
+call sp_AgregarProducto('Piercing Diamante Mujer', 'Con zirconia', 'Plateado', 44.99, 12, 'Mujer', 'Para ombligo', 'pearcings-6-mujer', 6, 2);
+call sp_AgregarProducto('Piercing Plata Unisex', 'Acero quirúrgico', 'Plateado', 29.99, 19, 'Unisex', 'Para ceja', 'pearcings-7-unisex', 6, 2);
+call sp_AgregarProducto('Piercing Oro Mujer', 'Baño de oro', 'Dorado', 37.99, 14, 'Mujer', 'Para nariz', 'pearcings-8-mujer', 6, 4);
+call sp_AgregarProducto('Piercing Negro Unisex', 'Titanio negro', 'Negro', 31.99, 17, 'Unisex', 'Para labio', 'pearcings-9-unisex', 6, 5);
+call sp_AgregarProducto('Piercing Plata Unisex', 'Acero quirúrgico', 'Plateado', 26.99, 21, 'Unisex', 'Para oreja', 'pearcings-10-unisex', 6, 2);
+call sp_AgregarProducto('Piercing Diamante Mujer', 'Con zirconia', 'Plateado', 42.99, 13, 'Mujer', 'Para ceja', 'pearcings-11-mujer', 6, 2);
+call sp_AgregarProducto('Piercing Oro Hombre', 'Baño de oro', 'Dorado', 36.99, 15, 'Hombre', 'Para nariz', 'pearcings-12-hombre', 6, 4);
+call sp_AgregarProducto('Piercing Plata Unisex', 'Acero quirúrgico', 'Plateado', 28.99, 18, 'Unisex', 'Para labio', 'pearcings-13-unisex', 6, 2);
+call sp_AgregarProducto('Piercing Negro Hombre', 'Titanio negro', 'Negro', 33.99, 16, 'Hombre', 'Para ceja', 'pearcings-14-hombre', 6, 5);
+call sp_AgregarProducto('Piercing Plata Unisex', 'Acero quirúrgico', 'Plateado', 27.99, 20, 'Unisex', 'Para oreja', 'pearcings-15-unisex', 6, 2);
+
+call sp_AgregarProducto('Reloj Metal', 'Acero inoxidable', 'Plateado', 199.99, 10, 'Hombre', 'Cronógrafo', 'relojes-1-metal', 1, 1);
+call sp_AgregarProducto('Reloj Cuero', 'Correa de cuero', 'Marrón', 179.99, 12, 'Hombre', 'Analógico', 'relojes-2-cuero', 1, 1);
+call sp_AgregarProducto('Reloj Acero', 'Acero pulido', 'Plateado', 219.99, 8, 'Hombre', 'Resistente al agua', 'relojes-3-metal', 1, 1);
+call sp_AgregarProducto('Reloj Cuero Negro', 'Correa de cuero', 'Negro', 189.99, 9, 'Hombre', 'Estilo clásico', 'relojes-4-cuero', 1, 1);
+call sp_AgregarProducto('Reloj Metal Dorado', 'Baño de oro', 'Dorado', 239.99, 7, 'Hombre', 'Cronógrafo', 'relojes-5-metal', 1, 1);
+call sp_AgregarProducto('Reloj Acero Negro', 'Acero negro', 'Negro', 209.99, 8, 'Hombre', 'Resistente al agua', 'relojes-6-metal', 1, 1);
+call sp_AgregarProducto('Reloj Metal Plata', 'Acero inoxidable', 'Plateado', 199.99, 10, 'Hombre', 'Analógico', 'relojes-7-metal', 1, 1);
+call sp_AgregarProducto('Reloj Cuero Marrón', 'Correa de cuero', 'Marrón', 169.99, 11, 'Hombre', 'Estilo casual', 'relojes-8-cuero', 1, 1);
+call sp_AgregarProducto('Reloj Cuero Negro', 'Correa de cuero', 'Negro', 179.99, 10, 'Hombre', 'Analógico', 'relojes-9-cuero', 1, 1);
+call sp_AgregarProducto('Reloj Metal Dorado', 'Baño de oro', 'Dorado', 229.99, 6, 'Hombre', 'Cronógrafo', 'relojes-10-metal', 1, 1);
+call sp_AgregarProducto('Reloj Cuero Marrón', 'Correa de cuero', 'Marrón', 159.99, 12, 'Hombre', 'Estilo retro', 'relojes-11-cuero', 1, 1);
+call sp_AgregarProducto('Reloj Acero Plata', 'Acero inoxidable', 'Plateado', 209.99, 8, 'Hombre', 'Resistente al agua', 'relojes-12-metal', 1, 1);
+call sp_AgregarProducto('Reloj Metal Negro', 'Acero negro', 'Negro', 219.99, 7, 'Hombre', 'Cronógrafo', 'relojes-13-metal', 1, 1);
+call sp_AgregarProducto('Reloj Cuero Negro', 'Correa de cuero', 'Negro', 189.99, 9, 'Hombre', 'Analógico', 'relojes-14-cuero', 1, 1);
+call sp_AgregarProducto('Reloj Metal Plata', 'Acero inoxidable', 'Plateado', 199.99, 10, 'Hombre', 'Resistente al agua', 'relojes-15-metal', 1, 1);
+  
+call sp_AgregarCarrito(1, 0);
+call sp_AgregarCarrito(2, 0);
+call sp_AgregarCarrito(3, 0);
+call sp_AgregarCarrito(4, 0);
+call sp_AgregarCarrito(5, 0);
+
+call sp_AgregarDetalleCarrito(1, 1, 1, 129.99, '2025-05-02', 'sin pagar');
+call sp_AgregarDetalleCarrito(1, 2, 1, 299.99, '2025-04-03', 'sin pagar');
+call sp_AgregarDetalleCarrito(2, 3, 1, 599.99, '2025-04-04', 'sin pagar');
+call sp_AgregarDetalleCarrito(3, 4, 2, 99.98, '2025-12-29', 'en espera');
+call sp_AgregarDetalleCarrito(4, 5, 1, 199.99, '2025-7-18', 'pagado');
+
+call sp_AgregarFactura(1, 1, '2023-11-10', 429.98, 500.98);
+call sp_AgregarFactura(2, 2, '2023-11-11', 599.99, 699.99);
+call sp_AgregarFactura(3, 3, '2023-11-12', 99.98, 119.98);
+call sp_AgregarFactura(4, 4, '2023-11-13', 199.99, 239.99);
+call sp_AgregarFactura(5, 5, '2023-11-14', 399.99, 479.99);
 
 call sp_ListarCarritos();
 call sp_ListarDetallesCarrito();
