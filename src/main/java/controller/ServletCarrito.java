@@ -25,57 +25,49 @@ import model.Usuario;
 @WebServlet("/ServletCarrito")
 public class ServletCarrito extends HttpServlet {
 
-   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    response.setContentType("text/html;charset=UTF-8");
-    
-    String accion = request.getParameter("accion");
-    HttpSession session = request.getSession();
-    Usuario usuario = (Usuario) session.getAttribute("usuario");
-    
-    if (usuario == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
-    
-    try {
-        CarritoDAO carritoDAO = new CarritoDAO();
-        ProductoDAO productoDAO = new ProductoDAO();
-        Carrito carrito = carritoDAO.obtenerCarritoActivo(usuario);
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         
-        // Actualizar carrito en sesión
-        session.setAttribute("carrito", carrito);
+        String accion = request.getParameter("accion");
+        HttpSession session = request.getSession();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         
-        switch (accion) {
-            case "agregar":
-                agregarProducto(request, response, carritoDAO, productoDAO, carrito);
-                break;
-            case "actualizar":
-                actualizarCantidad(request, response, carritoDAO, carrito);
-                break;
-            case "eliminar":
-                eliminarProducto(request, response, carritoDAO, carrito);
-                break;
-            case "vaciar":
-                vaciarCarrito(request, response, carritoDAO, carrito);
-                break;
-            case "obtener":
-                obtenerCarrito(request, response, carrito);
-                break;
-            default:
-                response.sendRedirect("catalogo.jsp");
+        if (usuario == null) {
+            response.sendRedirect("login.jsp");
+            return;
         }
         
-        // Actualizar carrito después de cada acción
-        carrito = carritoDAO.obtenerCarritoActivo(usuario);
-        session.setAttribute("carrito", carrito);
-        
-    } catch (SQLException ex) {
-        Logger.getLogger(ServletCarrito.class.getName()).log(Level.SEVERE, null, ex);
-        session.setAttribute("error", "Error al procesar la solicitud: " + ex.getMessage());
-        response.sendRedirect("carrito.jsp");
+        try {
+            CarritoDAO carritoDAO = new CarritoDAO();
+            ProductoDAO productoDAO = new ProductoDAO();
+            Carrito carrito = carritoDAO.obtenerCarritoActivo(usuario);
+            
+            switch (accion) {
+                case "agregar":
+                    agregarProducto(request, response, carritoDAO, productoDAO, carrito);
+                    break;
+                case "actualizar":
+                    actualizarCantidad(request, response, carritoDAO, carrito);
+                    break;
+                case "eliminar":
+                    eliminarProducto(request, response, carritoDAO, carrito);
+                    break;
+                case "vaciar":
+                    vaciarCarrito(request, response, carritoDAO, carrito);
+                    break;
+                case "obtener":
+                    obtenerCarrito(request, response, carrito);
+                    break;
+                default:
+                    response.sendRedirect("catalogo.jsp");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ServletCarrito.class.getName()).log(Level.SEVERE, null, ex);
+            request.getSession().setAttribute("error", "Error al procesar la solicitud: " + ex.getMessage());
+            response.sendRedirect("producto.jsp?id=" + request.getParameter("idProducto"));
+        }
     }
-}
 
    private void agregarProducto(HttpServletRequest request, HttpServletResponse response, 
         CarritoDAO carritoDAO, ProductoDAO productoDAO, Carrito carrito) 
@@ -137,69 +129,28 @@ public class ServletCarrito extends HttpServlet {
     }
 
     private void eliminarProducto(HttpServletRequest request, HttpServletResponse response, 
-        CarritoDAO carritoDAO, Carrito carrito) throws SQLException, IOException {
-    
-    HttpSession session = request.getSession();
-    
-    try {
+            CarritoDAO carritoDAO, Carrito carrito) throws SQLException, IOException {
+        
         int idDetalle = Integer.parseInt(request.getParameter("idDetalle"));
-        
-        // Verificar que el carrito existe
-        if (carrito == null) {
-            carrito = new Carrito();
-            carrito.setUsuario((Usuario) session.getAttribute("usuario"));
-        }
-        
-        // Buscar el detalle a eliminar
         DetalleCarrito detalle = buscarDetalle(carrito, idDetalle);
         
         if (detalle != null) {
-            // Eliminar de la base de datos
             carritoDAO.eliminarProducto(detalle);
-            
-            // Actualizar el carrito en sesión
-            carrito = carritoDAO.obtenerCarritoActivo(carrito.getUsuario());
-            session.setAttribute("carrito", carrito);
-            
-            session.setAttribute("mensaje", "Producto eliminado del carrito");
+            request.getSession().setAttribute("mensaje", "Producto eliminado del carrito");
         } else {
-            session.setAttribute("error", "No se encontró el producto en el carrito");
+            request.getSession().setAttribute("error", "Producto no encontrado en el carrito");
         }
         
-    } catch (Exception e) {
-        session.setAttribute("error", "Error al eliminar producto: " + e.getMessage());
-        Logger.getLogger(ServletCarrito.class.getName()).log(Level.SEVERE, null, e);
+        response.sendRedirect("carrito.jsp");
     }
-    
-    response.sendRedirect("carrito.jsp");
-}
 
-private void vaciarCarrito(HttpServletRequest request, HttpServletResponse response, 
-        CarritoDAO carritoDAO, Carrito carrito) throws SQLException, IOException {
-    
-    HttpSession session = request.getSession();
-    
-    try {
-        if (carrito != null) {
-            carritoDAO.vaciarCarrito(carrito);
-            
-            // Actualizar el carrito en sesión
-            carrito = carritoDAO.obtenerCarritoActivo(carrito.getUsuario());
-            session.setAttribute("carrito", carrito);
-            
-            session.setAttribute("mensaje", "Carrito vaciado correctamente");
-        } else {
-            session.setAttribute("error", "No se encontró el carrito");
-        }
-    } catch (Exception e) {
-        session.setAttribute("error", "Error al vaciar carrito: " + e.getMessage());
-        Logger.getLogger(ServletCarrito.class.getName()).log(Level.SEVERE, null, e);
+    private void vaciarCarrito(HttpServletRequest request, HttpServletResponse response, 
+            CarritoDAO carritoDAO, Carrito carrito) throws SQLException, IOException {
+        
+        carritoDAO.vaciarCarrito(carrito);
+        request.getSession().setAttribute("mensaje", "Carrito vaciado");
+        response.sendRedirect("carrito.jsp");
     }
-    
-    response.sendRedirect("carrito.jsp");
-}
-
-    
 
     private void obtenerCarrito(HttpServletRequest request, HttpServletResponse response, 
         Carrito carrito) throws IOException {
