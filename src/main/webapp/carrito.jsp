@@ -1,16 +1,31 @@
+<%@page import="model.Carrito"%>
+<%@page import="model.Usuario"%>
+<%@page import="dao.CarritoDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<jsp:useBean id="carrito" scope="session" class="model.Carrito"/>
+
 <%
     if (session.getAttribute("usuario") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
     
-    String mensaje = (String) request.getSession().getAttribute("mensaje");
-    String error = (String) request.getSession().getAttribute("error");
-    request.getSession().removeAttribute("mensaje");
-    request.getSession().removeAttribute("error");
+    // Obtener carrito de la sesión o crear uno nuevo
+    Carrito carritoSession = (Carrito) session.getAttribute("carrito");
+    if (carritoSession == null) {
+        CarritoDAO carritoDAO = new CarritoDAO();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        carritoSession = carritoDAO.obtenerCarritoActivo(usuario);
+        session.setAttribute("carrito", carritoSession);
+    }
+    
+    String mensaje = (String) session.getAttribute("mensaje");
+    String error = (String) session.getAttribute("error");
+    session.removeAttribute("mensaje");
+    session.removeAttribute("error");
+    
+    // Colocar el carrito en el ámbito de página para EL
+    pageContext.setAttribute("carrito", carritoSession);
 %>
 <!DOCTYPE html>
 <html>
@@ -38,6 +53,15 @@
         .quantity-input {
             width: 70px;
             display: inline-block;
+        }
+        .summary-card {
+            background-color: #f8f9fa;
+            border: none;
+            border-radius: 10px;
+        }
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
         }
     </style>
 </head>
@@ -79,81 +103,84 @@
                     </div>
                 </c:when>
                 <c:otherwise>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Precio</th>
-                                    <th>Cantidad</th>
-                                    <th>Subtotal</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach items="${carrito.detalles}" var="detalle">
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="${detalle.producto.urlImagen}" alt="${detalle.producto.nombre}" class="product-img me-3">
-                                                <div>
-                                                    <h6 class="mb-0">${detalle.producto.nombre}</h6>
-                                                    <small class="text-muted">${detalle.producto.color}</small>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">Q${detalle.producto.precio}</td>
-                                        <td class="align-middle">
-                                            <form action="ServletCarrito" method="post" class="d-inline">
-                                                <input type="hidden" name="accion" value="actualizar">
-                                                <input type="hidden" name="idDetalle" value="${detalle.idDetalle}">
-                                                <div class="input-group">
-                                                    <input type="number" name="cantidad" value="${detalle.cantidad}" min="1" max="10" class="form-control quantity-input">
-                                                    <button type="submit" class="btn btn-outline-primary">
-                                                        <i class="bi bi-arrow-clockwise"></i>
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </td>
-                                        <td class="align-middle">Q${detalle.subTotal}</td>
-                                        <td class="align-middle">
-                                            <form action="ServletCarrito" method="post" class="d-inline">
-                                                <input type="hidden" name="accion" value="eliminar">
-                                                <input type="hidden" name="idDetalle" value="${detalle.idDetalle}">
-                                                <button type="submit" class="btn btn-outline-danger">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="row mt-4">
-                        <div class="col-md-6">
-                            <form action="ServletCarrito" method="post">
-                                <input type="hidden" name="accion" value="vaciar">
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="bi bi-cart-x"></i> Vaciar carrito
-                                </button>
-                            </form>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Producto</th>
+                                            <th>Precio</th>
+                                            <th>Cantidad</th>
+                                            <th>Subtotal</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="${carrito.detalles}" var="detalle">
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="${detalle.producto.urlImagen}" alt="${detalle.producto.nombre}" class="product-img me-3">
+                                                        <div>
+                                                            <h6 class="mb-0">${detalle.producto.nombre}</h6>
+                                                            <small class="text-muted">${detalle.producto.color}</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle">Q${detalle.producto.precio}</td>
+                                                <td class="align-middle">
+                                                    <form action="ServletCarrito" method="post" class="d-inline">
+                                                        <input type="hidden" name="accion" value="actualizar">
+                                                        <input type="hidden" name="idDetalle" value="${detalle.idDetalle}">
+                                                        <div class="input-group">
+                                                            <input type="number" name="cantidad" value="${detalle.cantidad}" min="1" max="10" class="form-control quantity-input">
+                                                            <button type="submit" class="btn btn-outline-primary btn-sm">
+                                                                <i class="bi bi-arrow-clockwise"></i>
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </td>
+                                                <td class="align-middle">Q${detalle.subTotal}</td>
+                                                <td class="align-middle">
+                                                    <form action="ServletCarrito" method="post" class="d-inline">
+                                                        <input type="hidden" name="accion" value="eliminar">
+                                                        <input type="hidden" name="idDetalle" value="${detalle.idDetalle}">
+                                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                            <i class="bi bi-trash"></i> Quitar
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <form action="ServletCarrito" method="post" id="vaciarCarritoForm">
+                                    <input type="hidden" name="accion" value="vaciar">
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-cart-x"></i> Vaciar carrito
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="col-md-6 text-end">
-                            <div class="card bg-light">
+                        
+                        <div class="col-md-4">
+                            <div class="card summary-card">
                                 <div class="card-body">
                                     <h5 class="card-title">Resumen de compra</h5>
-                                    <div class="d-flex justify-content-between">
+                                    <div class="d-flex justify-content-between mb-2">
                                         <span>Subtotal:</span>
                                         <span>Q${carrito.total}</span>
                                     </div>
                                     <hr>
-                                    <div class="d-flex justify-content-between fw-bold">
+                                    <div class="d-flex justify-content-between fw-bold mb-3">
                                         <span>Total:</span>
                                         <span>Q${carrito.total}</span>
                                     </div>
-                                    <a href="checkout.jsp" class="btn btn-primary w-100 mt-3">
+                                    <a href="checkout.jsp" class="btn btn-primary w-100">
                                         <i class="bi bi-credit-card"></i> Proceder al pago
                                     </a>
                                 </div>
@@ -185,6 +212,46 @@
                 text: '<%= error %>'
             });
         <% } %>
+        
+        // Confirmación para vaciar carrito
+        document.getElementById('vaciarCarritoForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: '¿Vaciar carrito?',
+                text: "¿Estás seguro de que quieres vaciar todo tu carrito de compras?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, vaciar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        });
+        
+        // Confirmación para eliminar producto
+        document.querySelectorAll('form[action="ServletCarrito"][name="accion"][value="eliminar"]').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: '¿Quitar producto?',
+                    text: "¿Estás seguro de que quieres eliminar este producto de tu carrito?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, quitar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit();
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>

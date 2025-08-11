@@ -15,13 +15,12 @@ import model.Factura;
  * @author Lu0
  */
 public class CarritoDAO {
-    
+
     public Carrito obtenerCarritoActivo(Usuario usuario) throws SQLException {
         String sql = "{call sp_obtenercarritoactivo(?)}";
         Carrito carrito = null;
 
-        try (Connection conexion = DBConnection.getInstancia().getConnection();
-             CallableStatement consulta = conexion.prepareCall(sql)) {
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); CallableStatement consulta = conexion.prepareCall(sql)) {
 
             consulta.setInt(1, usuario.getIdUsuario());
 
@@ -45,36 +44,34 @@ public class CarritoDAO {
 
         return carrito;
     }
-    
+
     // Crear un nuevo carrito para un usuario
     private Carrito crearCarrito(Usuario usuario) throws SQLException {
         String sql = "{call sp_crearcarrito(?)}";
         Carrito carrito = new Carrito();
         carrito.setUsuario(usuario);
         carrito.setTotal(0.0);
-        
-        try (Connection conexion = DBConnection.getInstancia().getConnection();
-             CallableStatement consulta = conexion.prepareCall(sql)) {
-            
+
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); CallableStatement consulta = conexion.prepareCall(sql)) {
+
             consulta.setInt(1, usuario.getIdUsuario());
-            
+
             try (ResultSet resultado = consulta.executeQuery()) {
                 if (resultado.next()) {
                     carrito.setIdCarrito(resultado.getInt("idcarrito"));
                 }
             }
         }
-        
+
         return carrito;
     }
-    
+
     // Obtener los detalles de un carrito
     private List<DetalleCarrito> obtenerDetallesCarrito(int idCarrito) throws SQLException {
         String sql = "{call sp_obtenerdetallescarrito(?)}";
         List<DetalleCarrito> detalles = new ArrayList<>();
 
-        try (Connection conexion = DBConnection.getInstancia().getConnection();
-             CallableStatement consulta = conexion.prepareCall(sql)) {
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); CallableStatement consulta = conexion.prepareCall(sql)) {
 
             consulta.setInt(1, idCarrito);
 
@@ -100,89 +97,99 @@ public class CarritoDAO {
         }
         return detalles;
     }
-    
+
     // Agregar un producto al carrito
     public void agregarProducto(Carrito carrito, Producto producto, int cantidad) throws SQLException {
         String sql = "{call sp_agregarproductocarrito(?, ?, ?)}";
-        
-        try (Connection conexion = DBConnection.getInstancia().getConnection();
-             CallableStatement consulta = conexion.prepareCall(sql)) {
-            
+
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); CallableStatement consulta = conexion.prepareCall(sql)) {
+
             consulta.setInt(1, carrito.getIdCarrito());
             consulta.setInt(2, producto.getIdProducto());
             consulta.setInt(3, cantidad);
-            
+
             consulta.executeUpdate();
         }
-        
+
         // Actualizar el total del carrito
         actualizarTotalCarrito(carrito.getIdCarrito());
     }
-    
+
     // Actualizar la cantidad de un producto en el carrito
     public void actualizarCantidad(DetalleCarrito detalle, int nuevaCantidad) throws SQLException {
         String sql = "{call sp_actualizarcantidadcarrito(?, ?)}";
-        
-        try (Connection conexion = DBConnection.getInstancia().getConnection();
-             CallableStatement consulta = conexion.prepareCall(sql)) {
-            
+
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); CallableStatement consulta = conexion.prepareCall(sql)) {
+
             consulta.setInt(1, detalle.getIdDetalle());
             consulta.setInt(2, nuevaCantidad);
-            
+
             consulta.executeUpdate();
         }
-        
+
         // Actualizar el total del carrito
         actualizarTotalCarrito(detalle.getCarrito().getIdCarrito());
     }
-    
+
     // Eliminar un producto del carrito
     public void eliminarProducto(DetalleCarrito detalle) throws SQLException {
         String sql = "{call sp_eliminarproductocarrito(?)}";
-        
-        try (Connection conexion = DBConnection.getInstancia().getConnection();
+
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
              CallableStatement consulta = conexion.prepareCall(sql)) {
-            
+
             consulta.setInt(1, detalle.getIdDetalle());
             consulta.executeUpdate();
+            
+            // Actualizar el total del carrito después de eliminar
+            actualizarTotalCarrito(detalle.getCarrito().getIdCarrito());
         }
-        
-        // Actualizar el total del carrito
-        actualizarTotalCarrito(detalle.getCarrito().getIdCarrito());
     }
-    
-    // Vaciar el carrito
+
+    // Vaciar todo el carrito
     public void vaciarCarrito(Carrito carrito) throws SQLException {
         String sql = "{call sp_vaciarcarrito(?)}";
-        
-        try (Connection conexion = DBConnection.getInstancia().getConnection();
+
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
              CallableStatement consulta = conexion.prepareCall(sql)) {
-            
+
             consulta.setInt(1, carrito.getIdCarrito());
             consulta.executeUpdate();
+            
+            // Reiniciar el total del carrito
+            reiniciarTotalCarrito(carrito.getIdCarrito());
         }
-        
-        // Actualizar el total del carrito
-        actualizarTotalCarrito(carrito.getIdCarrito());
     }
-    
+
     // Actualizar el total del carrito
-        private void actualizarTotalCarrito(int idCarrito) throws SQLException {
+    private void actualizarTotalCarrito(int idCarrito) throws SQLException {
         String sql = "{call sp_actualizartotalcarrito(?)}";
 
-        try (Connection conexion = DBConnection.getInstancia().getConnection();
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
              CallableStatement consulta = conexion.prepareCall(sql)) {
 
             consulta.setInt(1, idCarrito);
             consulta.executeUpdate();
         }
     }
-    
+
+    // Reiniciar el total del carrito a 0
+    private void reiniciarTotalCarrito(int idCarrito) throws SQLException {
+        String sql = "{call sp_reiniciartotalcarrito(?)}";
+
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
+             CallableStatement consulta = conexion.prepareCall(sql)) {
+
+            consulta.setInt(1, idCarrito);
+            consulta.executeUpdate();
+        }
+    }
+
     public Factura finalizarCompra(Carrito carrito, String metodoPago) throws SQLException {
         String sql = "{call sp_finalizarcompra(?, ?, ?)}";
         Factura factura = new Factura();
 
-        try (Connection conexion = DBConnection.getInstancia().getConnection();
+        try (Connection conexion = DBConnection.getInstancia().getConnection(); 
              CallableStatement consulta = conexion.prepareCall(sql)) {
 
             consulta.setInt(1, carrito.getIdCarrito());
