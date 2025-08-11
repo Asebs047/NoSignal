@@ -1,4 +1,3 @@
-
 package controller;
 
 import dao.FacturaDAO;
@@ -13,21 +12,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Factura;
 
-/**
- *
- * @author reyes
- */
-
 @WebServlet("/ServletListarVentas")
 public class ServletListarVentas extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         FacturaDAO facturaDAO = new FacturaDAO();
         try {
             List<Factura> facturas = facturaDAO.listarTodos();
+            System.out.println("Facturas encontradas: " + facturas.size()); 
             request.setAttribute("facturas", facturas);
             RequestDispatcher dispatcher = request.getRequestDispatcher("listarFacturas.jsp");
             dispatcher.forward(request, response);
