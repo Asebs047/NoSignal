@@ -406,19 +406,22 @@ delimiter //
 delimiter ;
 
 delimiter //
-    create procedure sp_ListarFacturas()
-    begin
-        select
-            F.idFactura,
-            U.nombre as usuario,
-            F.idCarrito,
-            F.fecha,
-            F.subtotal,
-            F.total
-        from Facturas F
-        join Usuarios U on F.idUsuario = U.idUsuario;
-    end//
+create procedure sp_ListarFacturas()
+begin
+    select
+        F.idFactura,
+        U.nombre as usuario,
+        F.idCarrito,
+        F.fecha,
+        F.subtotal,
+        F.total,
+        F.estado,
+        F.metodoPago
+    from Facturas F
+    join Usuarios U on F.idUsuario = U.idUsuario;
+end//
 delimiter ;
+
 
 delimiter //
 	create procedure sp_ActualizarFactura(

@@ -311,9 +311,9 @@
                 <h3>Categorias</h3>
             </a>
             
-            <a href="listarFacturas.jsp" class="producto">
+            <a href="ServletListarVentas" class="producto">
                 <img src="https://www.credlix.com/_next/image?url=https%3A%2F%2Fblog.credlix.com%2Fwp-content%2Fuploads%2F2025%2F01%2Fblog1.webp&w=1200&q=75" alt="Audífonos LED" />
-                <h3>Facturas</h3>
+                <h3>Registro de Ventas</h3>
             </a>
         </div>                 
 
