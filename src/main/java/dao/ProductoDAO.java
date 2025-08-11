@@ -16,7 +16,6 @@ import model.Producto;
  */
 
 public class ProductoDAO {
-
     public void guardar(Producto producto) throws SQLException {
         String sql = "{call sp_AgregarProducto(?,?,?,?,?,?,?,?,?,?)}";
         
