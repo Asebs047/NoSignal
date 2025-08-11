@@ -294,7 +294,7 @@ x<%--
                 </div>
 
                 <div class="panel-footer">
-                    <button type="reset" class="back-btn">Cancelar</button>
+                    <button type="reset" class="back-btn" onclick="window.location.href='catalogo.jsp'">Cancelar</button>
                     <button type="submit" class="next-btn">Confirmar</button>
                 </div>
             </form>

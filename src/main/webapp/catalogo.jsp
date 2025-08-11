@@ -263,7 +263,7 @@
 
                     <div class="modal-footer justify-content-between">
                         <button class="btn btn-danger">Vaciar carrito</button>
-                        <button class="btn btn-success">Finalizar compra</button>
+                        <button class="btn btn-success" onclick="window.location.href='formularioCarrito.jsp'">Finalizar compra</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
 
                     </div>
