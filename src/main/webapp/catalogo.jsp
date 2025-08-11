@@ -280,10 +280,16 @@
                     </div>
 
                     <div class="modal-footer justify-content-between">
+<<<<<<< HEAD
+                        <button class="btn btn-danger">Vaciar carrito</button>
+                        <button class="btn btn-success" onclick="window.location.href='formularioCarrito.jsp'">Finalizar compra</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+=======
                         <form action="ServletComprar" method="post">
                             <input type="hidden" name="accion" value="vaciar">
                             <button type="submit" class="btn btn-danger">Vaciar carrito</button>
                         </form>
+>>>>>>> 507f9976a4895312170c3180f662118330814491
 
                         <form action="ServletComprar" method="post">
                             <input type="hidden" name="accion" value="finalizar">
