@@ -5,6 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%@page import="model.Producto"%>
+<%@page import="dao.ProductoDAO"%>
 <%
     String idParam = request.getParameter("id");
     int id = 1;
@@ -16,13 +19,27 @@
     } catch (NumberFormatException e) {
         id = 1;
     }
+
+    ProductoDAO productoDAO = new ProductoDAO();
+    Producto producto = productoDAO.buscarPorId(id);
+
+    if (producto == null) {
+        response.sendRedirect("catalogo.jsp");
+        return;
+    }
+%>
+<%
+    String mensaje = (String) request.getSession().getAttribute("mensaje");
+    String error = (String) request.getSession().getAttribute("error");
+    request.getSession().removeAttribute("mensaje");
+    request.getSession().removeAttribute("error");
 %>
 <!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Zoom tipo Amazon</title>
+        <title><%= producto.getNombre()%> - NoSignal</title>
         <style>
             body {
                 background-color: #f5f5f5;
@@ -112,109 +129,86 @@
             }
         </style>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+        <!-- Bootstrap Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     </head>
     <body>
-        <h1 class="text-center mb-5">Reloj Deportivo Elegante</h1>
-
-        <% if (id == 1) { %>
-        <div class="producto-contenido">
-
-            <div class="columna-imagen">
-                <div class="img-magnifier-container">
-                    <img id="myimage" src="images/reloj.jpg" width="400" height="400" alt="Reloj elegante">
-                </div>
-            </div>
-
-            <div class="columna-info">
-                <h2 class="titulo-producto">Reloj Deportivo Elegante de Acero Inoxidable</h2>
-                <div class="estrellas">★★★★☆ (4.3 de 5)</div>
-                <p class="mt-3">Este reloj combina diseño moderno con funcionalidad avanzada. Perfecto para el uso diario o eventos especiales.</p>
-
-                <table class="detalle-lista">
-                    <tr><td><strong>Marca:</strong></td><td>ASUS</td></tr>
-                    <tr><td><strong>Modelo:</strong></td><td>ROG Strix G16</td></tr>
-                    <tr><td><strong>Tamaño:</strong></td><td>16 Pulgadas</td></tr>
-                    <tr><td><strong>Color:</strong></td><td>Eclipse Gris</td></tr>
-                </table>
-
-                <ul class="mt-3">
-                    <li>Correa ajustable de acero inoxidable</li>
-                    <li>Resistente al agua hasta 50m</li>
-                    <li>Cronómetro digital y calendario</li>
-                    <li>Pantalla analógica con luz LED</li>
-                    <li>12 meses de garantía</li>
-                </ul>
-            </div>
-
-            <div class="columna-compra">
-                <p class="precio">Q899.00</p>
-                <label for="cantidad">Cantidad:</label>
-                <select id="cantidad">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                </select>
-                <div class="botones-comprar">
-                    <button class="btn btn-warning w-100">Agregar al carrito</button>
-                    <button class="btn btn-danger w-100">Comprar ahora</button>
-                </div>
-            </div>
-
+        <% if (mensaje != null) {%>
+        <div class="alert alert-success alert-dismissible fade show" style="margin: 20px;">
+            <%= mensaje%>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
+        <% } %>
 
-        <% } else if (id == 2) { %>
-        <div class="producto-contenido">
-
-            <div class="columna-imagen">
-                <div class="img-magnifier-container">
-                    <img id="myimage" src="https://m.media-amazon.com/images/I/71zuMSjwDfL._AC_SL1500_.jpg" width="400" height="400" alt="Reloj elegante">
-                </div>
-            </div>
-
-            <div class="columna-info">
-                <h2 class="titulo-producto">Reloj Deportivo Elegante de Acero Inoxidable</h2>
-                <div class="estrellas">★★★★☆ (4.3 de 5)</div>
-                <p class="mt-3">Este reloj combina diseño moderno con funcionalidad avanzada. Perfecto para el uso diario o eventos especiales.</p>
-
-                <table class="detalle-lista">
-                    <tr><td><strong>Marca:</strong></td><td>ASUS</td></tr>
-                    <tr><td><strong>Modelo:</strong></td><td>ROG Strix G16</td></tr>
-                    <tr><td><strong>Tamaño:</strong></td><td>16 Pulgadas</td></tr>
-                    <tr><td><strong>Color:</strong></td><td>Eclipse Gris</td></tr>
-                </table>
-
-                <ul class="mt-3">
-                    <li>Correa ajustable de acero inoxidable</li>
-                    <li>Resistente al agua hasta 50m</li>
-                    <li>Cronómetro digital y calendario</li>
-                    <li>Pantalla analógica con luz LED</li>
-                    <li>12 meses de garantía</li>
-                </ul>
-            </div>
-
-            <div class="columna-compra">
-                <p class="precio">Q899.00</p>
-                <label for="cantidad">Cantidad:</label>
-                <select id="cantidad">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                </select>
-                <div class="botones-comprar">
-                    <button class="btn btn-warning w-100">Agregar al carrito</button>
-                    <button class="btn btn-danger w-100">Comprar ahora</button>
-                </div>
-            </div>
-
-        </div>
-
-        <% } else { %>
-        <div class="container py-5 text-center">
-            <h2 class="text-danger">Producto no encontrado</h2>
-            <p>Regresa al <a href="catalogo.jsp">catálogo</a>.</p>
+        <% if (error != null) {%>
+        <div class="alert alert-danger alert-dismissible fade show" style="margin: 20px;">
+            <%= error%>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
         <% }%>
+        <h1 class="text-center mb-5"><%= producto.getNombre()%></h1>
 
+        <div class="producto-contenido">
+            <div class="columna-imagen">
+                <div class="img-magnifier-container">
+                    <img id="myimage" src="<%= producto.getUrlImagen()%>" width="400" height="400" alt="<%= producto.getNombre()%>">
+                </div>
+            </div>
+
+            <div class="columna-info">
+                <h2 class="titulo-producto"><%= producto.getNombre()%></h2>
+                <div class="estrellas">★★★★☆ (4.3 de 5)</div>
+                <p class="mt-3"><%= producto.getDescripcion()%></p>
+
+                <table class="detalle-lista">
+                    <tr><td><strong>Marca:</strong></td><td><%= producto.getMarca() != null ? producto.getMarca() : "Sin marca"%></td></tr>
+                    <tr><td><strong>Color:</strong></td><td><%= producto.getColor()%></td></tr>
+                    <tr><td><strong>Precio:</strong></td><td>Q<%= producto.getPrecio()%></td></tr>
+                    <tr><td><strong>Género:</strong></td><td><%= producto.getGenero()%></td></tr>
+                    <tr><td><strong>Disponibles:</strong></td><td><%= producto.getCantidad()%></td></tr>
+                </table>
+
+                <ul class="mt-3">
+                    <li><%= producto.getDetalle()%></li>
+                </ul>
+            </div>
+
+            <div class="columna-compra">
+                <p class="precio">Q<%= producto.getPrecio()%></p>
+
+                <form action="ServletCarrito" method="post">
+                    <input type="hidden" name="accion" value="agregar">
+                    <input type="hidden" name="idProducto" value="<%= producto.getIdProducto()%>">
+                    <input type="hidden" name="origen" value="producto.jsp?id=<%= producto.getIdProducto()%>">
+
+                    <% if (producto.getCantidad() > 0) { %>
+                    <label for="cantidad">Cantidad:</label>
+                    <select id="cantidad" name="cantidad" class="form-control">
+                        <%
+                            int maxCantidad = Math.min(producto.getCantidad(), 10);
+                            for (int i = 1; i <= maxCantidad; i++) {
+                        %>
+                        <option value="<%= i%>"><%= i%></option>
+                        <% } %>
+                    </select>
+
+                    <div class="botones-comprar mt-3">
+                        <button type="submit" class="btn btn-warning w-100">
+                            <i class="bi bi-cart-plus"></i> Agregar al carrito
+                        </button>
+                        <a href="carrito.jsp" class="btn btn-primary w-100 mt-2">
+                            <i class="bi bi-cart-check"></i> Ver carrito
+                        </a>
+                    </div>
+                    <% } else { %>
+                    <div class="alert alert-warning">Producto agotado</div>
+                    <a href="carrito.jsp" class="btn btn-primary w-100 mt-2">
+                        <i class="bi bi-cart-check"></i> Ver carrito
+                    </a>
+                    <% }%>
+                </form>
+            </div>
+        </div>
 
         <script>
             function magnify(imgID, zoom) {
@@ -271,7 +265,6 @@
                 magnify("myimage", 2);
             });
         </script>
-
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
     </body>
