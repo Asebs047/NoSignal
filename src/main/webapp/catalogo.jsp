@@ -211,9 +211,10 @@
                     </ul>
 
                     <div class="ms-2">
-                        <button class="btn btn-light me-3" data-bs-toggle="modal" data-bs-target="#Carrito">Carrito</button>
+                        <a href="carrito.jsp" class="btn btn-light me-3">Carrito</a>
                         <button class="btn btn-light me-3" data-bs-toggle="modal" data-bs-target="#miCuenta">Mi Cuenta</button>
                     </div>
+
                 </div>
             </div>
         </nav>
@@ -245,27 +246,51 @@
                                     <th>Producto</th>
                                     <th>Cantidad</th>
                                     <th>Precio</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
+                            <c:forEach items="${carrito.detalles}" var="detalle">
                                 <tr>
-                                    <td>Relog de oro</td>
-                                    <td>5</td>
-                                    <td>Q450.00</td>
+                                    <td>${detalle.producto.nombre}</td>
+                                    <td>
+                                        <form action="ServletComprar" method="post" class="d-inline">
+                                            <input type="hidden" name="accion" value="actualizar">
+                                            <input type="hidden" name="idDetalle" value="${detalle.idDetalle}">
+                                            <input type="number" name="cantidad" value="${detalle.cantidad}" min="1" max="10" class="form-control form-control-sm" style="width: 60px; display: inline;">
+                                            <button type="submit" class="btn btn-sm btn-info">✓</button>
+                                        </form>
+                                    </td>
+                                    <td>Q${detalle.subTotal}</td>
+                                    <td>
+                                        <form action="ServletComprar" method="post" class="d-inline">
+                                            <input type="hidden" name="accion" value="eliminar">
+                                            <input type="hidden" name="idDetalle" value="${detalle.idDetalle}">
+                                            <button type="submit" class="btn btn-sm btn-danger">X</button>
+                                        </form>
+                                    </td>
                                 </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
 
                         <div class="text-end">
-                            <h5>Total: <span class="text-success">Q450.00</span></h5>
+                            <h5>Total: <span class="text-success">Q${carrito.total}</span></h5>
                         </div>
                     </div>
 
                     <div class="modal-footer justify-content-between">
-                        <button class="btn btn-danger">Vaciar carrito</button>
-                        <button class="btn btn-success">Finalizar compra</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                        <form action="ServletComprar" method="post">
+                            <input type="hidden" name="accion" value="vaciar">
+                            <button type="submit" class="btn btn-danger">Vaciar carrito</button>
+                        </form>
 
+                        <form action="ServletComprar" method="post">
+                            <input type="hidden" name="accion" value="finalizar">
+                            <button type="submit" class="btn btn-success">Finalizar compra</button>
+                        </form>
+
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -986,115 +1011,115 @@
                 <h3>Sombrero Retro 111</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=112" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+112" alt="Sombrero Retro 112" />
                 <h3>Sombrero Retro 112</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=113" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+113" alt="Sombrero Retro 113" />
                 <h3>Sombrero Retro 113</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=114" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+114" alt="Sombrero Retro 114" />
                 <h3>Sombrero Retro 114</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=115" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+115" alt="Sombrero Retro 115" />
                 <h3>Sombrero Retro 115</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=116" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+116" alt="Sombrero Retro 116" />
                 <h3>Sombrero Retro 116</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=117" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+117" alt="Sombrero Retro 117" />
                 <h3>Sombrero Retro 117</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=118" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+118" alt="Sombrero Retro 118" />
                 <h3>Sombrero Retro 118</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=119" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+119" alt="Sombrero Retro 119" />
                 <h3>Sombrero Retro 119</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=120" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+120" alt="Sombrero Retro 120" />
                 <h3>Sombrero Retro 120</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=121" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+121" alt="Sombrero Retro 121" />
                 <h3>Sombrero Retro 121</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=122" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+122" alt="Sombrero Retro 122" />
                 <h3>Sombrero Retro 122</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=123" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+123" alt="Sombrero Retro 123" />
                 <h3>Sombrero Retro 123</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=124" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+124" alt="Sombrero Retro 124" />
                 <h3>Sombrero Retro 124</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=125" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+125" alt="Sombrero Retro 125" />
                 <h3>Sombrero Retro 125</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=126" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+126" alt="Sombrero Retro 126" />
                 <h3>Sombrero Retro 126</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=127" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+127" alt="Sombrero Retro 127" />
                 <h3>Sombrero Retro 127</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=128" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+128" alt="Sombrero Retro 128" />
                 <h3>Sombrero Retro 128</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=129" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+129" alt="Sombrero Retro 129" />
                 <h3>Sombrero Retro 129</h3>
                 <p>$22.00</p>
             </a>
-            
+
             <a href="producto.html?id=130" class="producto">
                 <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+130" alt="Sombrero Retro 130" />
                 <h3>Sombrero Retro 130</h3>
