@@ -266,6 +266,23 @@
             <p>Cada accesorio que diseñamos lleva el glitch en su ADN, inspirada por el arte digital, el anime, los videojuegos retro, los errores de sistema, los íconos tecnológicos y el caos visual que define a las nuevas subculturas. Queremos ofrecer a los jóvenes una forma auténtica de expresarse, sin filtros ni limitaciones.</p>
             <p>Creemos en el diseño disruptivo, las siluetas cómodas, los mensajes poderosos y el poder de una comunidad que ya no distingue entre lo físico y lo digital. Porque para nosotros, "<strong>sin señal</strong>" no significa estar desconectado, sino conectado a lo verdaderamente nuestro.</p>
             <p>Actualmente, buscamos alianzas estratégicas, colaboraciones artísticas y espacios de distribución que compartan nuestra visión. Si estás interesado/a en formar parte de esta revolución de estilo, estaremos encantados de conectar.</p>
+        </div>
+        <div class="left-side">
+            <h3 class="text-center"><strong>Misión</strong></h3> 
+            <p>Queremos ofrecer una experiencia de compra online única en accesorios de lujo como gorras, cadenas, anillos, piercings, guantes y relojes. Nos dirigimos a personas que buscan destacar con estilo y personalidad. Nuestra propuesta se diferencia por combinar diseños exclusivos, calidad premium y un servicio personalizado, para que cada cliente viva una experiencia de compra excepcional.</p>
+        </div>
+        <div class="left-side">
+            <h3 class="text-center"><strong>Visión</strong></h3>
+            <p>Ser la tienda online de accesorios de lujo más reconocida en Latinoamérica, dirigida a quienes valoran la exclusividad y el estilo. Nos diferencia la innovación constante, la atención personalizada y la calidad excepcional de nuestros productos. Queremos consolidarnos como la primera opción para marcar tendencia y proyectar elegancia.</p>
+        </div>
+        <div class="left-side">
+            <h3 class="text-center"><strong>Valores Corporativos</strong></h3>
+            <p><strong>Calidad Premium:</strong> Solo productos que cumplan con los más altos estándares.</p>
+            <p><strong>Exclusividad:</strong> Diseños únicos que reflejan personalidad y estilo.</p>
+            <p><strong>Innovación:</strong> Mejorar continuamente la experiencia de compra online.</p>
+            <p><strong>Compromiso con el Cliente:</strong> Atención personalizada y confiable.</p>
+            <p><strong>Integridad:</strong> Transparencia y ética en todos los procesos.</p>
+            <p><strong>Pasión por la Moda:</strong> Inspirar a expresarse con confianza.</p><br>
             <p class="mt-4 mb-0"><strong>Con actitud,</strong><br>El equipo de NoSignal<br><em>Sin conexión. Con estilo.</em></p>
         </div>
     </div>

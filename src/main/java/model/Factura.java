@@ -22,6 +22,9 @@ public class Factura {
     @Column(name = "subtotal")
     private double subtotal;
     
+    @Column(name = "impuestos")
+    private double impuestos;
+    
     @Column(name = "total")
     private double total;
     
@@ -39,12 +42,10 @@ public class Factura {
     @JoinColumn(name = "idCarrito")
     private Carrito carrito;
 
-    // Constructores, getters y setters
     public Factura() {
     }
 
-    public Factura(int idFactura, Date fecha, double subtotal, 
-                  double total, String estado, String metodoPago) {
+    public Factura(int idFactura, Date fecha, double subtotal, double total, String estado, String metodoPago) {
         this.idFactura = idFactura;
         this.fecha = fecha;
         this.subtotal = subtotal;
@@ -53,7 +54,6 @@ public class Factura {
         this.metodoPago = metodoPago;
     }
 
-    // Getters y Setters
     public int getIdFactura() {
         return idFactura;
     }
@@ -117,4 +117,12 @@ public class Factura {
     public void setCarrito(Carrito carrito) {
         this.carrito = carrito;
     }
+
+    public double getImpuestos() {
+        return impuestos;
+    }
+
+    public void setImpuestos(double impuestos) {
+        this.impuestos = impuestos;
+    }  
 }
