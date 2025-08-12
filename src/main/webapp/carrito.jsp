@@ -185,7 +185,7 @@
                                             <span>Total:</span>
                                             <span>Q${carrito.total}</span>
                                         </div>
-                                        <a href="checkout.jsp" class="btn btn-primary w-100">
+                                        <a href="formularioCarrito.jsp" class="btn btn-primary w-100">
                                             <i class="bi bi-credit-card"></i> Proceder al pago
                                         </a>
                                     </div>

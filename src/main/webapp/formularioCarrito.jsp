@@ -1,10 +1,5 @@
-x<%-- 
-    Document   : formularioCarrito
-    Created on : 8/08/2025, 19:12:02
-    Author     : Klopez
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -89,7 +84,6 @@ x<%--
                 box-shadow: 0 0 6px rgba(246, 47, 94, 0.3);
             }
 
-            /* Corrección para campos pequeños CVV y fecha alineados */
             .small-inputs {
                 display: flex;
                 gap: 15px;
@@ -108,15 +102,15 @@ x<%--
                 font-size: 14px;
                 color: #666;
                 cursor: pointer;
-                display: flex;           /* Alineamos en fila */
-                align-items: center;     /* Centramos vertical */
-                gap: 5px;                /* Espacio entre texto y tooltip */
-                height: 20px;            /* Altura fija para que no crezca */
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                height: 20px;
                 line-height: 20px;
             }
 
             .tooltip {
-                border-bottom: none;     /* Quitamos subrayado porque usaremos flex */
+                border-bottom: none;
             }
 
             .tooltip .tooltiptext {
@@ -150,7 +144,7 @@ x<%--
                 font-size: 16px;
                 border-radius: 6px;
                 border: 1.8px solid #ddd;
-                height: 48px; /* Igual altura para ambos */
+                height: 48px;
                 box-sizing: border-box;
             }
 
@@ -161,7 +155,6 @@ x<%--
                 box-shadow: 0 0 6px rgba(246, 47, 94, 0.3);
             }
 
-            /* Buttons */
             .panel-footer {
                 display: flex;
                 justify-content: space-between;
@@ -195,7 +188,6 @@ x<%--
                 color: white;
             }
 
-            /* Tooltip para CVV */
             .tooltip {
                 position: relative;
                 display: inline-block;
@@ -230,7 +222,6 @@ x<%--
                 opacity: 1;
             }
 
-            /* Ocultar botón "X" limpiar en inputs tel (Chrome, Edge) */
             input[type="tel"]::-webkit-clear-button {
                 display: none;
             }
@@ -238,7 +229,6 @@ x<%--
                 display: none;
             }
 
-            /* Responsive */
             @media (max-width: 480px) {
                 .small-inputs {
                     flex-direction: column;
@@ -249,7 +239,8 @@ x<%--
                 }
             }
         </style>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body>
         <div class="checkout-panel">
@@ -257,10 +248,10 @@ x<%--
 
             <img src="images/logo3.png" alt="Visa y Mastercard" class="card-image" />
 
-            <form>
+            <form action="ServletPago" method="post">
                 <div class="input-group">
                     <label for="cardholder">Nombre completo</label>
-                    <input type="text" id="cardholder" placeholder="Nombre completo" required />
+                    <input type="text" id="cardholder" name="cardholder" placeholder="Nombre completo" required />
                 </div>
 
                 <div class="input-group">
@@ -269,6 +260,7 @@ x<%--
                         type="tel"
                         inputmode="numeric"
                         id="cardnumber"
+                        name="cardnumber"
                         placeholder="1234 5678 9012 3456"
                         maxlength="19"
                         pattern="[0-9 ]{13,19}"
@@ -280,7 +272,7 @@ x<%--
                 <div class="small-inputs">
                     <div class="input-group">
                         <label for="date">Fecha de expiración</label>
-                        <input type="text" id="date" placeholder="MM / AA" maxlength="5" pattern="(0[1-9]|1[0-2])\/?([0-9]{2})" title="Formato MM/AA" required />
+                        <input type="text" id="date" name="date" placeholder="MM / AA" maxlength="5" pattern="(0[1-9]|1[0-2])\/?([0-9]{2})" title="Formato MM/AA" required />
                     </div>
 
                     <div class="input-group">
@@ -289,7 +281,7 @@ x<%--
                                 <span class="tooltiptext">Código de 3 o 4 dígitos al reverso de tu tarjeta</span>
                             </span>
                         </label>
-                        <input type="password" id="cvv" maxlength="4" pattern="\d{3,4}" placeholder="123" required />
+                        <input type="password" id="cvv" name="cvv" maxlength="4" pattern="\d{3,4}" placeholder="123" required />
                     </div>
                 </div>
 
@@ -300,6 +292,30 @@ x<%--
             </form>
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+        
+        <%-- Mostrar mensajes de éxito/error --%>
+        <c:if test="${not empty mensaje}">
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: '${mensaje}',
+                    timer: 3000
+                }).then(() => {
+                    window.location.href = 'confirmacion.jsp';
+                });
+            </script>
+        </c:if>
+        
+        <c:if test="${not empty error}">
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '${error}'
+                });
+            </script>
+        </c:if>
     </body>
 </html>
