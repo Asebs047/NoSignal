@@ -6,7 +6,25 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="model.Usuario" %>
-<% Usuario usuario = (Usuario) session.getAttribute("usuario");%>
+<%@ page import="dao.ProductoDAO" %>
+<%@page import="java.util.List"%>
+<%@page import="model.Producto"%>
+<%@ page import="java.sql.SQLException" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+    ProductoDAO productoDAO = new ProductoDAO();
+    List<Producto> productos = null;
+    try {
+        productos = productoDAO.listarTodos();
+        request.setAttribute("productos", productos);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -45,7 +63,7 @@
             }
 
             .navbar .nav-link.active {
-                color: #ffeb3b !important; /* <-- Color amarillo cuando activo */
+                color: #ffeb3b !important;
             }
 
             .btn-light {
@@ -145,7 +163,7 @@
             .sidebar {
                 position: fixed;
                 top: 0;
-                left: -300px; /* Oculto por defecto */
+                left: -300px;
                 width: 280px;
                 height: 100%;
                 background-color: white;
@@ -190,6 +208,19 @@
             .overlay.show {
                 display: block;
             }
+
+            .img-product {
+                width: 100%;
+                height: 150px;
+                object-fit: contain;
+                margin-bottom: 10px;
+            }
+
+            .filename {
+                font-size: 0.8rem;
+                color: #999;
+                margin-top: 5px;
+            }
         </style>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     </head>
@@ -214,7 +245,6 @@
                         <a href="carrito.jsp" class="btn btn-light me-3">Carrito</a>
                         <button class="btn btn-light me-3" data-bs-toggle="modal" data-bs-target="#miCuenta">Mi Cuenta</button>
                     </div>
-
                 </div>
             </div>
         </nav>
@@ -250,27 +280,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${carrito.detalles}" var="detalle">
-                                <tr>
-                                    <td>${detalle.producto.nombre}</td>
-                                    <td>
-                                        <form action="ServletComprar" method="post" class="d-inline">
-                                            <input type="hidden" name="accion" value="actualizar">
-                                            <input type="hidden" name="idDetalle" value="${detalle.idDetalle}">
-                                            <input type="number" name="cantidad" value="${detalle.cantidad}" min="1" max="10" class="form-control form-control-sm" style="width: 60px; display: inline;">
-                                            <button type="submit" class="btn btn-sm btn-info">✓</button>
-                                        </form>
-                                    </td>
-                                    <td>Q${detalle.subTotal}</td>
-                                    <td>
-                                        <form action="ServletComprar" method="post" class="d-inline">
-                                            <input type="hidden" name="accion" value="eliminar">
-                                            <input type="hidden" name="idDetalle" value="${detalle.idDetalle}">
-                                            <button type="submit" class="btn btn-sm btn-danger">X</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </c:forEach>
+                                <c:forEach items="${carrito.detalles}" var="detalle">
+                                    <tr>
+                                        <td>${detalle.producto.nombre}</td>
+                                        <td>
+                                            <form action="ServletComprar" method="post" class="d-inline">
+                                                <input type="hidden" name="accion" value="actualizar">
+                                                <input type="hidden" name="idDetalle" value="${detalle.idDetalle}">
+                                                <input type="number" name="cantidad" value="${detalle.cantidad}" min="1" max="10" class="form-control form-control-sm" style="width: 60px; display: inline;">
+                                                <button type="submit" class="btn btn-sm btn-info">✓</button>
+                                            </form>
+                                        </td>
+                                        <td>Q${detalle.subTotal}</td>
+                                        <td>
+                                            <form action="ServletComprar" method="post" class="d-inline">
+                                                <input type="hidden" name="accion" value="eliminar">
+                                                <input type="hidden" name="idDetalle" value="${detalle.idDetalle}">
+                                                <button type="submit" class="btn btn-sm btn-danger">X</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                             </tbody>
                         </table>
 
@@ -280,16 +310,10 @@
                     </div>
 
                     <div class="modal-footer justify-content-between">
-<<<<<<< HEAD
-                        <button class="btn btn-danger">Vaciar carrito</button>
-                        <button class="btn btn-success" onclick="window.location.href='formularioCarrito.jsp'">Finalizar compra</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-=======
                         <form action="ServletComprar" method="post">
                             <input type="hidden" name="accion" value="vaciar">
                             <button type="submit" class="btn btn-danger">Vaciar carrito</button>
                         </form>
->>>>>>> 507f9976a4895312170c3180f662118330814491
 
                         <form action="ServletComprar" method="post">
                             <input type="hidden" name="accion" value="finalizar">
@@ -301,7 +325,6 @@
                 </div>
             </div>
         </div>
-
 
         <div class="modal fade" id="miCuenta" tabindex="-1" aria-labelledby="acercaModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -346,792 +369,38 @@
             </div>
         </div>
 
-
-
         <h1>Catálogo NoSignal - Accesorios Urbanos</h1>
 
         <div class="catalogo">
-
-            <a href="producto.jsp?id=1" class="producto">
-                <img src="https://cubitt.com.gt/cdn/shop/files/CTCAP-1E_45922c1d-4546-4a79-816c-e3803f052bcb.webp?v=1736962853&width=800" alt="Gorra Negra" />
-                <h3>Gorra Negra</h3>
-                <p>$15.00</p>
-            </a>
-
-            <a href="producto.jsp?id=2" class="producto">
-                <img src="https://caterpillargt.com/cdn/shop/files/30074459.jpg?v=1751437381" alt="Mochila Retro" />
-                <h3>Mochila Retro</h3>
-                <p>$40.00</p>
-            </a>
-
-            <a href="producto.html?id=3" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Reloj+Geek" alt="Reloj Geek" />
-                <h3>Reloj Geek</h3>
-                <p>$55.00</p>
-            </a>
-
-            <a href="producto.html?id=4" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Pulsera+Tech" alt="Pulsera Tech" />
-                <h3>Pulsera Tech</h3>
-                <p>$20.00</p>
-            </a>
-
-            <a href="producto.html?id=5" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Audífonos+LED" alt="Audífonos LED" />
-                <h3>Audífonos LED</h3>
-                <p>$75.00</p>
-            </a>
-
-            <a href="producto.html?id=6" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Gafas+de+Sol" alt="Gafas de Sol" />
-                <h3>Gafas de Sol</h3>
-                <p>$25.00</p>
-            </a>
-
-            <a href="producto.html?id=7" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Llaveros+Personalizados" alt="Llaveros Personalizados" />
-                <h3>Llaveros Personalizados</h3>
-                <p>$10.00</p>
-            </a>
-
-            <a href="producto.html?id=8" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Cinturón+Urbano" alt="Cinturón Urbano" />
-                <h3>Cinturón Urbano</h3>
-                <p>$18.00</p>
-            </a>
-
-            <a href="producto.html?id=9" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Bolso+Crossbody" alt="Bolso Crossbody" />
-                <h3>Bolso Crossbody</h3>
-                <p>$35.00</p>
-            </a>
-
-            <a href="producto.html?id=10" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=11" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=12" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=13" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=14" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=15" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=16" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=17" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=18" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=19" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=20" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=21" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=22" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=23" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=24" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=25" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=26" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=27" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=28" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=29" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=30" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=31" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=32" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=33" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=34" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=35" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=36" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=37" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=38" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=39" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=40" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=41" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=42" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=43" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=44" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=45" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=46" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=47" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=48" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=49" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=50" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro" alt="Sombrero Retro" />
-                <h3>Sombrero Retro</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=51" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+51" alt="Sombrero Retro 51" />
-                <h3>Sombrero Retro 51</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=52" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+52" alt="Sombrero Retro 52" />
-                <h3>Sombrero Retro 52</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=53" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+53" alt="Sombrero Retro 53" />
-                <h3>Sombrero Retro 53</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=54" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+54" alt="Sombrero Retro 54" />
-                <h3>Sombrero Retro 54</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=55" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+55" alt="Sombrero Retro 55" />
-                <h3>Sombrero Retro 55</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=56" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+56" alt="Sombrero Retro 56" />
-                <h3>Sombrero Retro 56</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=57" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+57" alt="Sombrero Retro 57" />
-                <h3>Sombrero Retro 57</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=58" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+58" alt="Sombrero Retro 58" />
-                <h3>Sombrero Retro 58</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=59" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+59" alt="Sombrero Retro 59" />
-                <h3>Sombrero Retro 59</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=60" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+60" alt="Sombrero Retro 60" />
-                <h3>Sombrero Retro 60</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=61" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+61" alt="Sombrero Retro 61" />
-                <h3>Sombrero Retro 61</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=62" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+62" alt="Sombrero Retro 62" />
-                <h3>Sombrero Retro 62</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=63" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+63" alt="Sombrero Retro 63" />
-                <h3>Sombrero Retro 63</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=64" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+64" alt="Sombrero Retro 64" />
-                <h3>Sombrero Retro 64</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=65" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+65" alt="Sombrero Retro 65" />
-                <h3>Sombrero Retro 65</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=66" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+66" alt="Sombrero Retro 66" />
-                <h3>Sombrero Retro 66</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=67" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+67" alt="Sombrero Retro 67" />
-                <h3>Sombrero Retro 67</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=68" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+68" alt="Sombrero Retro 68" />
-                <h3>Sombrero Retro 68</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=69" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+69" alt="Sombrero Retro 69" />
-                <h3>Sombrero Retro 69</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=70" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+70" alt="Sombrero Retro 70" />
-                <h3>Sombrero Retro 70</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=71" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+71" alt="Sombrero Retro 71" />
-                <h3>Sombrero Retro 71</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=72" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+72" alt="Sombrero Retro 72" />
-                <h3>Sombrero Retro 72</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=73" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+73" alt="Sombrero Retro 73" />
-                <h3>Sombrero Retro 73</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=74" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+74" alt="Sombrero Retro 74" />
-                <h3>Sombrero Retro 74</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=75" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+75" alt="Sombrero Retro 75" />
-                <h3>Sombrero Retro 75</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=76" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+76" alt="Sombrero Retro 76" />
-                <h3>Sombrero Retro 76</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=77" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+77" alt="Sombrero Retro 77" />
-                <h3>Sombrero Retro 77</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=78" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+78" alt="Sombrero Retro 78" />
-                <h3>Sombrero Retro 78</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=79" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+79" alt="Sombrero Retro 79" />
-                <h3>Sombrero Retro 79</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=80" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+80" alt="Sombrero Retro 80" />
-                <h3>Sombrero Retro 80</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=81" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+81" alt="Sombrero Retro 81" />
-                <h3>Sombrero Retro 81</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=82" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+82" alt="Sombrero Retro 82" />
-                <h3>Sombrero Retro 82</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=83" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+83" alt="Sombrero Retro 83" />
-                <h3>Sombrero Retro 83</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=84" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+84" alt="Sombrero Retro 84" />
-                <h3>Sombrero Retro 84</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=85" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+85" alt="Sombrero Retro 85" />
-                <h3>Sombrero Retro 85</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=86" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+86" alt="Sombrero Retro 86" />
-                <h3>Sombrero Retro 86</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=87" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+87" alt="Sombrero Retro 87" />
-                <h3>Sombrero Retro 87</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=88" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+88" alt="Sombrero Retro 88" />
-                <h3>Sombrero Retro 88</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=89" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+89" alt="Sombrero Retro 89" />
-                <h3>Sombrero Retro 89</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=90" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+90" alt="Sombrero Retro 90" />
-                <h3>Sombrero Retro 90</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=91" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+91" alt="Sombrero Retro 91" />
-                <h3>Sombrero Retro 91</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=92" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+92" alt="Sombrero Retro 92" />
-                <h3>Sombrero Retro 92</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=93" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+93" alt="Sombrero Retro 93" />
-                <h3>Sombrero Retro 93</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=94" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+94" alt="Sombrero Retro 94" />
-                <h3>Sombrero Retro 94</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=95" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+95" alt="Sombrero Retro 95" />
-                <h3>Sombrero Retro 95</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=96" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+96" alt="Sombrero Retro 96" />
-                <h3>Sombrero Retro 96</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=97" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+97" alt="Sombrero Retro 97" />
-                <h3>Sombrero Retro 97</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=98" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+98" alt="Sombrero Retro 98" />
-                <h3>Sombrero Retro 98</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=99" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+99" alt="Sombrero Retro 99" />
-                <h3>Sombrero Retro 99</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=100" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+100" alt="Sombrero Retro 100" />
-                <h3>Sombrero Retro 100</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=101" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+101" alt="Sombrero Retro 101" />
-                <h3>Sombrero Retro 101</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=102" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+102" alt="Sombrero Retro 102" />
-                <h3>Sombrero Retro 102</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=103" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+103" alt="Sombrero Retro 103" />
-                <h3>Sombrero Retro 103</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=104" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+104" alt="Sombrero Retro 104" />
-                <h3>Sombrero Retro 104</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=105" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+105" alt="Sombrero Retro 105" />
-                <h3>Sombrero Retro 105</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=106" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+106" alt="Sombrero Retro 106" />
-                <h3>Sombrero Retro 106</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=107" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+107" alt="Sombrero Retro 107" />
-                <h3>Sombrero Retro 107</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=108" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+108" alt="Sombrero Retro 108" />
-                <h3>Sombrero Retro 108</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=109" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+109" alt="Sombrero Retro 109" />
-                <h3>Sombrero Retro 109</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=110" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+110" alt="Sombrero Retro 110" />
-                <h3>Sombrero Retro 110</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=111" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+111" alt="Sombrero Retro 111" />
-                <h3>Sombrero Retro 111</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=112" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+112" alt="Sombrero Retro 112" />
-                <h3>Sombrero Retro 112</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=113" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+113" alt="Sombrero Retro 113" />
-                <h3>Sombrero Retro 113</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=114" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+114" alt="Sombrero Retro 114" />
-                <h3>Sombrero Retro 114</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=115" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+115" alt="Sombrero Retro 115" />
-                <h3>Sombrero Retro 115</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=116" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+116" alt="Sombrero Retro 116" />
-                <h3>Sombrero Retro 116</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=117" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+117" alt="Sombrero Retro 117" />
-                <h3>Sombrero Retro 117</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=118" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+118" alt="Sombrero Retro 118" />
-                <h3>Sombrero Retro 118</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=119" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+119" alt="Sombrero Retro 119" />
-                <h3>Sombrero Retro 119</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=120" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+120" alt="Sombrero Retro 120" />
-                <h3>Sombrero Retro 120</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=121" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+121" alt="Sombrero Retro 121" />
-                <h3>Sombrero Retro 121</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=122" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+122" alt="Sombrero Retro 122" />
-                <h3>Sombrero Retro 122</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=123" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+123" alt="Sombrero Retro 123" />
-                <h3>Sombrero Retro 123</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=124" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+124" alt="Sombrero Retro 124" />
-                <h3>Sombrero Retro 124</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=125" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+125" alt="Sombrero Retro 125" />
-                <h3>Sombrero Retro 125</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=126" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+126" alt="Sombrero Retro 126" />
-                <h3>Sombrero Retro 126</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=127" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+127" alt="Sombrero Retro 127" />
-                <h3>Sombrero Retro 127</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=128" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+128" alt="Sombrero Retro 128" />
-                <h3>Sombrero Retro 128</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=129" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+129" alt="Sombrero Retro 129" />
-                <h3>Sombrero Retro 129</h3>
-                <p>$22.00</p>
-            </a>
-
-            <a href="producto.html?id=130" class="producto">
-                <img src="https://via.placeholder.com/180x150?text=Sombrero+Retro+130" alt="Sombrero Retro 130" />
-                <h3>Sombrero Retro 130</h3>
-                <p>$22.00</p>
-            </a>
-
+            <%
+                List<Producto> listaProductos = (List<Producto>) request.getAttribute("productos");
+                if (listaProductos != null && !listaProductos.isEmpty()) {
+                    for (Producto p : listaProductos) {
+                        String rutaImagen = request.getContextPath() + "/images/productos/" + p.getUrlImagen() + ".png";
+                        String rutaImagenDefault = request.getContextPath() + "/images/productos/placeholder.png";
+                        String statusClass = p.getCantidad() > 10 ? "status-available"
+                                : (p.getCantidad() > 0 ? "status-low" : "status-out");
+                        String statusText = p.getCantidad() > 10 ? "Disponible"
+                                : (p.getCantidad() > 0 ? "Últimas unidades" : "Agotado");
+            %>
+            <a href="producto.jsp?id=<%= p.getIdProducto()%>" class="producto">
+                <img src="<%= rutaImagen%>" 
+                     alt="<%= p.getNombre()%>"
+                     class="img-product"
+                     onerror="this.src='<%= rutaImagenDefault%>';this.onerror=null;">
+                <div class="filename"><%= p.getUrlImagen()%>.png</div>
+                <h3><%= p.getNombre()%></h3>
+                <p>$<%= p.getPrecio()%></p>
+                <div class="status <%= statusClass%>"><%= statusText%></div>
+            </a>
+            <%
+                }
+            } else {
+            %>
+            <p>No hay productos disponibles</p>
+            <%
+                }
+            %>
         </div>
 
         <script>
