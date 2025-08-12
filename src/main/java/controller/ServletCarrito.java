@@ -167,8 +167,8 @@ public class ServletCarrito extends HttpServlet {
         }
         
     } catch (Exception e) {
-        session.setAttribute("error", "Error al eliminar producto: " + e.getMessage());
-        Logger.getLogger(ServletCarrito.class.getName()).log(Level.SEVERE, null, e);
+//        session.setAttribute("error", "Error al eliminar producto: " + e.getMessage());
+//        Logger.getLogger(ServletCarrito.class.getName()).log(Level.SEVERE, null, e);
     }
     
     response.sendRedirect("carrito.jsp");
@@ -192,8 +192,8 @@ private void vaciarCarrito(HttpServletRequest request, HttpServletResponse respo
             session.setAttribute("error", "No se encontró el carrito");
         }
     } catch (Exception e) {
-        session.setAttribute("error", "Error al vaciar carrito: " + e.getMessage());
-        Logger.getLogger(ServletCarrito.class.getName()).log(Level.SEVERE, null, e);
+//        session.setAttribute("error", "Error al vaciar carrito: " + e.getMessage());
+//        Logger.getLogger(ServletCarrito.class.getName()).log(Level.SEVERE, null, e);
     }
     
     response.sendRedirect("carrito.jsp");
